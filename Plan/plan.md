@@ -141,8 +141,11 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
     { "type": "place", "text": "青葉避難所" },
     { "type": "number", "text": "15名" }
   ],
+  "avg_logprob": -0.42,
+  "no_speech_prob": 0.03,
   "latency_ms": 2400,
-  "audio_ref": "local:event-id.wav"
+  "audio_ref": "local:event-id.wav",
+  "glossary_hits": ["青葉避難所", "15名"]
 }
 ```
 
