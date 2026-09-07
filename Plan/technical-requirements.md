@@ -29,6 +29,20 @@ Sumradioは、特定小電力トランシーバーで受信した無線音声を
 
 主系はローカル処理とし、インターネット接続やクラウドAPIをMVPの必須条件にしない。
 
+## 実行環境
+
+- Ubuntu 22.04、Windows 11、macOS（Apple Siliconを含む）を同一仕様でサポートする。
+- 音声取得はPythonの `sounddevice` / PortAudioを使用し、入力デバイスを名称またはIDで選択する。
+- ASRは `faster-whisper`（CTranslate2）のバックエンドインターフェース経由で呼び出す。CUDAでは `compute_type=float16`、CPU（Apple Siliconを含む）では `compute_type=int8` とする。
+- 将来の任意バックエンド追加を可能にするが、MVPの必須条件にはしない。
+
+## 暫定字幕
+
+- Pythonでリングバッファを実装し、5〜8秒窓を0.5〜1秒ストライドで再認識する。
+- 発話中は `small` で暫定字幕を更新し、CPU-only環境でも応答性を優先する。
+- PTT解放または800〜1,200 msの無音検出後、発話全体を `kotoba-whisper-v2.0` で再認識して確定字幕に置き換える。
+- 暫定字幕は後から書き換わることを許容し、確定字幕のみをタスク抽出の入力とする。
+
 ## 3. 音声入力要件
 
 ### 3.1 取得
@@ -83,19 +97,19 @@ Sumradioは、特定小電力トランシーバーで受信した無線音声を
 ### 5.1 実行方式
 
 - MVPの主系はローカルWhisper推論とする
-- Pythonから扱いやすく高速化しやすい `faster-whisper` を第一候補とする
-- GPUが利用できる場合はFP16、CPUの場合はINT8を候補として実測比較する
+- `faster-whisper`（CTranslate2）を主ランタイムとし、ASRバックエンドインターフェース経由で利用する
+- CUDAでは `compute_type=float16`、CPU（Apple Siliconを含む）では `compute_type=int8` とする
 - モデルは開催前にダウンロードし、オフラインで起動できること
 
 ### 5.2 モデル選定
 
-同じ評価セットで `small`、`medium`、`large-v3` を比較する。次の条件を満たす最大のモデルを採用する。
+主モデルを `kotoba-whisper-v2.0`（CTranslate2変換版）とし、同じ評価セットで `large-v3-turbo`、`large-v3`、`medium`、`small` を比較する。次の条件を満たす最大のモデルを採用する。
 
 - PTT解放から画面表示までp95で5秒以内
 - デモ5発話を連続処理してメモリ不足やクラッシュがない
 - 重要語正解率が80%以上
 
-`large-v3` が時間要件を満たさない場合は `medium`、さらに満たさない場合は `small` へ縮退する。
+`kotoba-whisper-v2.0` が時間要件を満たさない場合は `large-v3-turbo`、`large-v3`、`medium`、`small` の順に評価結果に基づいて縮退する。
 
 ### 5.3 初期推論設定
 
@@ -165,7 +179,7 @@ domain_terms:
   "normalized_text": "訓練、青葉避難所、要支援者15名",
   "status": "needs_review",
   "source": "live_radio",
-  "model": "medium",
+  "model": "kotoba-whisper-v2.0",
   "preprocess_profile": "bandpass",
   "avg_logprob": -0.42,
   "no_speech_prob": 0.03,
@@ -218,7 +232,7 @@ domain_terms:
 次の組み合わせを同一データで比較し、結果をCSVまたはJSONへ保存する。
 
 - 前処理: `raw` / `bandpass` / `wide-bandpass` / `bandpass-denoise`
-- モデル: `small` / `medium` / `large-v3`
+- モデル: `kotoba-whisper-v2.0` / `large-v3-turbo` / `large-v3` / `medium` / `small`
 - 用語補助: なし / 初期プロンプトまたはhotwordsあり
 
 ### 10.3 指標
@@ -242,7 +256,7 @@ domain_terms:
 ## 12. フォールバック
 
 1. 自動VADが失敗したら、手動開始・停止へ切り替える
-2. 採用モデルが遅ければ、`large-v3` → `medium` → `small` の順に縮退する
+2. 採用モデルが遅ければ、`large-v3-turbo` → `large-v3` → `medium` → `small` の順に縮退する
 3. ノイズ抑制で精度が低下したら、`bandpass` または `raw` へ戻す
 4. PCへの直接入力が不安定なら、無線機スピーカーをUSBマイクで収音する
 5. ライブ処理が失敗したら、事前録音音声をローカルWhisperへ入力する

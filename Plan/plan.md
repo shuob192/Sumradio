@@ -2,11 +2,11 @@
 
 ## 0. この計画の結論
 
-Sumradioは、無線交信をMac上でストリーミング文字起こしし、交信から重要情報と対応タスクを抽出して、時刻付き記録と「未対応／対応済み」ボードへ表示する「第二の記録係」を1日で実装する。
+Sumradioは、Ubuntu、Windows、macOS上で無線交信をストリーミング文字起こしし、交信から重要情報と対応タスクを抽出して、時刻付き記録と「未対応／対応済み」ボードへ表示する「第二の記録係」を1日で実装する。
 
 当日の最優先は、次の一本の経路を正午までに完成させることである。
 
-> チームの無線送信 → Macへの音声入力 → ローカル文字起こし → 情報・タスク抽出 → タイムラインと対応状況の表示
+> チームの無線送信 → PCへの音声入力 → ローカル文字起こし → 情報・タスク抽出 → タイムラインと対応状況の表示
 
 画面には認識途中の「暫定字幕」と、発話終了後に再認識した「確定字幕」を分けて表示する。抽出したタスクは自動確定せず、人間が内容と状態を確認・修正できるようにする。文字起こしとタスク候補は参考情報であり、監査証跡や自動判断には使用しない。
 
@@ -57,7 +57,7 @@ Sumradioは、無線音声を時系列の参考記録へ変換し、次の価値
 - 該当音声の再生による再確認
 - 同じ対象・内容を持つタスク候補の重複提案
 - 発話から担当者・場所・期限・優先度を抽出
-- `Qwen3-ASR-0.6B` との精度・遅延比較
+- `kotoba-whisper-v2.0` と比較候補モデルの精度・遅延比較
 - 過去ログの検索とJSONLエクスポート
 
 ### 今回は実装しない
@@ -77,19 +77,19 @@ Sumradioは、無線音声を時系列の参考記録へ変換し、次の価値
 
 ### 実行環境と採用モデル
 
-- デモPCはApple Silicon搭載Mac（`arm64`）を使用する
-- 推論、保存、画面表示をすべてMacのlocalhost内で完結させる
-- 主ASRは `Kotoba-Whisper v2.0`、推論ランタイムはMetal最適化された `whisper.cpp` とする
-- 最初はQ5量子化モデルを使用し、速度に余裕があればQ8または非量子化モデルと比較する
-- 比較基準として `Whisper large-v3-turbo` を用意する
-- `Qwen3-ASR` は高精度な比較候補だが、MacでのストリーミングがvLLM／vLLM-Metalに依存するため、1日MVPの主系にはしない
+- 対応環境はUbuntu 22.04、Windows 11、macOS（Apple Siliconを含む）とする
+- 推論、保存、画面表示を各環境のlocalhost内で完結させる
+- 主ASRは `faster-whisper`（CTranslate2）とし、CUDAでは `compute_type=float16`、CPU（Apple Siliconを含む）では `compute_type=int8` を使用する
+- ASRは小さなバックエンドインターフェースで抽象化し、将来の任意バックエンド追加に備える
+- 主モデルは `kotoba-whisper-v2.0` のCTranslate2変換版（`kotoba-tech/kotoba-whisper-v2.0-faster`）とする
+- 比較候補として `large-v3-turbo`、`large-v3`、`medium`、`small` を用意する
 
 ### 主系
 
-1. 特定小電力トランシーバーからMacへ音声信号を入力する（Audacityで波形確認済み）
-2. CoreAudio入力を固定し、生音声を保存したうえで16 kHz・16 bit・モノラルPCMへ変換する
+1. 特定小電力トランシーバーからPCへ音声信号を入力する（Audacityで波形確認済み）
+2. Python（sounddevice / PortAudio）で入力デバイスを名称またはIDで選択し、生音声を保存したうえで16 kHz・16 bit・モノラルPCMへ変換する
 3. 技術要件で定義した `raw`、`bandpass`、`wide-bandpass`、`bandpass-denoise` を比較候補として適用する
-4. 音声をリングバッファへ保持し、0.5〜1秒間隔、5〜8秒窓、0.5〜1秒オーバーラップで `whisper.cpp` に渡す
+4. PythonのASRバックエンド上で音声をリングバッファへ保持し、0.5〜1秒間隔、5〜8秒窓、0.5〜1秒ストライドで再認識する。暫定字幕には `small`、確定字幕には `kotoba-whisper-v2.0` を使う
 5. 発話中は認識が安定した部分を暫定字幕として配信する
 6. PTT解放、スケルチ終端、または無音0.8〜1.2秒を検出したら、発話全体を再認識して確定字幕を作る
 7. 無線用語辞書で通話表・地名・部隊符号を照合し、原文を残したまま正規化・注釈する
@@ -135,7 +135,7 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
   "normalized_text": "訓練、青葉避難所、要支援者15名",
   "status": "needs_review",
   "source": "live_radio",
-  "model": "kotoba-whisper-v2.0-q5",
+  "model": "kotoba-whisper-v2.0",
   "preprocess_profile": "bandpass",
   "highlights": [
     { "type": "place", "text": "青葉避難所" },
@@ -190,10 +190,10 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 
 ### 意思決定と開発環境
 
-- [x] デモPCがApple Silicon Mac（`arm64`）であることを確認する
-- [ ] デモPCで `whisper.cpp`、SDL2、Pythonバックエンドを実行できる環境を固定する
-- [ ] `Kotoba-Whisper v2.0` のQ5モデルを事前にダウンロードし、オフライン状態で推論できることを確認する
-- [ ] Q5、Q8、`large-v3-turbo` の精度・遅延・メモリ使用量を実測する
+- [ ] Ubuntu / Windows / macOS それぞれで評価セットを実行し p50・p95 を記録する
+- [ ] 3環境すべてでCPU int8、利用可能な環境ではCUDA float16で実行する
+- [ ] `kotoba-whisper-v2.0` のCTranslate2変換モデルを事前にダウンロードし、オフライン状態で推論できることを確認する
+- [ ] `large-v3-turbo`、`large-v3`、`medium`、`small` の精度・遅延・メモリ使用量を実測する
 - [ ] ライブラリとモデルのライセンス、配布条件を確認する
 - [ ] 実際の無線録音で前処理・用語補助の比較試験を完了する
 - [ ] タスク抽出用の発生語・完了語・否定語をJSONで、無線通話表辞書を `config/radio_terms.yaml` で固定する
@@ -242,7 +242,7 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 | 無線機の機種・端子 | 手元の技適機種2台を使用 | 3日前 | 実機10分録音 |
 | 音声入力経路 | PC入力・波形確認済み | 完了 | 10分連続録音で最終確認 |
 | 発話区切り | 自動VAD＋手動停止 | 2日前 | 台本15発話で区切り成功率を確認 |
-| ASR | `Kotoba-Whisper v2.0`＋`whisper.cpp` | 3日前 | Q5／Q8／large-v3-turboを比較 |
+| ASR | `faster-whisper`＋CTranslate2バックエンド | 3日前 | kotoba-whisper-v2.0／large-v3-turbo／large-v3／medium／smallを比較 |
 | 暫定字幕 | 0.5〜1秒更新、5〜8秒窓 | 2日前 | 連続10発話で安定性を確認 |
 | 前処理 | `raw` と3種類のフィルタを比較 | 2日前 | CER・重要語正解率で決定 |
 | 用語補助 | プロンプト／hotwords＋辞書注釈 | 2日前 | 通話表入り音声で比較 |
@@ -264,7 +264,7 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 
 ### B：統合・バックエンド責任者
 
-- `whisper.cpp`推論、暫定／確定字幕、用語正規化を担当する
+- `faster-whisper`バックエンド、暫定／確定字幕、用語正規化を担当する
 - 情報・タスク抽出、SQLite保存、イベント整形、SSE配信を担当する
 - 推論モックとフォールバック再生モードを用意する
 - 当日の機能削減、コード凍結、デモ経路の最終判断を行う
@@ -283,7 +283,7 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 | 時刻 | 作業 | 続行条件 | 未達時の判断 |
 | --- | --- | --- | --- |
 | 09:00–09:20 | 成功条件、イベント形式、担当、台本を確認 | 全員が同じデモ経路を説明できる | 必須機能を削る |
-| 09:20–10:00 | A: Python実機録音、B: WAV→whisper.cpp、C: モック→UI | 3系統が単体動作 | 各系統を代替案へ切替 |
+| 09:20–10:00 | A: Python実機録音、B: WAV→faster-whisper、C: モック→UI | 3系統が単体動作 | 各系統を代替案へ切替 |
 | 10:00–11:30 | 録音WAV→ASR→SSE→字幕・タイムラインを結合 | 暫定／確定字幕が画面に出る | 保存済み結果の再生を基準版にする |
 | 11:30–12:30 | ライブ無線入力へ差し替える | 5発話を連続処理 | 事前録音を正式デモ経路にする |
 | 12:30 | MVP基準版をタグ付け・凍結 | 再現可能な縦切りがある | 新機能追加を中止 |
@@ -377,7 +377,7 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 
 - 課題（20秒）: 手書きでは、聞き逃した事実そのものが残らない
 - 実演（90秒）: 無線 → ライブ字幕 → タスク候補 → 未対応 → 対応済み
-- 仕組み（30秒）: Macローカル音声処理、Whisper、情報抽出、対応ボード
+- 仕組み（30秒）: クロスプラットフォームのPython音声処理、faster-whisper、情報抽出、対応ボード
 - 安全性（20秒）: 全件要確認、推測補完なし、訓練音声のみ
 - 結果（20秒）: 遅延、重要情報正解率、通し成功率
 - 将来性（20秒）: タスク重複統合、担当割当、災害対策本部から工事現場などへ展開
@@ -410,6 +410,6 @@ AIが抽出したタスクはまず `candidate` とし、人間が承認する�
 
 - Google Drive: `codex開発祭_応募用.md`
 - 技術要件: [technical-requirements.md](./technical-requirements.md)
-- Kotoba-Whisper v2.0: <https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0>
-- whisper.cpp stream: <https://github.com/ggml-org/whisper.cpp/tree/master/examples/stream>
-- Qwen3-ASR（比較候補）: <https://github.com/QwenLM/Qwen3-ASR>
+- faster-whisper: <https://github.com/SYSTRAN/faster-whisper>
+- kotoba-whisper-v2.0-faster: <https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0-faster>
+- sounddevice: <https://python-sounddevice.readthedocs.io/>
