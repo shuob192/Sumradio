@@ -64,7 +64,16 @@ uv run --extra audio sumradio
 | `SUMRADIO_USE_PROMPT` | `true`。辞書を初期プロンプトへ反映 |
 | `SUMRADIO_AUTO_EXTRACT` | `true`。falseで自動タスク・完了候補抽出を停止 |
 
-無線辞書は [sumradio/config/radio_terms.yaml](sumradio/config/radio_terms.yaml)、タスク抽出語は [sumradio/config/task_rules.json](sumradio/config/task_rules.json)。英字通話表A〜Zとデモ用の和文通話表・架空地名を同梱しています。
+通話表は次のMarkdownが編集元です。アプリが起動時に表を直接読み込み、文字起こし後の検知に使用します。
+
+- [和文通話表](sumradio/config/japanese_phonetic.md): ア〜ン（ヰ・ヱを含む48文字）、濁点・半濁点などの記号、数字の読み。
+- [NATOフォネティックコード表](sumradio/config/nato_phonetic.md): A〜Zのコードワードとカタカナ表記。
+
+「追加の検知表記」欄に `;` 区切りで表記揺れを追加できます。例えば「朝日のあ」も「ア」の候補になります。編集後はサーバーを再起動してください。原文・文脈条件・前後の区切りを確認する処理は維持し、Markdownにない表現は推測しません。音声認識用の初期プロンプトには各表の先頭2件を例として含めますが、全文は渡しません。
+
+地名・部隊名・無線用語は [sumradio/config/radio_terms.yaml](sumradio/config/radio_terms.yaml)、タスク抽出語は [sumradio/config/task_rules.json](sumradio/config/task_rules.json) で管理します。架空地名はデモ用です。
+
+独自の `SUMRADIO_CONFIG_DIR` を使う場合も、同ディレクトリに2つのMarkdownが必要です。旧YAMLの `nato_phonetic` / `japanese_phonetic` は読み込み元として使用しません。独自の追加表記をMarkdownへ移してください。表の欠落・不正な形式・異なる文字への同一表記の重複は起動時にエラーとして通知します。
 
 `raw` はリサンプルのみの比較基準です（ピーク超過時のみ-3 dBFSへ減衰）。その他はDC除去・SOS Butterworth帯域通過を適用します。数字・地名・否定語は自動訂正しません。技術要件の「原文を破壊しない正規化」に合わせ、通話表は `A（アルファ）` のように注釈します。
 

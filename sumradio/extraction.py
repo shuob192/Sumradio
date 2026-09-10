@@ -7,27 +7,38 @@ from pathlib import Path
 import yaml
 
 from .models import new_id, now
+from .phonetics import load_phonetic_table
 
 
 class Extractor:
     def __init__(self, config_dir: Path, radio_mode=True):
         self.terms = yaml.safe_load((config_dir / "radio_terms.yaml").read_text(encoding="utf-8"))
+        for family in ("nato_phonetic", "japanese_phonetic"):
+            self.terms[family] = load_phonetic_table(config_dir / f"{family}.md")
         self.rules = json.loads((config_dir / "task_rules.json").read_text(encoding="utf-8"))
         self.radio_mode = radio_mode
-        self.aliases = {
-            alias: symbol
-            for family in ("nato_phonetic", "japanese_phonetic")
-            for symbol, aliases in self.terms[family].items()
-            for alias in aliases
-        }
+        self.aliases = {}
+        for family in ("nato_phonetic", "japanese_phonetic"):
+            for symbol, aliases in self.terms[family].items():
+                for alias in aliases:
+                    key = alias.lower()
+                    if key in self.aliases and self.aliases[key] != symbol:
+                        raise ValueError(f"通話表間で検知表記が重複しています: {alias}")
+                    self.aliases[key] = symbol
         alternatives = "|".join(re.escape(a) for a in sorted(self.aliases, key=len, reverse=True))
         # Japanese words are not separated by spaces: require actual delimiters.
-        self.phonetic = re.compile(rf"(?<![^\s、。，:：])({alternatives})(?=$|[\s、。，])")
+        # Limit case folding to ASCII inside the alternatives, preserving Unicode delimiters.
+        self.phonetic = re.compile(rf"(?<![^\s、。，:：])(?ai:({alternatives}))(?=$|[\s、。，])")
 
     @property
     def prompt(self):
         terms = "、".join(self.terms["domain_terms"])
-        return f"日本語の訓練無線。{terms}。符号、アルファ、ブラボー。例：要支援者15名。"
+        examples = "、".join(
+            aliases[0]
+            for family in ("japanese_phonetic", "nato_phonetic")
+            for aliases in list(self.terms[family].values())[:2]
+        )
+        return f"日本語の訓練無線。{terms}。符号、{examples}。例：要支援者15名。"
 
     def annotate(self, raw_text):
         matches = list(self.phonetic.finditer(raw_text))
@@ -38,7 +49,9 @@ class Extractor:
         )
         normalized = raw_text
         if self.radio_mode and (explicit or consecutive):
-            normalized = self.phonetic.sub(lambda m: f"{self.aliases[m[1]]}（{m[1]}）", raw_text)
+            normalized = self.phonetic.sub(
+                lambda m: f"{self.aliases[m[1].lower()]}（{m[1]}）", raw_text
+            )
         highlights = []
         for kind, terms in (
             ("place", self.terms["places"]),
