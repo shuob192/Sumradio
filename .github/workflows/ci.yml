@@ -1,0 +1,21 @@
+name: Checks
+on: [push, pull_request]
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked --python 3.12
+      - run: uv run ruff check sumradio tests
+      - run: uv run ruff format --check sumradio tests
+      - run: uv run pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/ui.test.mjs

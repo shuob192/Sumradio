@@ -1,0 +1,36 @@
+[project]
+name = "sumradio"
+version = "0.1.0"
+description = "Local radio transcription and human-reviewed response board"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "pydantic-settings>=2.8,<3",
+  "numpy>=2,<3", "scipy>=1.15,<2", "soundfile>=0.13,<1",
+  "PyYAML>=6,<7", "python-multipart>=0.0.20,<1",
+]
+
+[project.optional-dependencies]
+audio = ["sounddevice>=0.5,<1", "faster-whisper>=1.1,<2"]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "httpx>=0.28,<1", "ruff>=0.11,<1"]
+
+[project.scripts]
+sumradio = "sumradio.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sumradio"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

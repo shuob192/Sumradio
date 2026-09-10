@@ -1,0 +1,14 @@
+.venv/
+.env
+data/
+models/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.egg-info/
+dist/
+.uv-cache/
+.python/
+test-results/
+evaluation/audio/
