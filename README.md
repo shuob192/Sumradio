@@ -15,28 +15,11 @@ uv run --extra audio sumradio setup
 - 暫定字幕用: `small`
 - 確定字幕用: `kotoba-tech/kotoba-whisper-v2.0-faster`（kotoba-whisperのCTranslate2変換版）
 
-初期設定にはネット接続とモデル保存用のディスク空き容量が必要です。モデルは既定で `models/` に保存します。モデルや保存先を変える場合は、実行前に `.env.example` を `.env` へコピーし、`SUMRADIO_PARTIAL_MODEL`・`SUMRADIO_FINAL_MODEL`・`SUMRADIO_MODEL_DIR` を編集してください。取得に失敗した場合は接続や空き容量を確認し、同じコマンドを再実行してください。再実行時はダウンロード済みのキャッシュを再利用します。
+モデルは既定で `models/` に保存します。モデルや保存先を変える場合は、実行前に `.env.example` を `.env` へコピーし、`SUMRADIO_PARTIAL_MODEL`・`SUMRADIO_FINAL_MODEL`・`SUMRADIO_MODEL_DIR` を編集してください。
 
 `uv` を使わない場合は仮想環境を作成し、`pip install -e '.[audio]'`、`sumradio setup` の順に実行してください。
 
-初期設定のログは英語で、ライブラリの読み込み、モデルの保存先、モデルごとの準備状況をステップ番号付きで表示します。時間のかかる処理では5秒ごとに `Still working...` と経過秒数を表示します（ダウンロード率ではなく、通信・キャッシュのロック待ちも含みます）。`Setup complete.` と表示されるまで待ってください。
-
-```text
-Sumradio | Initial setup
-Model directory: .../Sumradio/models
-[1/3] Loading faster-whisper...
-  Ready.
-Checking cached files and downloading missing files. First download may take minutes.
-[2/3] Preparing small...
-  Ready.
-[3/3] Preparing kotoba-tech/kotoba-whisper-v2.0-faster...
-  Still working... 5s elapsed (network/cache wait included)
-  Ready.
-Setup complete.
-Start the app: uv run --extra audio sumradio
-```
-
-HF_TOKEN未設定・Windowsのシンボリックリンク非対応の警告は、それぞれ短い `Note:` にまとめて一度だけ表示します。前者は取得制限、後者はディスク使用量に関する案内です。その他の警告や取得エラーは表示します。
+HF_TOKEN未設定・Windowsのシンボリックリンク非対応の警告は、それぞれ短い `Note:` にまとめて一度だけ表示します。
 
 何も表示されない場合は、`setup` の開始前にuvが依存パッケージを準備している可能性があります。終了していなければ `Ctrl+C` で中断し、Sumradioディレクトリで次を実行すると詳細ログを確認できます。
 
