@@ -2,15 +2,55 @@
 
 無線交信のローカル文字起こしと、人間が確認する対応ボード。計画は [Plan/plan.md](Plan/plan.md)、詳細仕様は [Plan/technical-requirements.md](Plan/technical-requirements.md) を参照してください。
 
-## 起動
+## 初期設定
 
 Python 3.11〜3.13 と [uv](https://docs.astral.sh/uv/) を利用します。Sumradioディレクトリで実行してください。
 
 ```sh
-uv run sumradio
+uv run --extra audio sumradio setup
 ```
 
-ブラウザで **http://127.0.0.1:8000** を開き、「保存済み台本を再生」を押します。初回は依存パッケージの取得にネット接続が必要です。2回目以降は `uv run --offline sumradio` で起動できます。ポート変更は `uv run sumradio serve --port 8001`。サーバーは127.0.0.1にのみバインドし、ホスティング・外部APIは使用しません。
+このコマンドで、uvが音声認識ライブラリ `faster-whisper` を含む依存パッケージをインストールし、続けて `setup` が以下のモデルを自動ダウンロードします。
+
+- 暫定字幕用: `small`
+- 確定字幕用: `kotoba-tech/kotoba-whisper-v2.0-faster`（kotoba-whisperのCTranslate2変換版）
+
+初期設定にはネット接続とモデル保存用のディスク空き容量が必要です。モデルは既定で `models/` に保存します。モデルや保存先を変える場合は、実行前に `.env.example` を `.env` へコピーし、`SUMRADIO_PARTIAL_MODEL`・`SUMRADIO_FINAL_MODEL`・`SUMRADIO_MODEL_DIR` を編集してください。取得に失敗した場合は接続や空き容量を確認し、同じコマンドを再実行してください。再実行時はダウンロード済みのキャッシュを再利用します。
+
+`uv` を使わない場合は仮想環境を作成し、`pip install -e '.[audio]'`、`sumradio setup` の順に実行してください。
+
+初期設定のログは英語で、ライブラリの読み込み、モデルの保存先、モデルごとの準備状況をステップ番号付きで表示します。時間のかかる処理では5秒ごとに `Still working...` と経過秒数を表示します（ダウンロード率ではなく、通信・キャッシュのロック待ちも含みます）。`Setup complete.` と表示されるまで待ってください。
+
+```text
+Sumradio | Initial setup
+Model directory: .../Sumradio/models
+[1/3] Loading faster-whisper...
+  Ready.
+Checking cached files and downloading missing files. First download may take minutes.
+[2/3] Preparing small...
+  Ready.
+[3/3] Preparing kotoba-tech/kotoba-whisper-v2.0-faster...
+  Still working... 5s elapsed (network/cache wait included)
+  Ready.
+Setup complete.
+Start the app: uv run --extra audio sumradio
+```
+
+HF_TOKEN未設定・Windowsのシンボリックリンク非対応の警告は、それぞれ短い `Note:` にまとめて一度だけ表示します。前者は取得制限、後者はディスク使用量に関する案内です。その他の警告や取得エラーは表示します。
+
+何も表示されない場合は、`setup` の開始前にuvが依存パッケージを準備している可能性があります。終了していなければ `Ctrl+C` で中断し、Sumradioディレクトリで次を実行すると詳細ログを確認できます。
+
+```sh
+uv run --verbose --extra audio python -u -m sumradio setup
+```
+
+## 起動
+
+```sh
+uv run --extra audio sumradio
+```
+
+ブラウザで **http://127.0.0.1:8000** を開き、「保存済み台本を再生」を押します。初期設定後は `uv run --offline --extra audio sumradio` で起動できます。ポート変更は `uv run --extra audio sumradio serve --port 8001`。サーバーは127.0.0.1にのみバインドし、ホスティング・外部APIは使用しません。
 
 台本再生は**推論なし・音声なし**です。AI精度や処理速度の検証には使えません。保存済みテキストを暫定字幕→確定字幕→タスク候補へ流し、利用経路を確認できます。
 
@@ -23,15 +63,13 @@ uv run sumradio
 ## 実際の音声を認識
 
 ```sh
-uv sync --extra audio
-uv run --extra audio sumradio download-models
 uv run --extra audio sumradio devices
 uv run --extra audio sumradio
 ```
 
-モデルのダウンロードは明示したコマンドでのみ行います。既定では `small` と `kotoba-tech/kotoba-whisper-v2.0-faster` を `models/` に取得。推論は既定で `local_files_only=True` です。モデル未取得時は失敗を画面に表示し、ダウンロードへ勝手に切り替えません。
+先に「初期設定」を実行してください。追加モデルは `uv run --extra audio sumradio download-models <モデル名...>` で取得できます。推論は既定で `local_files_only=True` です。モデル未取得時は失敗を画面に表示します。
 
-`uv` を使わない場合は仮想環境を作成し `pip install -e '.[audio]'`、`sumradio` で起動できます。初回準備後は外部接続を必要としません。
+`uv` を使わない場合は初期設定した仮想環境で `sumradio` を実行します。初回準備後は外部接続を必要としません。
 
 - Windows 11: 音声入力へのアクセスをOSのプライバシー設定で許可してください。
 - Ubuntu 22.04: PortAudioがない場合は `sudo apt install libportaudio2` を実行してください。
