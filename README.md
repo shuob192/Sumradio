@@ -67,23 +67,23 @@ uv run --extra audio sumradio
 
 `.env.example` を `.env` へコピーして編集します。再起動すると反映されます。
 
-| 設定 | 既定値・意味 |
-| --- | --- |
-| `SUMRADIO_PROFILE` | `raw`。比較後に `bandpass` / `wide-bandpass` / `bandpass-denoise` を選択 |
-| `SUMRADIO_FINAL_MODEL` | `kotoba-tech/kotoba-whisper-v2.0-faster` |
-| `SUMRADIO_PARTIAL_MODEL` | `small` |
-| `SUMRADIO_ENERGY_THRESHOLD` | `0.012`。入力音量に合わせて調整 |
-| `SUMRADIO_SILENCE_SECONDS` | `1.0`。0.8〜1.2秒 |
-| `SUMRADIO_MIN_SPEECH_SECONDS` | `0.2`。短いスケルチ音での開始を抑制 |
-| `SUMRADIO_PREROLL_SECONDS` | `0.3`。開始検出前の音声を保持 |
-| `SUMRADIO_MAX_SECONDS` | `30`。連続録音の最大長 |
-| `SUMRADIO_PARTIAL_INTERVAL` | `0.75`。推論が終了した場合のみ次を投入 |
-| `SUMRADIO_PARTIAL_WINDOW` | `6`。直近6秒を再認識 |
-| `SUMRADIO_NOTCH_HZ` | `0`。実測したハムに応じて50/60を指定（rawでは無効） |
-| `SUMRADIO_DENOISE_STRENGTH` | `0.15`。弱いスペクトル減衰 |
-| `SUMRADIO_RADIO_MODE` | `true`。明示的な符号読み・連続する通話表を注釈 |
-| `SUMRADIO_USE_PROMPT` | `true`。辞書を初期プロンプトへ反映 |
-| `SUMRADIO_AUTO_EXTRACT` | `true`。falseで自動タスク・完了候補抽出を停止 |
+| 設定 | 既定値 | 意味 |
+| --- | --- | --- |
+| `SUMRADIO_PROFILE` | `raw` | 音声の前処理方式。比較後に `bandpass` / `wide-bandpass` / `bandpass-denoise` を選択 |
+| `SUMRADIO_FINAL_MODEL` | `kotoba-tech/kotoba-whisper-v2.0-faster` | 確定字幕用の認識モデル |
+| `SUMRADIO_PARTIAL_MODEL` | `small` | 暫定字幕用の認識モデル |
+| `SUMRADIO_ENERGY_THRESHOLD` | `0.012` | 発話検出の音量閾値。入力音量に合わせて調整 |
+| `SUMRADIO_SILENCE_SECONDS` | `1.0` | 発話終了と判定する無音時間（秒）。0.8〜1.2秒 |
+| `SUMRADIO_MIN_SPEECH_SECONDS` | `0.2` | 発話開始と判定する最小音声時間（秒）。短いスケルチ音での開始を抑制 |
+| `SUMRADIO_PREROLL_SECONDS` | `0.3` | 開始検出前に保持する音声の長さ（秒） |
+| `SUMRADIO_MAX_SECONDS` | `30` | 連続録音の最大長（秒） |
+| `SUMRADIO_PARTIAL_INTERVAL` | `0.75` | 暫定字幕の認識間隔（秒）。推論が終了した場合のみ次を投入 |
+| `SUMRADIO_PARTIAL_WINDOW` | `6` | 暫定字幕で再認識する直近の音声の長さ（秒） |
+| `SUMRADIO_NOTCH_HZ` | `0` | ハム除去の周波数（Hz）。実測したハムに応じて50/60を指定（0は無効、rawでは無効） |
+| `SUMRADIO_DENOISE_STRENGTH` | `0.15` | ノイズ低減の強度。弱いスペクトル減衰 |
+| `SUMRADIO_RADIO_MODE` | `true` | 明示的な符号読み・連続する通話表を注釈 |
+| `SUMRADIO_USE_PROMPT` | `true` | 辞書を初期プロンプトへ反映 |
+| `SUMRADIO_AUTO_EXTRACT` | `true` | 自動タスク・完了候補抽出の有効化。`false` で停止 |
 
 通話表は次のMarkdownが編集元です。アプリが起動時に表を直接読み込み、文字起こし後の検知に使用します。
 
