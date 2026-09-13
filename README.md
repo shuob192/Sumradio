@@ -100,7 +100,16 @@ uv run --extra audio sumradio
 
 ## データとAPI
 
-SQLite: `data/sumradio.sqlite3`、音声: `data/audio/<交信ID>.raw.wav` と `<交信ID>.wav`。データとモデルはGit対象外です。スキーマは [sumradio/schema.sql](sumradio/schema.sql)。API仕様は起動後の `/docs` を参照してください。
+台本・音声・文字起こしの保存先は次のとおりです。`data/` は既定の保存先で、`SUMRADIO_DATA_DIR` を設定した場合はそのディレクトリに変わります。
+
+| 内容 | 保存先・確認する項目 |
+| --- | --- |
+| 「保存済み台本を再生」のデモ原稿 | [sumradio/fixtures/demo.json](sumradio/fixtures/demo.json) の各 `text`。5発話あり、編集するとデモの内容が変わります。音声なしのテキストデモです |
+| 取り込んだ録音・ライブ入力の音声 | `data/audio/<交信ID>.raw.wav` が原音、`data/audio/<交信ID>.wav` が認識用の処理後音声 |
+| 音声の文字起こし | `data/sumradio.sqlite3` の `events` テーブル。`document` 列のJSON内にある `raw_text` が認識結果、`corrected_text` が人間による訂正文 |
+| 音声認識の評価用原稿 | [evaluation/manifest.json](evaluation/manifest.json) の `text` が読み上げ文、`audio` が録音ファイルの配置先（同ファイルのあるディレクトリ基準）。30件のテストデータで、発話なしのノイズも含みます。実際の無線録音は未付属です |
+
+データとモデルはGit対象外です。スキーマは [sumradio/schema.sql](sumradio/schema.sql)。API仕様は起動後の `/docs` を参照してください。
 
 交信・タスクの更新、操作履歴、SSE配信キューは同じトランザクションで確定します。`GET /api/snapshot` が返す `cursor` 以降を `/api/stream?after=<cursor>` から購読。再接続時の `Last-Event-ID` に対応し、昇順で再送します。イベント種別は `status`、`event`、`task`。データはそのオブジェクト全体です。クライアントはID単位で置換します。
 
