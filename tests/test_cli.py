@@ -40,6 +40,7 @@ def test_default_models(monkeypatch, downloads, capsys, command):
         assert "[2/3] Preparing small" in output
         assert "[3/3] Preparing kotoba-tech/kotoba-whisper-v2.0-faster" in output
         assert "Setup complete." in output
+        assert "in an activated venv: python -m sumradio" in output
 
 
 def test_setup_uses_env_settings_and_deduplicates(monkeypatch, downloads, tmp_path):
@@ -80,7 +81,10 @@ def test_setup_missing_audio_dependency(monkeypatch, downloads, capsys):
     with pytest.raises(SystemExit) as exc:
         main()
     assert exc.value.code == 1
-    assert "uv run --extra audio sumradio setup" in capsys.readouterr().err
+    error = capsys.readouterr().err
+    assert "uv run --extra audio sumradio setup" in error
+    assert "python -m pip install -e '.[audio]'" in error
+    assert "python -m sumradio setup" in error
 
 
 @pytest.mark.parametrize("fail", [False, True])

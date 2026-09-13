@@ -113,6 +113,9 @@ def main():
                 1,
                 f"ERROR: Could not load faster-whisper: {exc}\n"
                 "Run: uv run --extra audio sumradio setup\n"
+                "Or, in an activated venv from the project directory:\n"
+                "  python -m pip install -e '.[audio]'\n"
+                "  python -m sumradio setup\n"
                 "For DLL errors, check your Python environment and OS execution policy.\n",
             )
 
@@ -135,7 +138,11 @@ def main():
                     parser.exit(130, "\nCancelled. Run the command again to resume setup.\n")
                 print("  Ready.", flush=True)
         if args.command == "setup":
-            print("Setup complete.\nStart the app: uv run --extra audio sumradio", flush=True)
+            print(
+                "Setup complete.\nStart the app: uv run --extra audio sumradio\n"
+                "Or, in an activated venv: python -m sumradio",
+                flush=True,
+            )
         else:
             print("Models ready.", flush=True)
     elif args.command == "evaluate":

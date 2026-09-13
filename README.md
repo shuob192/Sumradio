@@ -17,7 +17,7 @@ uv run --extra audio sumradio setup
 
 モデルは既定で `models/` に保存します。モデルや保存先を変える場合は、実行前に `.env.example` を `.env` へコピーし、`SUMRADIO_PARTIAL_MODEL`・`SUMRADIO_FINAL_MODEL`・`SUMRADIO_MODEL_DIR` を編集してください。
 
-`uv` を使わない場合は仮想環境を作成し、`pip install -e '.[audio]'`、`sumradio setup` の順に実行してください。
+**Macでuvを使わずに導入する場合は [macOS向け venv・pip手順](docs/macos-pip.md) を参照してください。** Pythonの準備から、画面の動作確認・音声認識・次回の起動まで説明しています。
 
 HF_TOKEN未設定・Windowsのシンボリックリンク非対応の警告は、それぞれ短い `Note:` にまとめて一度だけ表示します。
 
@@ -56,7 +56,7 @@ uv run --extra audio sumradio
 
 - Windows 11: 音声入力へのアクセスをOSのプライバシー設定で許可してください。
 - Ubuntu 22.04: PortAudioがない場合は `sudo apt install libportaudio2` を実行してください。
-- macOS / Apple Silicon: マイク権限を許可し、PortAudioがない場合は `brew install portaudio` を実行してください。CPU int8で動作する構成です。
+- macOS（Apple Silicon / Intel）: CPU int8を使用します。音声入力の権限やPortAudioの確認は [macOS向け手順](docs/macos-pip.md#困ったとき) を参照してください。
 - CUDA: `.env` の `SUMRADIO_DEVICE=cuda` でfloat16へ変更します。CUDA/cuDNN要件は [faster-whisper公式README](https://github.com/SYSTRAN/faster-whisper#gpu) を確認してください。CPUではint8を使用します。
 
 画面の「無線入力・録音WAVを使う」を開き、入力デバイスを取得して選択します。自動モードはエネルギー閾値と1秒の無音で発話を区切ります。手動モードでは「手動録音開始」→「発話終了・認識」を操作します。物理PTT信号や専用スケルチ信号との直接連動は未実装で、手動操作または音声の無音検出で代替します。

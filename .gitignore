@@ -1,4 +1,5 @@
 .venv/
+.venv-pip/
 .env
 data/
 models/
