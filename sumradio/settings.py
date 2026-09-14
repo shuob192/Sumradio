@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     model_dir: Path = Path("models")
     config_dir: Path = PACKAGE / "config"
     device: Literal["cpu", "cuda"] = "cpu"
-    final_model: str = "kotoba-tech/kotoba-whisper-v2.0-faster"
-    partial_model: str = "small"
+    final_model: str = "medium"
+    partial_model: str = "medium"
     offline: bool = True
     profile: Profile = "raw"
     silence_seconds: float = Field(1.0, ge=0.8, le=1.2)

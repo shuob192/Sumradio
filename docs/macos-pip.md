@@ -48,7 +48,7 @@ python -m sumradio
 
 `'.[audio]'` の引用符は省略しないでください。macOS標準のzshでは、引用符がないと `no matches found` になる場合があります。
 
-`setup` は既定で `small` と `kotoba-tech/kotoba-whisper-v2.0-faster` を `models/` に準備します。`Setup complete.` と表示されるまで待ってから起動します。モデル取得後は、同じフォルダ・モデル設定でオフライン起動できます。
+`setup` は既定で暫定字幕・確定字幕に共通の `medium` を `models/` に準備します。既存の `.env` がある場合は `SUMRADIO_PARTIAL_MODEL` と `SUMRADIO_FINAL_MODEL` を両方 `medium` に変更してください。`Setup complete.` と表示されるまで待ってから起動します。モデル取得後は、同じフォルダ・モデル設定でオフライン起動できます。
 
 Macでは既定のCPU設定を使用してください。既存の `.env` に `SUMRADIO_DEVICE=cuda` があれば `SUMRADIO_DEVICE=cpu` に変更します。設定を変更する場合だけ `.env` を用意し、既存のファイルは上書きしないでください。
 

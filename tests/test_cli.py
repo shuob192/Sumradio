@@ -30,29 +30,25 @@ def downloads(monkeypatch, tmp_path):
 def test_default_models(monkeypatch, downloads, capsys, command):
     monkeypatch.setattr(sys, "argv", ["sumradio", command])
     main()
-    assert downloads == [
-        ("small", {"cache_dir": "models"}),
-        ("kotoba-tech/kotoba-whisper-v2.0-faster", {"cache_dir": "models"}),
-    ]
+    assert downloads == [("medium", {"cache_dir": "models"})]
     if command == "setup":
         output = capsys.readouterr().out
-        assert "[1/3] Loading faster-whisper" in output
-        assert "[2/3] Preparing small" in output
-        assert "[3/3] Preparing kotoba-tech/kotoba-whisper-v2.0-faster" in output
+        assert "[1/2] Loading faster-whisper" in output
+        assert "[2/2] Preparing medium" in output
         assert "Setup complete." in output
         assert "in an activated venv: python -m sumradio" in output
 
 
 def test_setup_uses_env_settings_and_deduplicates(monkeypatch, downloads, tmp_path):
     (tmp_path / ".env").write_text(
-        "SUMRADIO_PARTIAL_MODEL=medium\n"
-        "SUMRADIO_FINAL_MODEL=medium\n"
+        "SUMRADIO_PARTIAL_MODEL=small\n"
+        "SUMRADIO_FINAL_MODEL=small\n"
         "SUMRADIO_MODEL_DIR=custom-models\n",
         encoding="utf-8",
     )
     monkeypatch.setattr(sys, "argv", ["sumradio", "setup"])
     main()
-    assert downloads == [("medium", {"cache_dir": "custom-models"})]
+    assert downloads == [("small", {"cache_dir": "custom-models"})]
 
 
 def test_explicit_model_download(monkeypatch, downloads):

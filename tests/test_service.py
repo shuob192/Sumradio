@@ -24,13 +24,15 @@ def test_backend_contract_is_offline_and_iterates_segments(settings, monkeypatch
     monkeypatch.setitem(sys.modules, "faster_whisper", SimpleNamespace(WhisperModel=Model))
     backend = FasterWhisperBackend(settings, Extractor(settings.config_dir).prompt)
     result = backend.transcribe(np.ones(16000, dtype=np.float32))
-    backend.transcribe(np.ones(16000, dtype=np.float32), partial=True)
+    partial_result = backend.transcribe(np.ones(16000, dtype=np.float32), partial=True)
     assert result.text == "訓練" and result.segments[0]["end"] == 1
+    assert result.model == partial_result.model == "medium"
+    assert calls[0][0] == "medium"
     assert calls[0][1]["local_files_only"] is True
     assert calls[0][1]["compute_type"] == "int8"
     assert calls[1]["condition_on_previous_text"] is False
     assert calls[1]["language"] == "ja" and calls[1]["beam_size"] == 5
-    assert calls[2][0] == "small" and calls[3]["beam_size"] == 1
+    assert calls[2][0] == "medium" and calls[3]["beam_size"] == 1
 
 
 def test_partial_never_extracts_tasks_and_stale_result_is_discarded(client, backend):

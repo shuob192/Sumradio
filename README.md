@@ -12,10 +12,11 @@ uv run --extra audio sumradio setup
 
 このコマンドで、uvが音声認識ライブラリ `faster-whisper` を含む依存パッケージをインストールし、続けて `setup` が以下のモデルを自動ダウンロードします。
 
-- 暫定字幕用: `small`
-- 確定字幕用: `kotoba-tech/kotoba-whisper-v2.0-faster`（kotoba-whisperのCTranslate2変換版）
+- 暫定字幕・確定字幕用: `medium`（faster-whisperで使用するCTranslate2変換版。ダウンロードは1回のみ）
 
 モデルは既定で `models/` に保存します。モデルや保存先を変える場合は、実行前に `.env.example` を `.env` へコピーし、`SUMRADIO_PARTIAL_MODEL`・`SUMRADIO_FINAL_MODEL`・`SUMRADIO_MODEL_DIR` を編集してください。
+
+以前の設定を使っている場合は、既存の `.env` の `SUMRADIO_PARTIAL_MODEL` と `SUMRADIO_FINAL_MODEL` を両方 `medium` に変更し、上の `setup` を実行してからアプリを再起動してください。ライブ入力の暫定・確定字幕と録音WAVの文字起こしにmediumを使います。
 
 **Macでuvを使わずに導入する場合は [macOS向け venv・pip手順](docs/macos-pip.md) を参照してください。** Pythonの準備から、画面の動作確認・音声認識・次回の起動まで説明しています。
 
@@ -70,8 +71,8 @@ uv run --extra audio sumradio
 | 設定 | 既定値 | 意味 |
 | --- | --- | --- |
 | `SUMRADIO_PROFILE` | `raw` | 音声の前処理方式。比較後に `bandpass` / `wide-bandpass` / `bandpass-denoise` を選択 |
-| `SUMRADIO_FINAL_MODEL` | `kotoba-tech/kotoba-whisper-v2.0-faster` | 確定字幕用の認識モデル |
-| `SUMRADIO_PARTIAL_MODEL` | `small` | 暫定字幕用の認識モデル |
+| `SUMRADIO_FINAL_MODEL` | `medium` | 確定字幕用の認識モデル |
+| `SUMRADIO_PARTIAL_MODEL` | `medium` | 暫定字幕用の認識モデル |
 | `SUMRADIO_ENERGY_THRESHOLD` | `0.012` | 発話検出の音量閾値。入力音量に合わせて調整 |
 | `SUMRADIO_SILENCE_SECONDS` | `1.0` | 発話終了と判定する無音時間（秒）。0.8〜1.2秒 |
 | `SUMRADIO_MIN_SPEECH_SECONDS` | `0.2` | 発話開始と判定する最小音声時間（秒）。短いスケルチ音での開始を抑制 |

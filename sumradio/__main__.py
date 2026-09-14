@@ -79,7 +79,7 @@ def main():
     commands.add_parser("devices", help="入力デバイス一覧")
     commands.add_parser("setup", help="Initial setup: download transcription models")
     download = commands.add_parser("download-models", help="事前にモデルをダウンロード")
-    download.add_argument("models", nargs="*", help="省略時はsmallと主モデル")
+    download.add_argument("models", nargs="*", help="省略時は設定済みの暫定・確定字幕モデル")
     evaluate = commands.add_parser("evaluate", help="正解文付きWAV評価セットを比較")
     evaluate.add_argument("manifest", help="JSON配列: audio, text, slots")
     evaluate.add_argument("--output", default="data/evaluation.json")
