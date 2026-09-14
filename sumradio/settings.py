@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PACKAGE = Path(__file__).parent
@@ -30,3 +30,8 @@ class Settings(BaseSettings):
     radio_mode: bool = True
     use_prompt: bool = True
     auto_extract: bool = True
+
+    @field_validator("notch_hz", mode="before")
+    @classmethod
+    def parse_notch_hz(cls, value: object) -> object:
+        return int(value) if isinstance(value, str) else value

@@ -195,9 +195,9 @@ def create_app(settings=None, backend=None):
                     raise ValueError("モノラル／ステレオのWAVを選択してください")
                 if (
                     not 8000 <= sound.samplerate <= 192000
-                    or not 0 < sound.frames <= sound.samplerate * 30
+                    or not 0 < sound.frames <= sound.samplerate * 120
                 ):
-                    raise ValueError("8〜192 kHz、30秒以下のWAVを選択してください")
+                    raise ValueError("8〜192 kHz、2分以下のWAVを選択してください")
                 samples = sound.read(dtype="float32", always_2d=True)
                 rate = sound.samplerate
             if not np.isfinite(samples).all():
