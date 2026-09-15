@@ -1,10 +1,14 @@
 .DS_Store
+.env
 .venv/
-.pytest_cache/
-.ruff_cache/
 __pycache__/
 *.py[cod]
-
-# Local recordings, application data, and downloaded ASR models
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 data/
 models/
+dist/
+build/
+*.egg-info/

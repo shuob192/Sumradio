@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sumradio</title>
+    <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 class="brand">
+        <img class="brand-logo" src="/static/Sumradio_Icon.png" alt="Sumradio" width="966" height="378" />
+      </h1>
+      <div class="system-status" aria-label="システム状態">
+        <span id="whisper-status" class="status-pill">文字起こし · 確認中</span>
+        <span id="codex-status" class="status-pill">AI整理 · 確認中</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="area-strip" aria-label="災害対象地域">
+        <div><strong id="active-area-name">対象地域を設定してください</strong><span id="training-label">実在地名を使った架空の災害訓練</span></div>
+        <button id="change-area">対象地域を指定</button>
+      </section>
+      <section class="capture-panel" aria-labelledby="capture-heading">
+        <div class="capture-controls">
+          <div class="section-kicker">受信</div>
+          <h2 id="capture-heading">マイク入力</h2>
+          <label for="device-select">入力マイク</label>
+          <div class="device-row">
+            <select id="device-select" aria-label="入力マイク"></select>
+            <button id="refresh-devices" class="icon-button" title="マイクを再読み込み" aria-label="マイクを再読み込み">↻</button>
+          </div>
+          <div class="meter" aria-label="入力レベル"><span id="input-level"></span></div>
+          <div class="record-buttons">
+            <button id="start-recording" class="primary"><span class="record-dot"></span>録音開始</button>
+            <button id="finalize-recording" disabled>今の交信を確定</button>
+            <button id="stop-recording" disabled>録音停止</button>
+          </div>
+          <p id="audio-message" class="helper">無音5秒で自動的に1件の交信として確定します。</p>
+        </div>
+        <div class="live-caption" aria-live="polite">
+          <div class="live-heading"><span class="live-indicator"></span>ライブ字幕</div>
+          <p id="partial-caption">録音を開始すると、ここに暫定字幕が表示されます。</p>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="communications-panel">
+          <div class="panel-heading">
+            <div><div class="section-kicker">記録</div><h2>交信履歴</h2></div>
+            <span id="communication-count" class="count-badge">0</span>
+          </div>
+          <div id="communications" class="communications-list"></div>
+        </aside>
+
+        <section class="board-panel">
+          <div class="panel-heading">
+            <div><div class="section-kicker">対応</div><h2>対応ボード</h2></div>
+            <div class="toolbar"><button id="show-archived">完了・破棄の履歴</button><button id="new-task" class="secondary">+　手動登録</button></div>
+          </div>
+          <div class="board">
+            <section class="board-column candidate-column" data-state="candidate">
+              <header><h3>タスク候補</h3><span id="candidate-count">0</span></header>
+              <p class="column-note">AI・手動で登録された未確認の候補</p>
+              <div id="candidate-tasks" class="task-list"></div>
+            </section>
+            <section class="board-column open-column" data-state="open">
+              <header><h3>未対応</h3><span id="open-count">0</span></header>
+              <p class="column-note">人間が確認し、対応対象としたタスク</p>
+              <div id="open-tasks" class="task-list"></div>
+            </section>
+            <section class="board-column done-column" data-state="done">
+              <header><h3>対応済み</h3><span id="done-count">0</span></header>
+              <p class="column-note">対応完了または対応要否を確定済み</p>
+              <div id="done-tasks" class="task-list"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+      <section id="map-panel" class="map-panel" aria-labelledby="map-heading">
+        <div class="panel-heading"><div><div class="section-kicker">位置と対応</div><h2 id="map-heading">対応マップ</h2><p id="map-area-name"></p></div><div class="toolbar"><span id="map-task-count"></span><button id="fit-map-tasks">対応中の地点を表示</button></div></div>
+        <div id="map-training-label" class="training-banner">訓練表示 · 地名は実在しますが、被害・要請は架空の設定です。</div>
+        <div id="map-legend" class="map-legend" aria-label="地図の凡例"></div>
+        <p class="map-explanation">破線のピンはタスクまたは位置が未確認です。場所の確認とタスクの承認は別々に行います。</p>
+        <div class="map-workspace"><div id="response-map" aria-label="対応タスクの地図"></div><aside class="map-sidebar"><h3>地点の確認</h3><div id="map-location-list"></div></aside></div>
+        <div class="map-footer"><p id="map-network-message" role="status"></p><p id="catalog-status"></p><a href="https://www.city.yokohama.lg.jp/bousai-kyukyu-bohan/bousai-saigai/data/shiryodata/data/data.html" target="_blank" rel="noopener">地点データ：横浜市 防災関連データ（CC BY）</a></div>
+      </section>
+    </main>
+
+    <dialog id="area-dialog" class="area-dialog">
+      <form id="area-form" class="dialog-shell">
+        <header><div><div class="section-kicker">はじめに</div><h2>災害対象地域を指定</h2></div><button type="button" class="close-button" data-close="area-dialog" aria-label="閉じる">×</button></header>
+        <div class="dialog-content">
+          <p>市区町村を検索して選ぶか、地図を動かして対応する範囲を指定してください。</p>
+          <div class="area-search"><label for="area-query">市区町村名</label><input id="area-query" maxlength="160" value="神奈川県横浜市" /><button type="button" id="search-area">地域を検索</button></div>
+          <div id="area-results" aria-live="polite"></div>
+          <div id="area-map" class="dialog-map" aria-label="対象地域の範囲"></div>
+          <button type="button" id="use-map-bounds">表示中の範囲を使用</button>
+          <label class="field-label">地域の表示名<input id="area-name" maxlength="160" required /></label>
+          <details><summary>対象範囲の座標</summary><div class="bounds-fields">
+            <label>南端の緯度<input id="area-south" type="number" step="any" min="-85" max="85" required /></label>
+            <label>西端の経度<input id="area-west" type="number" step="any" min="-180" max="180" required /></label>
+            <label>北端の緯度<input id="area-north" type="number" step="any" min="-85" max="85" required /></label>
+            <label>東端の経度<input id="area-east" type="number" step="any" min="-180" max="180" required /></label>
+          </div></details>
+          <label class="checkbox-label"><input id="area-training" type="checkbox" checked />訓練として表示する</label>
+          <p class="helper">横浜の公開施設一覧と保存済み地点を先に照合します。未登録地点だけ公開地名検索へ送ります（最大毎分4件）。取得に失敗しても手動で指定できます。</p>
+          <p class="helper"><a href="https://operations.osmfoundation.org/policies/nominatim/" target="_blank" rel="noopener">公開地名検索の利用方針</a> · 地点名と地域情報のみ送信し、人物・被害・要請本文は送信しません。</p>
+          <p id="area-error" class="helper error" role="alert"></p>
+        </div>
+        <footer><button type="submit" class="primary">この地域で開始</button></footer>
+      </form>
+    </dialog>
+
+    <dialog id="location-dialog">
+      <div class="dialog-shell"><header><div><div class="section-kicker">場所の確認</div><h2 id="location-title"></h2></div><button type="button" class="close-button" data-close="location-dialog" aria-label="閉じる">×</button></header>
+        <div class="dialog-content">
+          <p id="location-status"></p><p id="location-detail"></p><div id="location-candidates"></div>
+          <div class="toolbar"><button id="confirm-location-candidate" type="button" class="primary">選択した位置を確定</button><button id="retry-location" type="button">場所を再検索</button></div>
+          <h3>地図から指定・訂正</h3><p class="helper">地図をクリックするか座標を入力し、確定してください。施設の代表位置は入口の位置とは限りません。</p>
+          <div id="location-map" class="dialog-map" aria-label="手動で場所を指定する地図"></div>
+          <form id="manual-location-form"><div class="form-grid">
+            <label class="wide">表示名<input id="location-name" required maxlength="400" /></label>
+            <label>緯度<input id="location-lat" type="number" step="any" min="-85" max="85" required /></label>
+            <label>経度<input id="location-lon" type="number" step="any" min="-180" max="180" required /></label>
+          </div><button class="primary" type="submit">入力した位置を確定</button></form>
+          <p id="location-error" class="helper error" role="alert"></p>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="archive-dialog"><div class="dialog-shell"><header><h2>対応済み・破棄したタスクの履歴</h2><button class="close-button" data-close="archive-dialog" aria-label="閉じる">×</button></header><div id="archive-list" class="dialog-content"></div></div></dialog>
+
+    <dialog id="communication-dialog" class="detail-dialog">
+      <form method="dialog" class="dialog-shell">
+        <header><div><div class="section-kicker">交信詳細</div><h2 id="communication-title">交信</h2></div><button class="close-button" value="close" aria-label="閉じる">×</button></header>
+        <div id="communication-detail" class="dialog-content"></div>
+      </form>
+    </dialog>
+
+    <dialog id="task-dialog" class="detail-dialog">
+      <form id="task-form" class="dialog-shell">
+        <header><div><div class="section-kicker">対応詳細</div><h2 id="task-dialog-title">タスク</h2></div><button type="button" class="close-button" data-close="task-dialog" aria-label="閉じる">×</button></header>
+        <div class="dialog-content form-grid">
+          <input id="task-id" type="hidden" />
+          <input id="task-version" type="hidden" />
+          <label>種別<select id="task-kind"><option value="request">要請</option><option value="situation_confirmation">状況確認</option></select></label>
+          <label class="wide">見出し<input id="task-title" required maxlength="160" /></label>
+          <label class="wide">対応内容<textarea id="task-action" required maxlength="1000"></textarea></label>
+          <label>対象<input id="task-target" maxlength="400" /></label>
+          <label>場所<input id="task-location" maxlength="400" /></label>
+          <fieldset class="wide"><legend>地図記号（複数選択可）</legend><div id="task-map-categories" class="category-checkboxes"></div></fieldset>
+          <label>条件<input id="task-condition" maxlength="500" /></label>
+          <label>担当<input id="task-assignee" maxlength="240" /></label>
+          <label>期限<input id="task-deadline" maxlength="240" /></label>
+          <label class="wide">人数（1行ごとに「説明｜人数」）<textarea id="task-people" placeholder="避難者｜60\n乳幼児｜8"></textarea></label>
+          <label class="wide">物資（1行ごとに「品目｜数量｜単位｜詳細」）<textarea id="task-resources" placeholder="飲料水｜15｜箱｜500ml"></textarea></label>
+          <label class="wide">根拠交信ID（1行1件）<textarea id="task-communications"></textarea></label>
+          <label class="wide">根拠の原文（1行1件）<textarea id="task-quotes"></textarea></label>
+          <div id="task-readonly-detail" class="wide"></div>
+        </div>
+        <footer><button type="button" data-close="task-dialog">キャンセル</button><button type="submit" class="primary">保存</button></footer>
+      </form>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/static/vendor/leaflet/leaflet.js"></script>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

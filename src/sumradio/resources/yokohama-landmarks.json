@@ -1,0 +1,189 @@
+{
+  "retrieved_at": "2026-09-15T02:16:39.585052+00:00",
+  "license": "Coordinates © OpenStreetMap contributors / ODbL",
+  "note": "横浜市の施設案内と照合した訓練用の地名索引。座標は施設・道路・街区の代表位置です。入口・橋詰・住宅・駐車場の正確な位置は人間が確認します。",
+  "curation": {
+    "紅葉坂": "道路のOSM way/26616872を採用。同名の停留所は索引へ含めない。",
+    "万国橋": "橋の代表位置way/530755814。並行する道路要素は同じ橋として別名に対応。",
+    "野毛地区センター": "横浜市施設案内（野毛町3-160-4 ちぇるる野毛3階）と建物way/94922685を照合。",
+    "伊勢佐木町商店街": "横浜市の伊勢佐木町地区街づくり協議指針に基づき一丁目の街区代表位置を使用。"
+  },
+  "places": [
+    {
+      "id": "osm-way-94893959",
+      "name": "野毛山公園",
+      "address": "野毛山公園, 西区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4463125,
+      "lon": 139.6231713,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/94893959",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4439021,
+        "west": 139.6203266,
+        "north": 35.4486479,
+        "east": 139.6261478
+      },
+      "aliases": [
+        "横浜市野毛山公園",
+        "神奈川県横浜市野毛山公園"
+      ]
+    },
+    {
+      "id": "osm-way-26616872",
+      "name": "紅葉坂",
+      "address": "紅葉坂, 戸部町一丁目, 西区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4515572,
+      "lon": 139.6265158,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/26616872",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4508198,
+        "west": 139.6247537,
+        "north": 35.4522267,
+        "east": 139.6283067
+      },
+      "aliases": [
+        "横浜市紅葉坂",
+        "神奈川県横浜市紅葉坂"
+      ]
+    },
+    {
+      "id": "osm-way-530755814",
+      "name": "万国橋",
+      "address": "万国橋, 万国橋通り, 海岸通四丁目, 真砂町, 中区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4520285,
+      "lon": 139.6390688,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/530755814",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4517754,
+        "west": 139.6387826,
+        "north": 35.4522557,
+        "east": 139.6393358
+      },
+      "aliases": [
+        "萬国橋",
+        "萬國橋",
+        "横浜市万国橋",
+        "神奈川県横浜市万国橋"
+      ]
+    },
+    {
+      "id": "osm-node-7621526876",
+      "name": "本牧元町",
+      "address": "本牧元町, 中区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4176452,
+      "lon": 139.667878,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/node/7621526876",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4076452,
+        "west": 139.657878,
+        "north": 35.4276452,
+        "east": 139.677878
+      },
+      "aliases": [
+        "本牧元町の住宅地",
+        "本牧元町住宅地",
+        "横浜市本牧元町",
+        "神奈川県横浜市本牧元町"
+      ]
+    },
+    {
+      "id": "osm-way-94922685",
+      "name": "野毛地区センター",
+      "address": "神奈川県横浜市中区野毛町3-160-4 ちぇるる野毛3階（建物代表位置）",
+      "lat": 35.4485086,
+      "lon": 139.6287982,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/94922685",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4479858,
+        "west": 139.6283827,
+        "north": 35.4488124,
+        "east": 139.629133
+      },
+      "aliases": [
+        "横浜市野毛地区センター",
+        "神奈川県横浜市野毛地区センター"
+      ]
+    },
+    {
+      "id": "osm-way-95183768",
+      "name": "本牧山頂公園",
+      "address": "本牧山頂公園, 中区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4254725,
+      "lon": 139.6627652,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/95183768",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4226532,
+        "west": 139.6553612,
+        "north": 35.4283002,
+        "east": 139.6652889
+      },
+      "aliases": [
+        "横浜市本牧山頂公園",
+        "神奈川県横浜市本牧山頂公園"
+      ]
+    },
+    {
+      "id": "osm-way-85644095",
+      "name": "横浜市健康福祉総合センター",
+      "address": "横浜市健康福祉総合センター, 新横浜通り, 花咲町一丁目, 真砂町, 中区, 横浜市, 神奈川県, 231-0017, 日本",
+      "lat": 35.4504543,
+      "lon": 139.6304763,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/way/85644095",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4501998,
+        "west": 139.6302197,
+        "north": 35.4507088,
+        "east": 139.6307329
+      },
+      "aliases": [
+        "健康福祉総合センター",
+        "横浜市横浜市健康福祉総合センター",
+        "神奈川県横浜市横浜市健康福祉総合センター"
+      ]
+    },
+    {
+      "id": "osm-node-8366483998",
+      "name": "伊勢佐木町商店街",
+      "address": "神奈川県横浜市中区伊勢佐木町一丁目（街区代表位置・店舗や駐車場の位置は未確認）",
+      "lat": 35.4448031,
+      "lon": 139.6336395,
+      "source": "master",
+      "source_url": "https://www.openstreetmap.org/node/8366483998",
+      "license": "© OpenStreetMap contributors / ODbL",
+      "precision": "representative",
+      "bounds": {
+        "south": 35.4348031,
+        "west": 139.6236395,
+        "north": 35.4548031,
+        "east": 139.6436395
+      },
+      "aliases": [
+        "伊勢佐木町1丁目",
+        "伊勢佐木町一丁目",
+        "イセザキモール",
+        "横浜市伊勢佐木町商店街",
+        "神奈川県横浜市伊勢佐木町商店街"
+      ]
+    }
+  ]
+}
