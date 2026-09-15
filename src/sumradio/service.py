@@ -3,12 +3,15 @@ from __future__ import annotations
 import asyncio
 import threading
 import time
+import uuid
 from contextlib import suppress
 
 from .audio import AudioRecorder, CapturedSegment
 from .codex_extractor import CodexExtractor
 from .config import Settings
 from .events import EventBus
+from .geography import Geography, place_query
+from .geography_models import AreaInput, LocationConfirmInput, LocationStatus, OperatingArea
 from .models import (
     CorrectionInput,
     ExtractionStatus,
@@ -16,6 +19,7 @@ from .models import (
     TaskEditInput,
     TaskRecord,
     TaskTransitionInput,
+    TaskState,
 )
 from .phonetic import PhoneticTableError, load_phonetic_table
 from .storage import DataStore, VersionConflictError
@@ -27,6 +31,10 @@ class SumradioService:
         self.settings = settings
         self.store = DataStore(settings.data_dir)
         self.events = EventBus()
+        self.geography = Geography(settings)
+        self._location_tasks: dict[str, asyncio.Task] = {}
+        self._recording_area: OperatingArea | None = None
+        self.boot_id = uuid.uuid4().hex
         self.transcriber = WhisperTranscriber(
             settings.whisper_model,
             settings.whisper_cpu_threads,
@@ -59,6 +67,7 @@ class SumradioService:
     async def start(self) -> None:
         self._loop = asyncio.get_running_loop()
         self.store.initialize()
+        self.geography.initialize()
         try:
             japanese = load_phonetic_table(self.settings.japanese_phonetic_path)
             nato = load_phonetic_table(self.settings.nato_phonetic_path)
@@ -73,6 +82,9 @@ class SumradioService:
             self.codex_status = "error"
             self.codex_error = str(exc)
         self._worker_task = asyncio.create_task(self._extraction_worker(), name="sumradio-extraction")
+        for task in self.store.list_tasks():
+            if task.position.status in {LocationStatus.UNRESOLVED, LocationStatus.QUEUED, LocationStatus.SEARCHING}:
+                await self._enqueue_location(task)
         if self.settings.skip_model_load:
             self.whisper_status = "skipped"
         else:
@@ -83,11 +95,13 @@ class SumradioService:
             self.recorder.stop()
         for task in tuple(self._background_tasks):
             task.cancel()
+        for task in self._location_tasks.values():
+            task.cancel()
         if self._worker_task:
             self._worker_task.cancel()
         if self._model_task:
             self._model_task.cancel()
-        tasks = [task for task in [self._worker_task, self._model_task, *self._background_tasks] if task]
+        tasks = [task for task in [self._worker_task, self._model_task, *self._background_tasks, *self._location_tasks.values()] if task]
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -105,6 +119,7 @@ class SumradioService:
 
     def runtime_status(self) -> dict:
         return {
+            "boot_id": self.boot_id,
             "recording": self.recorder.recording,
             "input_level": self.input_level,
             "whisper": {"status": self.whisper_status, "error": self.whisper_error},
@@ -118,14 +133,17 @@ class SumradioService:
         }
 
     def public_state(self) -> dict:
-        return {**self.store.public_state(), "runtime": self.runtime_status()}
+        return {**self.store.public_state(), "runtime": self.runtime_status(), "map": self.geography.config()}
 
     def list_devices(self) -> list[dict]:
         return self.recorder.devices()
 
     async def start_recording(self, device_id: int | None) -> dict:
+        if not self.store.active_area:
+            raise ValueError("先に災害対象地域を指定してください")
         if self.whisper_status != "ready":
             raise RuntimeError("Whisper mediumの準備完了後に録音を開始してください")
+        self._recording_area = self.store.active_area.model_copy(deep=True)
         info = await asyncio.to_thread(self.recorder.start, device_id)
         self.audio_error = None
         await self.events.publish("system.status", self.runtime_status())
@@ -150,7 +168,7 @@ class SumradioService:
 
     def _on_segment(self, segment: CapturedSegment) -> None:
         if self._loop:
-            self._loop.call_soon_threadsafe(self._schedule, self._process_segment(segment))
+            self._loop.call_soon_threadsafe(self._schedule, self._process_segment(segment, self._recording_area))
 
     def _on_partial(self, pcm: bytes) -> None:
         with self._partial_guard:
@@ -187,7 +205,7 @@ class SumradioService:
             with self._partial_guard:
                 self._partial_busy = False
 
-    async def _process_segment(self, segment: CapturedSegment) -> None:
+    async def _process_segment(self, segment: CapturedSegment, area: OperatingArea | None = None) -> None:
         communication = await asyncio.to_thread(
             self.store.create_communication,
             original_pcm=segment.original_pcm,
@@ -195,6 +213,7 @@ class SumradioService:
             recognition_pcm=segment.recognition_pcm,
             started_at=segment.started_at,
             ended_at=segment.ended_at,
+            area=area,
         )
         await self.events.publish("communication.created", communication.model_dump(mode="json"))
         await asyncio.to_thread(self.store.set_transcription_running, communication.id)
@@ -248,7 +267,8 @@ class SumradioService:
             return
         await self.events.publish("communication.updated", record.model_dump(mode="json"))
         try:
-            result, duration = await self.extractor.extract(record, self.store.list_tasks(include_discarded=False))  # type: ignore[union-attr]
+            related = [task for task in self.store.list_tasks(include_discarded=False) if task.area == record.area]
+            result, duration = await self.extractor.extract(record, related)  # type: ignore[union-attr]
             updated, tasks, is_current = await asyncio.to_thread(
                 self.store.commit_extraction,
                 communication_id,
@@ -260,6 +280,7 @@ class SumradioService:
             if is_current:
                 for task in tasks:
                     await self.events.publish("task.updated", task.model_dump(mode="json"))
+                    await self._enqueue_location(task)
         except Exception as exc:
             updated = await asyncio.to_thread(self.store.fail_extraction, communication_id, revision, str(exc))
             await self.events.publish("communication.updated", updated.model_dump(mode="json"))
@@ -273,6 +294,12 @@ class SumradioService:
             version=data.version,
         )
         await self.events.publish("communication.updated", record.model_dump(mode="json"))
+        for task in self.store.list_tasks():
+            if communication_id in task.evidence_communication_ids:
+                job = self._location_tasks.get(task.id)
+                if job:
+                    job.cancel()
+                await self.events.publish("task.updated", task.model_dump(mode="json"))
         await self.enqueue_extraction(record.id, record.transcript_revision)
         return record
 
@@ -286,16 +313,91 @@ class SumradioService:
         return record
 
     async def create_manual_task(self, data: ManualTaskInput) -> TaskRecord:
+        if not self.store.active_area:
+            raise ValueError("先に災害対象地域を指定してください")
         task = await asyncio.to_thread(self.store.create_manual_task, data)
         await self.events.publish("task.updated", task.model_dump(mode="json"))
-        return task
+        return await self._enqueue_location(task)
 
     async def edit_task(self, task_id: str, data: TaskEditInput) -> TaskRecord:
         task = await asyncio.to_thread(self.store.edit_task, task_id, data)
         await self.events.publish("task.updated", task.model_dump(mode="json"))
-        return task
+        return await self._enqueue_location(task)
 
     async def transition_task(self, task_id: str, data: TaskTransitionInput) -> TaskRecord:
         task = await asyncio.to_thread(self.store.transition_task, task_id, data)
+        await self.events.publish("task.updated", task.model_dump(mode="json"))
+        return task
+
+    async def set_area(self, data: AreaInput) -> OperatingArea:
+        if self.recorder.recording:
+            raise ValueError("録音を停止してから対象地域を変更してください")
+        area = await asyncio.to_thread(self.store.set_area, data)
+        await self.events.publish("area.updated", area.model_dump(mode="json"))
+        self._schedule(self._refresh_places(area))
+        return area
+
+    async def _refresh_places(self, area: OperatingArea) -> None:
+        await self.geography.refresh_catalog(area)
+        await self.events.publish("map.updated", self.geography.config())
+
+    async def _enqueue_location(self, task: TaskRecord, *, version: int | None = None) -> TaskRecord:
+        if not task.area or not place_query(task):
+            return task
+        if version is None and task.position.status not in {
+            LocationStatus.UNRESOLVED, LocationStatus.QUEUED, LocationStatus.SEARCHING,
+        }:
+            return task
+        started = await asyncio.to_thread(self.store.begin_location, task.id, version=version)
+        if not started:
+            return task
+        previous = self._location_tasks.get(task.id)
+        if previous and previous is not asyncio.current_task():
+            previous.cancel()
+        await self.events.publish("task.updated", started.model_dump(mode="json"))
+        job = asyncio.create_task(self._resolve_location(started), name=f"location-{task.id}")
+        self._location_tasks[task.id] = job
+
+        def completed(future):
+            if self._location_tasks.get(task.id) is future:
+                self._location_tasks.pop(task.id, None)
+
+        job.add_done_callback(completed)
+        return started
+
+    async def _resolve_location(self, started: TaskRecord) -> None:
+        places, error = [], None
+        try:
+            places = await self.geography.resolve(started)
+        except Exception as exc:
+            error = f"場所検索に失敗しました。手動指定または再試行を利用してください: {exc}"
+        updated = await asyncio.to_thread(self.store.finish_location, started, places, error)
+        if updated:
+            await self.events.publish("task.updated", updated.model_dump(mode="json"))
+        else:
+            current = self.store.get_task(started.id)
+            # A board transition or text edit may race a lookup. Reuse the cache,
+            # but never overwrite a confirmed position or an obsolete transcript.
+            if current.position.status in {LocationStatus.QUEUED, LocationStatus.UNRESOLVED}:
+                await self._enqueue_location(current)
+
+    async def retry_location(self, task_id: str, version: int) -> TaskRecord:
+        task = self.store.get_task(task_id)
+        if task.version != version:
+            raise VersionConflictError("タスクが更新されています。画面を更新してください")
+        if not task.area or not place_query(task):
+            raise ValueError("検索する場所と対象地域を指定してください")
+        if task.state not in {TaskState.CANDIDATE, TaskState.OPEN}:
+            raise ValueError("対応中のタスクだけ場所を再検索できます")
+        if not self.store.evidence_is_current(task):
+            raise ValueError("根拠が旧版です。訂正後のタスクを確認するか、場所を手動指定してください")
+        return await self._enqueue_location(task, version=version)
+
+    async def confirm_location(self, task_id: str, data: LocationConfirmInput) -> TaskRecord:
+        task = await asyncio.to_thread(self.store.confirm_location, task_id, data)
+        self.geography.remember(task)
+        job = self._location_tasks.get(task_id)
+        if job:
+            job.cancel()
         await self.events.publish("task.updated", task.model_dump(mode="json"))
         return task

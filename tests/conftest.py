@@ -14,8 +14,8 @@ def settings(tmp_path: Path) -> Settings:
         project_root=root,
         data_dir=tmp_path / "data",
         model_cache_dir=tmp_path / "models",
-        japanese_phonetic_path=root / "Document" / "japanese_phonetic.md",
-        nato_phonetic_path=root / "Document" / "nato_phonetic.md",
+        japanese_phonetic_path=root / "Document_recent" / "japanese_phonetic.md",
+        nato_phonetic_path=root / "Document_recent" / "nato_phonetic.md",
         codex_path="codex",
         codex_model="gpt-5.6-luna",
         codex_effort="low",
@@ -27,4 +27,6 @@ def settings(tmp_path: Path) -> Settings:
         skip_model_load=True,
         host="127.0.0.1",
         port=8000,
+        geocoder_enabled=False,
+        refresh_places=False,
     )

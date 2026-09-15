@@ -24,6 +24,14 @@ class Settings:
     skip_model_load: bool
     host: str
     port: int
+    geocoder_enabled: bool = True
+    geocoder_url: str = "https://nominatim.openstreetmap.org/search"
+    geocoder_user_agent: str = "Sumradio/0.2 (local disaster-training application)"
+    geocoder_interval_seconds: float = 15.0
+    geocoder_timeout_seconds: float = 10.0
+    tile_url: str = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    tile_attribution: str = ""
+    refresh_places: bool = True
 
     @classmethod
     def from_env(cls, project_root: Path | None = None) -> "Settings":
@@ -36,8 +44,8 @@ class Settings:
             model_cache_dir=Path(
                 os.getenv("SUMRADIO_MODEL_DIR", Path(os.getenv("SUMRADIO_DATA_DIR", root / "data")) / "models")
             ).resolve(),
-            japanese_phonetic_path=root / "Document" / "japanese_phonetic.md",
-            nato_phonetic_path=root / "Document" / "nato_phonetic.md",
+            japanese_phonetic_path=root / "Document_recent" / "japanese_phonetic.md",
+            nato_phonetic_path=root / "Document_recent" / "nato_phonetic.md",
             codex_path=codex_path,
             codex_model=os.getenv("SUMRADIO_CODEX_MODEL", "gpt-5.6-luna"),
             codex_effort=os.getenv("SUMRADIO_CODEX_EFFORT", "low"),
@@ -49,4 +57,12 @@ class Settings:
             skip_model_load=os.getenv("SUMRADIO_SKIP_MODEL_LOAD", "0") == "1",
             host=os.getenv("SUMRADIO_HOST", "127.0.0.1"),
             port=int(os.getenv("SUMRADIO_PORT", "8000")),
+            geocoder_enabled=os.getenv("SUMRADIO_GEOCODER_ENABLED", "1") == "1",
+            geocoder_url=os.getenv("SUMRADIO_GEOCODER_URL", "https://nominatim.openstreetmap.org/search"),
+            geocoder_user_agent=os.getenv("SUMRADIO_GEOCODER_USER_AGENT", "Sumradio/0.2 (local disaster-training application)"),
+            geocoder_interval_seconds=float(os.getenv("SUMRADIO_GEOCODER_INTERVAL_SECONDS", "15")),
+            geocoder_timeout_seconds=float(os.getenv("SUMRADIO_GEOCODER_TIMEOUT_SECONDS", "10")),
+            tile_url=os.getenv("SUMRADIO_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
+            tile_attribution=os.getenv("SUMRADIO_TILE_ATTRIBUTION", ""),
+            refresh_places=os.getenv("SUMRADIO_REFRESH_PLACES", "1") == "1",
         )

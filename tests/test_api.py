@@ -1,10 +1,12 @@
 from fastapi.testclient import TestClient
 
 from sumradio.app import create_app
+from sumradio.geography_models import YOKOHAMA_AREA
 
 
 def test_health_state_and_manual_board_flow(settings) -> None:
     with TestClient(create_app(settings)) as client:
+        assert client.put("/api/area", json=YOKOHAMA_AREA.model_dump()).status_code == 200
         assert client.get("/").status_code == 200
         assert client.get("/api/health").json()["ok"]
         created = client.post(
@@ -39,6 +41,7 @@ def test_health_state_and_manual_board_flow(settings) -> None:
 
 def test_version_conflict_is_409(settings) -> None:
     with TestClient(create_app(settings)) as client:
+        assert client.put("/api/area", json=YOKOHAMA_AREA.model_dump()).status_code == 200
         task = client.post(
             "/api/tasks",
             json={"kind": "situation_confirmation", "title": "状況確認", "action": "対応要否を判断する"},

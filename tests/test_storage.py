@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from sumradio.geography_models import MapExtraction, LocationStatus, YOKOHAMA_AREA
 from sumradio.models import (
     CommunicationFacts,
     ExtractionResponse,
@@ -34,6 +35,7 @@ def extraction() -> ExtractionResponse:
         communication=CommunicationFacts(sender="青葉避難所担当", recipient="災害本部", location="青葉避難所"),
         candidates=[
             TaskCandidate(
+                map_info=MapExtraction(location=None, map_category=["other"], evidence_quotes=["飲料水"]),
                 kind=TaskKind.REQUEST,
                 title="飲料水の手配",
                 action="飲料水15箱を手配する",
@@ -85,6 +87,25 @@ def test_retry_is_idempotent_and_correction_marks_evidence_stale(tmp_path) -> No
     assert not is_current
     assert stale_tasks == []
     assert len(store.list_tasks()) == 1
+
+
+def test_transcript_correction_stops_pending_location_and_rejects_old_result(tmp_path):
+    store = DataStore(tmp_path / "data")
+    store.initialize()
+    area = store.set_area(YOKOHAMA_AREA)
+    communication = create_communication(store)
+    store.begin_extraction(communication.id, 0)
+    _, tasks, _ = store.commit_extraction(communication.id, 0, extraction(), 1)
+    # Older recordings may lack an area; assign one to model an active lookup.
+    store._tasks[tasks[0].id].area = area
+    started = store.begin_location(tasks[0].id)
+    current = store.get_communication(communication.id)
+    store.correct_communication(current.id, text="元街小学校へ手配願います。", author="operator", version=current.version)
+    updated = store.get_task(started.id)
+    assert updated.position.status == LocationStatus.UNRESOLVED
+    assert "訂正" in updated.position.error
+    assert store.finish_location(started, []) is None
+    assert store.begin_location(started.id) is None
 
 
 def test_human_only_transitions_and_history(tmp_path) -> None:

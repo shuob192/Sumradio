@@ -5,6 +5,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .geography_models import MapCategory, MapExtraction, OperatingArea, TaskPosition
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -71,6 +73,7 @@ class PhoneticInterpretation(StrictModel):
 
 
 class TaskCandidate(StrictModel):
+    map_info: MapExtraction
     kind: TaskKind
     title: str = Field(min_length=1, max_length=160)
     action: str = Field(min_length=1, max_length=1000)
@@ -120,6 +123,7 @@ class ExtractionRun(StrictModel):
 
 
 class CommunicationRecord(StrictModel):
+    area: OperatingArea | None = None
     id: str
     started_at: str
     ended_at: str
@@ -144,7 +148,7 @@ class CommunicationRecord(StrictModel):
 
 
 class TaskHistoryEntry(StrictModel):
-    action: Literal["created", "edited", "transitioned"]
+    action: Literal["created", "edited", "transitioned", "location_searched", "location_confirmed", "location_reset"]
     actor: str
     created_at: str
     before: dict | None = None
@@ -152,6 +156,10 @@ class TaskHistoryEntry(StrictModel):
 
 
 class TaskRecord(StrictModel):
+    area: OperatingArea | None = None
+    map_info: MapExtraction | None = None
+    map_category: list[MapCategory] = Field(default_factory=lambda: [MapCategory.OTHER])
+    position: TaskPosition = Field(default_factory=TaskPosition)
     id: str
     kind: TaskKind
     state: TaskState = TaskState.CANDIDATE
@@ -178,6 +186,7 @@ class TaskRecord(StrictModel):
 
 
 class ManualTaskInput(StrictModel):
+    map_category: list[MapCategory] = Field(default_factory=lambda: [MapCategory.OTHER], min_length=1, max_length=7)
     kind: TaskKind
     title: str = Field(min_length=1, max_length=160)
     action: str = Field(min_length=1, max_length=1000)
@@ -194,6 +203,7 @@ class ManualTaskInput(StrictModel):
 
 
 class TaskEditInput(StrictModel):
+    map_category: list[MapCategory] | None = Field(default=None, min_length=1, max_length=7)
     version: int = Field(ge=1)
     title: str = Field(min_length=1, max_length=160)
     action: str = Field(min_length=1, max_length=1000)

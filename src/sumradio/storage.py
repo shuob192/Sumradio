@@ -10,6 +10,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from .geography_models import (
+    AreaInput, LocationConfirmInput, LocationStatus, OperatingArea,
+    PlaceCandidate, TaskPosition,
+)
+
 from .models import (
     CommunicationRecord,
     Confirmation,
@@ -61,6 +66,7 @@ class DataStore:
         self._communications: dict[str, CommunicationRecord] = {}
         self._tasks: dict[str, TaskRecord] = {}
         self.diagnostics: list[str] = []
+        self.active_area: OperatingArea | None = None
 
     def initialize(self) -> None:
         for path in (
@@ -74,6 +80,12 @@ class DataStore:
             self._communications.clear()
             self._tasks.clear()
             self.diagnostics.clear()
+            area_path = self.root / "geography" / "area.json"
+            if area_path.exists():
+                try:
+                    self.active_area = OperatingArea.model_validate_json(area_path.read_text(encoding="utf-8"))
+                except Exception as exc:
+                    self.diagnostics.append(f"{area_path}: {exc}")
             for path in sorted(self.communications_dir.glob("*/metadata.json")):
                 try:
                     record = CommunicationRecord.model_validate_json(path.read_text(encoding="utf-8"))
@@ -184,6 +196,7 @@ class DataStore:
         recognition_pcm: bytes,
         started_at: str,
         ended_at: str,
+        area: OperatingArea | None = None,
     ) -> CommunicationRecord:
         with self._lock:
             communication_id = _new_id("comm")
@@ -194,6 +207,7 @@ class DataStore:
             self._write_wav_atomic(original, original_pcm, original_sample_rate)
             self._write_wav_atomic(recognition, recognition_pcm, 16000)
             record = CommunicationRecord(
+                area=area,
                 id=communication_id,
                 started_at=started_at,
                 ended_at=ended_at,
@@ -269,6 +283,25 @@ class DataStore:
             record.extraction_error = None
             record.version += 1
             self._save_communication(record)
+            # Stop pending lookups based on the previous transcript. Keep human
+            # confirmations and completed lookup results available for review.
+            for task in self._tasks.values():
+                if (communication_id in task.evidence_communication_ids
+                        and task.source_transcript_revision is not None
+                        and task.source_transcript_revision != record.transcript_revision
+                        and task.position.status in {LocationStatus.QUEUED, LocationStatus.SEARCHING}):
+                    before = task.position.model_dump(mode="json")
+                    task.position = TaskPosition(
+                        revision=task.position.revision + 1,
+                        error="根拠交信が訂正されました。訂正後のタスクまたは場所を確認してください。",
+                    )
+                    task.version += 1
+                    task.updated_at = utc_now()
+                    task.history.append(TaskHistoryEntry(
+                        action="location_reset", actor=author, created_at=task.updated_at,
+                        before=before, after=task.position.model_dump(mode="json"),
+                    ))
+                    self._save_task(task)
             return deepcopy(record)
 
     def begin_extraction(self, communication_id: str, revision: int) -> tuple[CommunicationRecord, bool]:
@@ -333,6 +366,9 @@ class DataStore:
                         continue
                     now = utc_now()
                     task = TaskRecord(
+                        area=record.area,
+                        map_info=candidate.map_info,
+                        map_category=candidate.map_info.map_category,
                         id=task_id,
                         kind=candidate.kind,
                         state=TaskState.CANDIDATE,
@@ -404,6 +440,8 @@ class DataStore:
                 raise NotFoundError(", ".join(unknown))
             now = utc_now()
             task = TaskRecord(
+                area=deepcopy(self.active_area),
+                map_category=data.map_category,
                 id=_new_id("task"),
                 kind=data.kind,
                 state=TaskState.CANDIDATE,
@@ -442,6 +480,11 @@ class DataStore:
             if unknown:
                 raise NotFoundError(", ".join(unknown))
             before = task.model_dump(mode="json", exclude={"history"})
+            if task.location != data.location:
+                task.position = TaskPosition(revision=task.position.revision + 1)
+                task.map_info = None
+            if data.map_category is not None:
+                task.map_category = list(dict.fromkeys(data.map_category))
             for field in (
                 "title",
                 "action",
@@ -467,6 +510,108 @@ class DataStore:
                     after=task.model_dump(mode="json", exclude={"history"}),
                 )
             )
+            self._save_task(task)
+            return deepcopy(task)
+
+    def set_area(self, data: AreaInput) -> OperatingArea:
+        with self._lock:
+            area = OperatingArea.from_input(data)
+            self._write_json_atomic(self.root / "geography" / "area.json", area.model_dump(mode="json"))
+            self.active_area = area
+            return deepcopy(area)
+
+    def evidence_is_current(self, task: TaskRecord) -> bool:
+        with self._lock:
+            return all(
+                task.source_transcript_revision is None
+                or self._communications.get(cid) is None
+                or self._communications[cid].transcript_revision == task.source_transcript_revision
+                for cid in task.evidence_communication_ids
+            )
+
+    def begin_location(self, task_id: str, *, version: int | None = None) -> TaskRecord | None:
+        with self._lock:
+            task = self.get_task(task_id)
+            if version is not None and task.version != version:
+                raise VersionConflictError("タスクが更新されています。最新の表示から再試行してください")
+            if task.state not in {TaskState.CANDIDATE, TaskState.OPEN}:
+                return None
+            if not self.evidence_is_current(task):
+                return None
+            if not task.area:
+                return None
+            if version is None and task.position.status == LocationStatus.CONFIRMED:
+                return None
+            # A manual re-search deliberately invalidates a previously selected location.
+            old_position = task.position.model_dump(mode="json")
+            task.position = TaskPosition(revision=task.position.revision + 1, status=LocationStatus.QUEUED)
+            task.version += 1
+            task.updated_at = utc_now()
+            task.history.append(TaskHistoryEntry(
+                action="location_reset", actor="operator" if version is not None else "resolver",
+                created_at=task.updated_at, before=old_position, after=task.position.model_dump(mode="json"),
+            ))
+            self._save_task(task)
+            return deepcopy(task)
+
+    def finish_location(self, started: TaskRecord, places: list[PlaceCandidate], error: str | None = None) -> TaskRecord | None:
+        with self._lock:
+            task = self.get_task(started.id)
+            if (
+                task.version != started.version
+                or task.position.revision != started.position.revision
+                or task.area != started.area
+                or task.source_transcript_revision != started.source_transcript_revision
+                or not self.evidence_is_current(task)
+                or task.state not in {TaskState.CANDIDATE, TaskState.OPEN}
+            ):
+                return None
+            before = task.position.model_dump(mode="json")
+            task.position.candidates = places
+            task.position.selected = places[0] if len(places) == 1 else None
+            task.position.status = (
+                LocationStatus.FAILED if error else LocationStatus.NOT_FOUND if not places
+                else LocationStatus.SUGGESTED if len(places) == 1 else LocationStatus.AMBIGUOUS
+            )
+            task.position.error = error
+            task.position.searched_at = utc_now()
+            task.version += 1
+            task.updated_at = utc_now()
+            task.history.append(TaskHistoryEntry(
+                action="location_searched", actor="resolver", created_at=task.updated_at,
+                before=before, after=task.position.model_dump(mode="json"),
+            ))
+            self._save_task(task)
+            return deepcopy(task)
+
+    def confirm_location(self, task_id: str, data: LocationConfirmInput) -> TaskRecord:
+        with self._lock:
+            task = self.get_task(task_id)
+            if task.version != data.version:
+                raise VersionConflictError("タスクが更新されています。最新の位置候補を確認してください")
+            before = task.position.model_dump(mode="json")
+            if data.candidate_id:
+                selected = next((place for place in task.position.candidates if place.id == data.candidate_id), None)
+                if selected is None:
+                    raise ValueError("現在の位置候補にない地点は選択できません")
+            else:
+                selected = PlaceCandidate(
+                    id=_new_id("manual"), name=data.name, lat=data.lat, lon=data.lon,
+                    source="manual", precision="exact",
+                )
+            if task.area and not task.area.bounds.contains(selected.lat, selected.lon):
+                raise ValueError("対象地域の範囲外です。地域または座標を確認してください")
+            now = utc_now()
+            task.position = TaskPosition(
+                revision=task.position.revision + 1, status=LocationStatus.CONFIRMED,
+                candidates=task.position.candidates, selected=selected,
+                searched_at=task.position.searched_at, confirmed_by=data.actor, confirmed_at=now,
+            )
+            task.updated_at, task.version = now, task.version + 1
+            task.history.append(TaskHistoryEntry(
+                action="location_confirmed", actor=data.actor, created_at=now,
+                before=before, after=task.position.model_dump(mode="json"),
+            ))
             self._save_task(task)
             return deepcopy(task)
 
@@ -521,6 +666,7 @@ class DataStore:
             )
             tasks.append(payload)
         return {
+            "active_area": self.active_area.model_dump(mode="json") if self.active_area else None,
             "communications": [item.model_dump(mode="json") for item in communications],
             "tasks": tasks,
             "discarded_task_count": len(self.list_tasks(include_discarded=True)) - len(tasks),

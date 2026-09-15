@@ -1,4 +1,8 @@
+import {setupGeography, positionHistoryHTML} from "./geography-ui.js";
+import {categories, categoryHTML, positionLabels} from "./map.js";
+
 const appState = { communications: [], tasks: [], runtime: {}, selectedCommunication: null, editingTask: null };
+const geographyUI = setupGeography({api, toast, getState: () => appState, reload: loadState, onTask: openTaskDialog, onCommunication: showCommunication});
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const lines = (value) => (value || "").split("\n").map((item) => item.trim()).filter(Boolean);
@@ -32,7 +36,7 @@ async function api(path, options = {}) {
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
   });
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.detail || `処理に失敗しました (${response.status})`);
+  if (!response.ok) throw new Error(Array.isArray(body.detail) ? body.detail.map((item) => item.msg).join(" / ") : body.detail || `処理に失敗しました (${response.status})`);
   return body;
 }
 
@@ -75,7 +79,7 @@ function renderStatus() {
   codexNode.className = `status-pill ${codex.status === "ready" ? "ready" : codex.status === "error" ? "error" : ""}`;
   const recording = Boolean(runtime.recording);
   document.body.classList.toggle("recording", recording);
-  $("#start-recording").disabled = recording || whisper.status !== "ready";
+  $("#start-recording").disabled = recording || whisper.status !== "ready" || !appState.active_area;
   $("#finalize-recording").disabled = !recording;
   $("#stop-recording").disabled = !recording;
   $("#device-select").disabled = recording;
@@ -108,6 +112,8 @@ function taskCard(task) {
   const kindLabel = task.kind === "request" ? "要請" : "状況確認";
   const facts = [];
   if (task.location) facts.push(`場所: ${task.location}`);
+  if (task.area) facts.push(`地域: ${task.area.name}`);
+  facts.push(positionLabels[task.position?.status] || "場所未確認");
   if (task.assignee) facts.push(`担当: ${task.assignee}`);
   if (task.condition) facts.push(`条件: ${task.condition}`);
   const people = (task.people || []).map((item) => `${item.description} ${item.count ?? "未確認"}人`);
@@ -117,11 +123,12 @@ function taskCard(task) {
   const actions = task.state === "candidate"
     ? `<button data-action="approve" data-task-id="${task.id}" class="primary">承認</button><button data-action="discard" data-task-id="${task.id}">破棄</button>`
     : task.state === "open" ? `<button data-action="complete" data-task-id="${task.id}" class="primary">対応済みにする</button>` : "";
-  return `<article class="task-card ${esc(task.kind)}">
+  return `<article id="card-${esc(task.id)}" class="task-card ${esc(task.kind)}">
     <div class="task-labels"><span class="kind-badge ${esc(task.kind)}">${kindLabel}</span>${task.is_evidence_stale ? '<span class="warning-badge">根拠が旧版</span>' : ""}${(task.related_task_ids || []).length ? '<span class="warning-badge">重複候補</span>' : ""}</div>
     <h4>${esc(task.title)}</h4><p class="action">${esc(task.action)}</p>
+    <div class="card-map-categories">${categoryHTML(task.map_category)}</div>
     <div class="task-facts">${facts.map((fact) => `<span>${esc(fact)}</span>`).join("")}</div>
-    <div class="task-actions">${actions}<button data-action="edit" data-task-id="${task.id}">詳細・編集</button></div>
+    <div class="task-actions">${actions}<button data-action="edit" data-task-id="${task.id}">詳細・編集</button><button data-action="map" data-task-id="${task.id}">地図</button><button data-action="location" data-task-id="${task.id}">場所確認</button></div>
   </article>`;
 }
 
@@ -133,7 +140,7 @@ function renderBoard() {
   }
 }
 
-function render() { renderStatus(); renderCommunications(); renderBoard(); }
+function render() { renderStatus(); renderCommunications(); renderBoard(); geographyUI.render(appState); }
 
 async function loadState() {
   try {
@@ -214,7 +221,12 @@ function openTaskDialog(task = null) {
   $("#task-resources").value = formatResources(task?.resources);
   $("#task-communications").value = (task?.evidence_communication_ids || []).join("\n");
   $("#task-quotes").value = (task?.evidence_quotes || []).join("\n");
-  $("#task-readonly-detail").innerHTML = task ? `<section class="detail-section"><h3>履歴</h3>${(task.history || []).map((entry) => `<div class="history">${esc(localTime(entry.created_at))} · ${esc(entry.actor)} · ${esc(entry.action)}</div>`).join("")}</section>` : "";
+  $("#task-map-categories").innerHTML = Object.entries(categories).map(([value, item]) => `<label class="checkbox-label"><input type="checkbox" name="map_category" value="${value}" ${(task?.map_category || ["other"]).includes(value) ? "checked" : ""} />${item.symbol} ${item.label}</label>`).join("");
+  $("#task-readonly-detail").innerHTML = task ? positionHistoryHTML(task, localTime) : "";
+  if (task) {
+    $("#task-open-location").onclick = () => { $("#task-dialog").close(); geographyUI.openLocation(task); };
+    document.querySelectorAll("[data-evidence-id]").forEach((button) => { button.onclick = () => { $("#task-dialog").close(); showCommunication(button.dataset.evidenceId); }; });
+  }
   $("#task-dialog").showModal();
 }
 
@@ -229,6 +241,8 @@ async function saveTask(event) {
       people:parsePeople($("#task-people").value), resources:parseResources($("#task-resources").value),
       evidence_communication_ids:lines($("#task-communications").value), evidence_quotes:lines($("#task-quotes").value), actor:"operator"
     };
+    common.map_category = [...document.querySelectorAll('input[name="map_category"]:checked')].map((input) => input.value);
+    if (!common.map_category.length) throw new Error("地図記号を1つ以上選択してください");
     if (task) await api(`/api/tasks/${encodeURIComponent(task.id)}`, {method:"PATCH", body:JSON.stringify({...common, version:task.version})});
     else await api("/api/tasks", {method:"POST", body:JSON.stringify({...common, kind:$("#task-kind").value})});
     $("#task-dialog").close(); toast(task ? "タスクを更新しました" : "タスク候補を登録しました"); await loadState();
@@ -268,6 +282,8 @@ $(".board").addEventListener("click", (event) => {
   const button = event.target.closest("[data-task-id]"); if (!button) return;
   const task = appState.tasks.find((item) => item.id === button.dataset.taskId); if (!task) return;
   if (button.dataset.action === "edit") openTaskDialog(task);
+  if (button.dataset.action === "map") geographyUI.focus(task);
+  if (button.dataset.action === "location") geographyUI.openLocation(task);
   if (button.dataset.action === "approve") transitionTask(task, "open");
   if (button.dataset.action === "discard") transitionTask(task, "discarded");
   if (button.dataset.action === "complete") transitionTask(task, "done");
@@ -277,7 +293,7 @@ const events = new EventSource("/api/events");
 let refreshTimer;
 const scheduleRefresh = () => { clearTimeout(refreshTimer); refreshTimer = setTimeout(loadState, 120); };
 events.addEventListener("connected", scheduleRefresh);
-for (const type of ["communication.created","communication.updated","task.updated","system.status"]) events.addEventListener(type, scheduleRefresh);
+for (const type of ["communication.created","communication.updated","task.updated","system.status","area.updated","map.updated"]) events.addEventListener(type, scheduleRefresh);
 events.addEventListener("caption.partial", (event) => { const data = JSON.parse(event.data); $("#partial-caption").textContent = data.text || "次の交信を待っています。"; });
 events.addEventListener("audio.level", (event) => { const data = JSON.parse(event.data); $("#input-level").style.width = `${Math.round(Math.max(0, Math.min(1, data.level)) * 100)}%`; });
 events.onerror = () => { $("#codex-status").textContent = "画面更新 · 再接続中"; };

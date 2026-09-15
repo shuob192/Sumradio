@@ -9,6 +9,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import Settings
+from .geography_models import AreaInput, AreaSearchInput, LocationConfirmInput
 from .models import (
     CorrectionInput,
     ManualTaskInput,
@@ -34,7 +35,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         finally:
             await service.stop()
 
-    app = FastAPI(title="Sumradio", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="Sumradio", version="0.2.0", lifespan=lifespan)
     static_dir = Path(__file__).resolve().parent / "static"
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
@@ -47,6 +48,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if isinstance(exc, VersionConflictError):
             return HTTPException(status_code=409, detail=str(exc))
         if isinstance(exc, InvalidTransitionError):
+            return HTTPException(status_code=422, detail=str(exc))
+        if isinstance(exc, ValueError):
             return HTTPException(status_code=422, detail=str(exc))
         return HTTPException(status_code=503, detail=str(exc))
 
@@ -148,5 +151,48 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
+
+    @app.post("/api/areas/search")
+    async def search_areas(data: AreaSearchInput, request: Request) -> dict:
+        try:
+            result = await get_service(request).geography.search_areas(data.query)
+            return {"areas": [area.model_dump(mode="json") for area in result]}
+        except Exception as exc:
+            raise translate_error(exc) from exc
+
+    @app.put("/api/area")
+    async def set_area(data: AreaInput, request: Request) -> dict:
+        try:
+            area = await get_service(request).set_area(data)
+            return area.model_dump(mode="json")
+        except Exception as exc:
+            raise translate_error(exc) from exc
+
+    @app.get("/api/tasks")
+    async def list_tasks(request: Request, include_discarded: bool = False) -> dict:
+        return {"tasks": [task.model_dump(mode="json") for task in get_service(request).store.list_tasks(include_discarded=include_discarded)]}
+
+    @app.get("/api/tasks/{task_id}")
+    async def get_task(task_id: str, request: Request) -> dict:
+        try:
+            return get_service(request).store.get_task(task_id).model_dump(mode="json")
+        except Exception as exc:
+            raise translate_error(exc) from exc
+
+    @app.post("/api/tasks/{task_id}/location/search")
+    async def search_location(task_id: str, data: VersionInput, request: Request) -> dict:
+        try:
+            task = await get_service(request).retry_location(task_id, data.version)
+            return task.model_dump(mode="json")
+        except Exception as exc:
+            raise translate_error(exc) from exc
+
+    @app.put("/api/tasks/{task_id}/location")
+    async def confirm_location(task_id: str, data: LocationConfirmInput, request: Request) -> dict:
+        try:
+            task = await get_service(request).confirm_location(task_id, data)
+            return task.model_dump(mode="json")
+        except Exception as exc:
+            raise translate_error(exc) from exc
 
     return app

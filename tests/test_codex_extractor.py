@@ -6,6 +6,8 @@ import pytest
 
 from sumradio.codex_extractor import CodexExtractionError, CodexExtractor
 from sumradio.codex_extractor import _structured_output_schema
+from sumradio.codex_extractor import _split_exact_quotes
+from sumradio.geography_models import MapExtraction, PlaceExpression
 from sumradio.models import (
     CommunicationFacts,
     CommunicationRecord,
@@ -91,6 +93,18 @@ def test_structured_output_schema_requires_every_property() -> None:
     assert_strict(schema)
 
 
+def test_separates_joined_quotes_only_when_each_sentence_is_exact_and_in_order():
+    transcript = "避難者80名です。対象食品を確認中です。80食を手配願います。"
+    assert _split_exact_quotes(["避難者80名です。80食を手配願います。"], transcript) == ["避難者80名です。", "80食を手配願います。"]
+    contiguous = "避難者80名です。対象食品を確認中です。"
+    assert _split_exact_quotes([contiguous], transcript) == [contiguous]
+    for invalid in ["避難者81名です。80食を手配願います。", "80食を手配願います。避難者80名です。", "避難者80名です。完了しました。"]:
+        # Keep the entire invalid quote so normal validation rejects it.
+        assert _split_exact_quotes([invalid], transcript) == [invalid]
+    with pytest.raises(CodexExtractionError, match="20件"):
+        _split_exact_quotes(["避難者80名です。80食を手配願います。"] * 11, transcript)
+
+
 def test_prompt_separates_rules_references_and_dynamic_input(settings, tmp_path) -> None:
     extractor = make_extractor(settings, tmp_path)
     prompt = extractor.build_prompt(communication("符号は朝日のあです。"), [existing_task()])
@@ -112,6 +126,7 @@ def test_validates_exact_evidence_and_related_ids(settings, tmp_path) -> None:
         ],
         candidates=[
             TaskCandidate(
+                map_info=MapExtraction(location=None, map_category=["water"], evidence_quotes=["飲料水を手配願います"]),
                 kind=TaskKind.REQUEST,
                 title="飲料水",
                 action="手配する",
@@ -125,6 +140,19 @@ def test_validates_exact_evidence_and_related_ids(settings, tmp_path) -> None:
     bad_quote.candidates[0].evidence_quotes = ["原文にない引用"]
     with pytest.raises(CodexExtractionError, match="根拠引用"):
         extractor.validate_result(bad_quote, text, [existing_task()])
+    bad_quote.candidates[0].evidence_quotes = ["   "]
+    with pytest.raises(CodexExtractionError, match="根拠引用"):
+        extractor.validate_result(bad_quote, text, [existing_task()])
+    bad_map_quote = result.model_copy(deep=True)
+    bad_map_quote.candidates[0].map_info.evidence_quotes = ["原文にない地図の根拠"]
+    with pytest.raises(CodexExtractionError):
+        extractor.validate_result(bad_map_quote, text, [existing_task()])
+    bad_map_quote.candidates[0].map_info = MapExtraction(
+        location=PlaceExpression(source_text="原文にない施設", search_name="本町小学校"),
+        map_category=["water"], evidence_quotes=["飲料水を手配願います"],
+    )
+    with pytest.raises(CodexExtractionError):
+        extractor.validate_result(bad_map_quote, text, [existing_task()])
     bad_id = result.model_copy(deep=True)
     bad_id.candidates[0].related_task_ids = ["task_unknown"]
     with pytest.raises(CodexExtractionError, match="存在しない"):
@@ -137,6 +165,7 @@ async def test_extracts_structured_output_from_subprocess(settings, tmp_path) ->
         communication=CommunicationFacts(sender="調査班"),
         candidates=[
             TaskCandidate(
+                map_info=MapExtraction(location=None, map_category=["other"], evidence_quotes=["現地確認"]),
                 kind=TaskKind.REQUEST,
                 title="現地確認",
                 action="現地を確認する",

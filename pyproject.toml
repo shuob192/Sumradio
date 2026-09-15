@@ -1,11 +1,12 @@
 [project]
 name = "sumradio"
-version = "0.1.0"
+version = "0.2.0"
 description = "無線交信を文字起こしし、人間が確認する対応事項として整理するローカルアプリ"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
   "fastapi>=0.116,<1",
+  "httpx>=0.28,<1",
   "faster-whisper>=1.2,<2",
   "numpy>=2.1,<3",
   "pydantic>=2.11,<3",

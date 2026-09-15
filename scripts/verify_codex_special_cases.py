@@ -43,7 +43,7 @@ def existing_task() -> TaskRecord:
         title="飲料水15箱の手配",
         action="飲料水15箱を手配する",
         target="飲料水",
-        location="青葉避難所",
+        location="本町小学校避難所",
         resources=[ResourceQuantity(item="飲料水", quantity=15, unit="箱")],
         created_at=now,
         updated_at=now,
@@ -53,7 +53,7 @@ def existing_task() -> TaskRecord:
 CASES = [
     {
         "id": "situation",
-        "transcript": "災害本部、こちら青葉避難所担当。青葉避難所に負傷者3名がいます。以上。",
+        "transcript": "災害本部、こちら本町小学校避難所担当。本町小学校避難所に負傷者3名がいます。以上。",
         "tasks": [],
         "check": lambda result: len(result.candidates) == 1
         and result.candidates[0].kind == TaskKind.SITUATION_CONFIRMATION
@@ -79,7 +79,7 @@ CASES = [
     },
     {
         "id": "negation_hold",
-        "transcript": "災害本部、こちら青葉避難所担当。飲料水の手配は未完了です。追加手配は保留してください。以上。",
+        "transcript": "災害本部、こちら本町小学校避難所担当。飲料水の手配は未完了です。追加手配は保留してください。以上。",
         "tasks": [existing_task()],
         "check": lambda result: result.candidates == []
         and any(item.type == "negation_or_hold" for item in result.confirmations)
@@ -87,7 +87,7 @@ CASES = [
     },
     {
         "id": "completion",
-        "transcript": "災害本部、こちら青葉避難所担当。飲料水15箱の手配は完了しました。以上。",
+        "transcript": "災害本部、こちら本町小学校避難所担当。飲料水15箱の手配は完了しました。以上。",
         "tasks": [existing_task()],
         "check": lambda result: result.candidates == []
         and any(
@@ -97,7 +97,7 @@ CASES = [
     },
     {
         "id": "duplicate",
-        "transcript": "災害本部、こちら青葉避難所担当。青葉避難所へ飲料水15箱を手配願います。以上。",
+        "transcript": "災害本部、こちら本町小学校避難所担当。本町小学校避難所へ飲料水15箱を手配願います。以上。",
         "tasks": [existing_task()],
         "check": lambda result: len(result.candidates) == 1
         and "task_existing_water" in result.candidates[0].related_task_ids
