@@ -1,0 +1,56 @@
+{
+  "mode": "saved_audio_real_worker_simulated_stop_not_microphone_acceptance",
+  "at": "2026-09-15T02:43:05.063643+00:00",
+  "audio_sha256": "ed3053c08b8af38cbeda20ea9ed186da37392ecd0e8d78541adbb6396288fa9e",
+  "threads": 8,
+  "source_sha256": "4ce93df2742d5e5c226d3cc710dfd6b97cc8a551229e85a828e4eb085c8d3b6f",
+  "limitations": "暫定字幕の処理直後に手動確定を模擬。モデルロード・実録音・無音待ち・画面描画・Codexは時間に含まない。生成データは一時保存先のみ。",
+  "results": [
+    {
+      "final_delay_seconds": 11.4778,
+      "pre_recognition_seconds": 5.2762,
+      "text": "訓練訓練本部こちら連絡一般東京都台東区の上野温室公園から報告待機者は60名です飲料水が不足しています2リットリー6本を1箱として飲料水15箱の手配をお願いします園内の詳しい受け渡し場所は録音中です以上訓練",
+      "calls": [
+        {
+          "kind": "partial",
+          "audio_seconds": 20.0,
+          "started_after_finalize_seconds": -0.0004,
+          "duration_seconds": 5.2652
+        },
+        {
+          "kind": "final",
+          "audio_seconds": 25.0,
+          "started_after_finalize_seconds": 5.2762,
+          "duration_seconds": 6.2015
+        }
+      ],
+      "stale_subtitles_published": 0,
+      "metrics": {
+        "finalized_at_epoch": 1789440186.023456
+      }
+    },
+    {
+      "final_delay_seconds": 11.0664,
+      "pre_recognition_seconds": 5.1078,
+      "text": "訓練訓練本部こちら連絡一般東京都台東区の上野温室公園から報告待機者は60名です飲料水が不足しています2リットリー6本を1箱として飲料水15箱の手配をお願いします園内の詳しい受け渡し場所は録音中です以上訓練",
+      "calls": [
+        {
+          "kind": "partial",
+          "audio_seconds": 20.0,
+          "started_after_finalize_seconds": -0.0003,
+          "duration_seconds": 5.098
+        },
+        {
+          "kind": "final",
+          "audio_seconds": 25.0,
+          "started_after_finalize_seconds": 5.1078,
+          "duration_seconds": 5.9584
+        }
+      ],
+      "stale_subtitles_published": 0,
+      "metrics": {
+        "finalized_at_epoch": 1789440198.425045
+      }
+    }
+  ]
+}

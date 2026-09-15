@@ -1,0 +1,164 @@
+{
+  "id": "aoba",
+  "name": "架空地名・青葉地区",
+  "training": true,
+  "external_geocoding": false,
+  "locations": [
+    {
+      "id": "aoba_1",
+      "name": "青葉避難所",
+      "detail": "体育館正面入口",
+      "lat": 35.705,
+      "lon": 139.62,
+      "aliases": [
+        "青葉避難所体育館正面入口"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_2",
+      "name": "若葉公園",
+      "detail": "東側広場",
+      "lat": 35.711,
+      "lon": 139.631,
+      "aliases": [
+        "若葉公園東側広場"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_3",
+      "name": "青葉北線",
+      "detail": "第二カーブ",
+      "lat": 35.723,
+      "lon": 139.617,
+      "aliases": [
+        "青葉北線第二カーブ",
+        "青葉北線、第二カーブ",
+        "青葉北線第二カーブの南側"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_4",
+      "name": "あさぎ橋",
+      "detail": "南詰",
+      "lat": 35.716,
+      "lon": 139.64,
+      "aliases": [
+        "あさぎ橋南詰"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_5",
+      "name": "みどり住宅",
+      "detail": "",
+      "lat": 35.699,
+      "lon": 139.635,
+      "aliases": [
+        "みどり住宅東端の2階建て住宅"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_6",
+      "name": "ひなた集会所",
+      "detail": "玄関",
+      "lat": 35.707,
+      "lon": 139.643,
+      "aliases": [
+        "ひなた集会所玄関"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_7",
+      "name": "つばき地区",
+      "detail": "進入路",
+      "lat": 35.728,
+      "lon": 139.635,
+      "aliases": [
+        "つばき地区進入路",
+        "つばき地区の進入路"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_8",
+      "name": "こもれび福祉館",
+      "detail": "西側入口",
+      "lat": 35.702,
+      "lon": 139.653,
+      "aliases": [
+        "こもれび福祉館西側入口"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_9",
+      "name": "ほたる通り",
+      "detail": "南端の駐車場",
+      "lat": 35.691,
+      "lon": 139.625,
+      "aliases": [
+        "ほたる通り南端の駐車場",
+        "ほたる通り商店街南端"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "aoba_10",
+      "name": "すみれ避難所",
+      "detail": "旧すみれ学校の給食搬入口",
+      "lat": 35.693,
+      "lon": 139.648,
+      "aliases": [
+        "旧すみれ学校",
+        "旧すみれ学校の給食搬入口",
+        "すみれ避難所給食搬入口"
+      ],
+      "municipality": "架空の青葉地区",
+      "precision": "specific",
+      "source": "fictional_demo",
+      "source_url": "",
+      "checked_at": "2026-09-15"
+    }
+  ]
+}

@@ -1,0 +1,644 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "at": "2026-09-15T03:26:51.755382+00:00",
+  "prompt_sha256": "4d3dbf4a4a9c34a2d3391effbae8b35364c125859760857b60143a1fb308e0c6",
+  "results": [
+    {
+      "case": "I01",
+      "input": "訓練。本部、青葉避難所に負傷者3名。うち1名の搬送と救急隊の派遣をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": "本部",
+        "situation": "青葉避難所に負傷者3名。そのうち1名の搬送と救急隊の派遣を要請。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "負傷者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "負傷者1名の搬送と救急隊派遣",
+            "description": "青葉避難所に負傷者3名。うち1名の搬送と救急隊の派遣をお願いします。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "injury",
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_258aa1abac49411f8ed2680d33ec5f16",
+                "revision": 1,
+                "quote": "本部、青葉避難所に負傷者3名。"
+              },
+              {
+                "communication_id": "comm_258aa1abac49411f8ed2680d33ec5f16",
+                "revision": 1,
+                "quote": "うち1名の搬送と救急隊の派遣をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 3.0,
+                "unit": "名",
+                "description": "負傷者"
+              },
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "搬送対象の負傷者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_258aa1abac49411f8ed2680d33ec5f16",
+                "revision": 1,
+                "quote": "本部、青葉避難所に負傷者3名。"
+              },
+              {
+                "communication_id": "comm_258aa1abac49411f8ed2680d33ec5f16",
+                "revision": 1,
+                "quote": "うち1名の搬送と救急隊の派遣をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 13.614
+    },
+    {
+      "case": "I02",
+      "input": "訓練。青葉避難所の倉庫に2名が閉じ込められています。けが人はいません。救助をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "訓練。青葉避難所の倉庫に2名が閉じ込められており、けが人はいない。",
+        "people": [
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "倉庫に閉じ込められている人"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉避難所の倉庫から2名を救助",
+            "description": "青葉避難所の倉庫に2名が閉じ込められています。けが人はいません。救助をお願いします。",
+            "place": {
+              "expression": "青葉避難所の倉庫",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": "倉庫"
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_b7969fab018644c292660d674301a9ee",
+                "revision": 1,
+                "quote": "救助をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "名",
+                "description": "救助対象者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_b7969fab018644c292660d674301a9ee",
+                "revision": 1,
+                "quote": "青葉避難所の倉庫に2名が閉じ込められています。"
+              },
+              {
+                "communication_id": "comm_b7969fab018644c292660d674301a9ee",
+                "revision": 1,
+                "quote": "けが人はいません。"
+              },
+              {
+                "communication_id": "comm_b7969fab018644c292660d674301a9ee",
+                "revision": 1,
+                "quote": "救助をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 13.208
+    },
+    {
+      "case": "I03",
+      "input": "訓練。ひなた集会所で煙と炎が出ています。消防隊の出動をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "訓練。ひなた集会所で煙と炎が出ている。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "消防隊の出動要請",
+            "description": "ひなた集会所で煙と炎が出ているため、消防隊の出動をお願いします。",
+            "place": {
+              "expression": "ひなた集会所",
+              "search_name": "ひなた集会所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "fire",
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_84a8a44b354447b79b8945ef15d3afcb",
+                "revision": 1,
+                "quote": "ひなた集会所で煙と炎が出ています。"
+              },
+              {
+                "communication_id": "comm_84a8a44b354447b79b8945ef15d3afcb",
+                "revision": 1,
+                "quote": "消防隊の出動をお願いします。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_84a8a44b354447b79b8945ef15d3afcb",
+                "revision": 1,
+                "quote": "ひなた集会所で煙と炎が出ています。"
+              },
+              {
+                "communication_id": "comm_84a8a44b354447b79b8945ef15d3afcb",
+                "revision": 1,
+                "quote": "消防隊の出動をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 11.093
+    },
+    {
+      "case": "I04",
+      "input": "訓練。青葉橋の道路が冠水して通行できません。近くの建物の壁も崩れています。道路と建物の現地確認をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "青葉橋の道路が冠水して通行できず、近くの建物の壁も崩れている。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉橋の道路と建物の現地確認",
+            "description": "青葉橋の道路が冠水して通行できず、近くの建物の壁も崩れているため、道路と建物の現地確認をお願いします。",
+            "place": {
+              "expression": "青葉橋",
+              "search_name": "青葉橋",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "road_blocked",
+              "flood",
+              "building_damage"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "青葉橋の道路が冠水して通行できません。"
+              },
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "青葉橋の道路が冠水して通行できません。"
+              },
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "近くの建物の壁も崩れています。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "青葉橋の道路が冠水して通行できません。"
+              },
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "近くの建物の壁も崩れています。"
+              },
+              {
+                "communication_id": "comm_a756bbde9e424fe8b263c77297a9bac8",
+                "revision": 1,
+                "quote": "道路と建物の現地確認をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 12.564
+    },
+    {
+      "case": "I05",
+      "input": "訓練。青葉避難所の電話が不通で無線機も故障しています。予備の無線機を手配願います。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "青葉避難所の電話が不通で、無線機も故障しています。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "予備の無線機を手配",
+            "description": "青葉避難所の電話が不通で無線機も故障しているため、予備の無線機を手配願います。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "communication"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_acb6c36ca1a64bc1bc8103106f3a4a24",
+                "revision": 1,
+                "quote": "青葉避難所の電話が不通で無線機も故障しています。"
+              },
+              {
+                "communication_id": "comm_acb6c36ca1a64bc1bc8103106f3a4a24",
+                "revision": 1,
+                "quote": "予備の無線機を手配願います。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_acb6c36ca1a64bc1bc8103106f3a4a24",
+                "revision": 1,
+                "quote": "青葉避難所の電話が不通で無線機も故障しています。"
+              },
+              {
+                "communication_id": "comm_acb6c36ca1a64bc1bc8103106f3a4a24",
+                "revision": 1,
+                "quote": "予備の無線機を手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 10.23
+    },
+    {
+      "case": "I06",
+      "input": "訓練。青葉避難所に戻る予定の2名の行方が分からず、連絡も取れません。安否確認をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "訓練。青葉避難所に戻る予定の2名の行方が分からず、連絡も取れない。",
+        "people": [
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "青葉避難所に戻る予定で行方不明・連絡不能の人"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "2名の安否確認",
+            "description": "青葉避難所に戻る予定の2名の行方が分からず、連絡も取れないため、安否確認をお願いします。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "missing_person"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_482db41254724766ad66ebf5b19407ca",
+                "revision": 1,
+                "quote": "青葉避難所に戻る予定の2名の行方が分からず、連絡も取れません。"
+              },
+              {
+                "communication_id": "comm_482db41254724766ad66ebf5b19407ca",
+                "revision": 1,
+                "quote": "安否確認をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "名",
+                "description": "行方不明・連絡不能の人"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_482db41254724766ad66ebf5b19407ca",
+                "revision": 1,
+                "quote": "青葉避難所に戻る予定の2名の行方が分からず、連絡も取れません。"
+              },
+              {
+                "communication_id": "comm_482db41254724766ad66ebf5b19407ca",
+                "revision": 1,
+                "quote": "安否確認をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "2名の氏名、現在地、詳細な状況は不明。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 16.479
+    },
+    {
+      "case": "I07",
+      "input": "訓練。青葉避難所に発熱している人が1名います。けがはありません。医療担当者への相談を手配願います。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "青葉避難所に発熱している人が1名います。けがはありません。",
+        "people": [
+          {
+            "value": 1.0,
+            "unit": "人",
+            "description": "発熱している人"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "医療担当者への相談を手配",
+            "description": "青葉避難所にいる発熱している人1名について、医療担当者への相談を手配する。けがはない。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "medical"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_d04253c27d8d4bd8a4cd662202b95efe",
+                "revision": 1,
+                "quote": "青葉避難所に発熱している人が1名います。"
+              },
+              {
+                "communication_id": "comm_d04253c27d8d4bd8a4cd662202b95efe",
+                "revision": 1,
+                "quote": "医療担当者への相談を手配願います。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_d04253c27d8d4bd8a4cd662202b95efe",
+                "revision": 1,
+                "quote": "青葉避難所に発熱している人が1名います。"
+              },
+              {
+                "communication_id": "comm_d04253c27d8d4bd8a4cd662202b95efe",
+                "revision": 1,
+                "quote": "けがはありません。"
+              },
+              {
+                "communication_id": "comm_d04253c27d8d4bd8a4cd662202b95efe",
+                "revision": 1,
+                "quote": "医療担当者への相談を手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 14.411
+    },
+    {
+      "case": "I08",
+      "input": "訓練。青葉避難所のトイレが使用できず、し尿の処理もできません。仮設トイレを2基お願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": null,
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉避難所への仮設トイレ手配",
+            "description": "青葉避難所のトイレが使用できず、し尿の処理もできないため、仮設トイレを2基要請。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "sanitation"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_dad83fd821f24cf6b6dc0bee3dc60c80",
+                "revision": 1,
+                "quote": "青葉避難所のトイレが使用できず、し尿の処理もできません。"
+              },
+              {
+                "communication_id": "comm_dad83fd821f24cf6b6dc0bee3dc60c80",
+                "revision": 1,
+                "quote": "仮設トイレを2基お願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "基",
+                "description": "仮設トイレ"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_dad83fd821f24cf6b6dc0bee3dc60c80",
+                "revision": 1,
+                "quote": "青葉避難所のトイレが使用できず、し尿の処理もできません。"
+              },
+              {
+                "communication_id": "comm_dad83fd821f24cf6b6dc0bee3dc60c80",
+                "revision": 1,
+                "quote": "仮設トイレを2基お願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 10.254
+    },
+    {
+      "case": "I09",
+      "input": "訓練。青葉避難所に火災も負傷者もありません。飲料水が足りないので10箱手配願います。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "青葉避難所に火災も負傷者もない。飲料水が不足している。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "飲料水の手配",
+            "description": "青葉避難所で不足している飲料水10箱の手配を依頼。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "water"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_a61d883574d444a194093f83852d3932",
+                "revision": 1,
+                "quote": "飲料水が足りないので10箱手配願います。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 10.0,
+                "unit": "箱",
+                "description": "飲料水"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_a61d883574d444a194093f83852d3932",
+                "revision": 1,
+                "quote": "飲料水が足りないので10箱手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": [
+          {
+            "kind": "negation",
+            "text": "青葉避難所に火災はない。",
+            "related_task_ids": [],
+            "evidence": [
+              {
+                "communication_id": "comm_a61d883574d444a194093f83852d3932",
+                "revision": 1,
+                "quote": "青葉避難所に火災も負傷者もありません。"
+              }
+            ]
+          },
+          {
+            "kind": "negation",
+            "text": "青葉避難所に負傷者はいない。",
+            "related_task_ids": [],
+            "evidence": [
+              {
+                "communication_id": "comm_a61d883574d444a194093f83852d3932",
+                "revision": 1,
+                "quote": "青葉避難所に火災も負傷者もありません。"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 11.707
+    }
+  ]
+}

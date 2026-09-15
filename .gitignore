@@ -8,3 +8,12 @@ __pycache__/
 # Local recordings, application data, and downloaded ASR models
 data/
 models/
+
+# The application's checked-in demo master is source data, not recorded audio.
+!/App/data/
+/App/data/*
+!/App/data/profiles/
+/App/data/profiles/*
+!/App/data/profiles/aoba.json
+!/App/data/profiles/tokyo.json
+!/App/data/profiles/local.json

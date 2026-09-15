@@ -1,0 +1,189 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "at": "2026-09-15T02:21:10.170899+00:00",
+  "prompt_sha256": "b2536e6fcaa6b9bc8adfc816b2c2ea27e6262bef1524758804c3cb7c9f4a5df6",
+  "results": [
+    {
+      "case": "R02",
+      "input": "訓練、訓練。本部、こちら救護二班。東京都渋谷区の代々木公園から報告。負傷者3名、うち2名は自力歩行可能、1名は脚の痛みで歩行が困難です。救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。園内の正確な場所は確認中です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "救護二班",
+        "recipient": "本部",
+        "situation": "東京都渋谷区の代々木公園で負傷者3名。うち2名は自力歩行可能、1名は脚の痛みで歩行困難。園内の正確な場所は確認中。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "負傷者"
+          },
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "自力歩行可能な負傷者"
+          },
+          {
+            "value": 1.0,
+            "unit": "名",
+            "description": "脚の痛みで歩行が困難な負傷者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "救急隊派遣と歩行困難者の搬送調整",
+            "description": "負傷者3名（うち2名は自力歩行可能、1名は脚の痛みで歩行困難）について、救急隊の派遣と歩行困難な1名の搬送調整を要請。園内の正確な場所は確認中。",
+            "place": {
+              "expression": "東京都渋谷区の代々木公園",
+              "search_name": "代々木公園",
+              "municipality": "東京都渋谷区",
+              "detail": null
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_e9b81b78826d437eab2b77359c90a88d",
+                "revision": 1,
+                "quote": "救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "搬送調整対象の歩行困難者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_e9b81b78826d437eab2b77359c90a88d",
+                "revision": 1,
+                "quote": "負傷者3名、うち2名は自力歩行可能、1名は脚の痛みで歩行が困難です。救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。園内の正確な場所は確認中です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "園内の正確な場所は確認中。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 23.3
+    },
+    {
+      "case": "S05",
+      "input": "本部、こちら調査班。青葉避難所への飲料水15箱の手配は完了しました。追加の要請はありません。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": "青葉避難所への飲料水15箱の手配は完了。追加の要請なし。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "tasks": [],
+        "notices": [
+          {
+            "kind": "completion",
+            "text": "既存タスク「青葉避難所へ飲料水15箱を手配」の完了報告。追加の要請はない。",
+            "related_task_ids": [
+              "task_8ecc5f68db0d4915ac68426e7d5e7580"
+            ],
+            "evidence": [
+              {
+                "communication_id": "comm_960bfbf22f1a4eefb779a887a3524262",
+                "revision": 1,
+                "quote": "青葉避難所への飲料水15箱の手配は完了しました。追加の要請はありません。"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 12.02
+    },
+    {
+      "case": "S06",
+      "input": "本部、こちら調査班。先ほどと同じ要請を再送します。青葉避難所への飲料水15箱の手配をお願いします。追加分ではありません。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": null,
+        "people": [],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉避難所への飲料水15箱の手配",
+            "description": "青葉避難所への飲料水15箱の手配を依頼。先ほどと同じ要請で、追加分ではない。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "water"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_9f584809b9b1497896cd8550377f83ae",
+                "revision": 1,
+                "quote": "青葉避難所への飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 15.0,
+                "unit": "箱",
+                "description": "飲料水"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_9f584809b9b1497896cd8550377f83ae",
+                "revision": 1,
+                "quote": "青葉避難所への飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "related_task_ids": [
+              "task_db275f0f4f0f470d8e51307b0cebdad1"
+            ],
+            "uncertainties": []
+          }
+        ],
+        "notices": [
+          {
+            "kind": "duplicate",
+            "text": "先行要請と同じ要請の再送であり、追加分ではない。",
+            "related_task_ids": [
+              "task_db275f0f4f0f470d8e51307b0cebdad1"
+            ],
+            "evidence": [
+              {
+                "communication_id": "comm_9f584809b9b1497896cd8550377f83ae",
+                "revision": 1,
+                "quote": "先ほどと同じ要請を再送します。"
+              },
+              {
+                "communication_id": "comm_9f584809b9b1497896cd8550377f83ae",
+                "revision": 1,
+                "quote": "追加分ではありません。"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 16.193
+    }
+  ]
+}

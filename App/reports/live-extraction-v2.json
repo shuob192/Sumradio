@@ -1,0 +1,1392 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "results": [
+    {
+      "case": "01",
+      "input": "訓練、訓練。災害本部、こちら青葉避難所担当。体育館正面入口から報告。避難者は60名、うち歩行に介助が必要な方は8名です。断水で飲料水が不足しています。飲料水、2リットル入り6本を1箱として、15箱を手配願います。受け渡し場所は体育館正面入口です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "青葉避難所担当",
+        "recipient": "災害本部",
+        "situation": "断水で飲料水が不足している。避難者は60名で、うち歩行に介助が必要な方は8名。",
+        "people": [
+          {
+            "value": 60.0,
+            "unit": "名",
+            "description": "避難者"
+          },
+          {
+            "value": 8.0,
+            "unit": "名",
+            "description": "歩行に介助が必要な方"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "situation_confirmation",
+            "title": "青葉避難所の避難者数と介助必要者数の確認",
+            "description": "青葉避難所の避難者60名のうち、歩行に介助が必要な方が8名いるとの報告。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "evacuation"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_e49dec93f9e0469cb1c8f1d401270276",
+                "revision": 1,
+                "quote": "避難者は60名、うち歩行に介助が必要な方は8名です。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 60.0,
+                "unit": "名",
+                "description": "避難者"
+              },
+              {
+                "value": 8.0,
+                "unit": "名",
+                "description": "歩行に介助が必要な方"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_e49dec93f9e0469cb1c8f1d401270276",
+                "revision": 1,
+                "quote": "避難者は60名、うち歩行に介助が必要な方は8名です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "request",
+            "title": "飲料水15箱の手配",
+            "description": "飲料水を、2リットル入り6本を1箱として15箱手配するよう要請。",
+            "place": {
+              "expression": "青葉避難所・体育館正面入口",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": "体育館正面入口"
+            },
+            "map_categories": [
+              "water"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_e49dec93f9e0469cb1c8f1d401270276",
+                "revision": 1,
+                "quote": "飲料水、2リットル入り6本を1箱として、15箱を手配願います。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "リットル",
+                "description": "1本あたりの容量"
+              },
+              {
+                "value": 6.0,
+                "unit": "本",
+                "description": "1箱あたりの本数"
+              },
+              {
+                "value": 15.0,
+                "unit": "箱",
+                "description": "手配する箱数"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_e49dec93f9e0469cb1c8f1d401270276",
+                "revision": 1,
+                "quote": "断水で飲料水が不足しています。飲料水、2リットル入り6本を1箱として、15箱を手配願います。受け渡し場所は体育館正面入口です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 25.842
+    },
+    {
+      "case": "02",
+      "input": "訓練、訓練。災害本部、こちら救護一班。若葉公園東側広場から報告。避難途中に転倒した負傷者が3名います。2名は自力歩行可能、1名は脚の痛みで歩行が困難です。若葉公園東側広場へ救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。東側入口に誘導員1名を配置しています。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "救護一班",
+        "recipient": "災害本部",
+        "situation": "若葉公園東側広場で、避難途中に転倒した負傷者3名。2名は自力歩行可能、1名は脚の痛みで歩行困難。東側入口には誘導員1名を配置済み。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "人",
+            "description": "負傷者"
+          },
+          {
+            "value": 2.0,
+            "unit": "人",
+            "description": "自力歩行可能な負傷者"
+          },
+          {
+            "value": 1.0,
+            "unit": "人",
+            "description": "脚の痛みで歩行困難な負傷者"
+          },
+          {
+            "value": 1.0,
+            "unit": "人",
+            "description": "東側入口に配置された誘導員"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "救急隊派遣と歩行困難者1名の搬送調整",
+            "description": "若葉公園東側広場へ救急隊を派遣し、歩行困難な1名の搬送を調整する。",
+            "place": {
+              "expression": "若葉公園東側広場",
+              "search_name": "若葉公園",
+              "municipality": null,
+              "detail": "東側広場"
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_13b8b72680f149729942dacde3364162",
+                "revision": 1,
+                "quote": "救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "人",
+                "description": "搬送調整の対象となる歩行困難者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_13b8b72680f149729942dacde3364162",
+                "revision": 1,
+                "quote": "若葉公園東側広場へ救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 22.517
+    },
+    {
+      "case": "03",
+      "input": "訓練、訓練。災害本部、こちら調査一班。青葉北線、第二カーブの南側から報告。土砂が道路を約20メートル塞いでいます。手前に車両2台、乗員合わせて3名が待機。巻き込まれた人の有無は確認中です。青葉北線の第二カーブについて、道路管理者の現地確認と、安全確認後の土砂撤去を手配願います。待機者3名には斜面から離れた南側の待避所へ移ってもらっています。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査一班",
+        "recipient": "災害本部",
+        "situation": "青葉北線の第二カーブ南側で土砂が道路を約20メートル塞いでおり、手前に車両2台と乗員3名が待機しています。巻き込まれた人の有無は確認中です。待機者3名は南側の待避所へ移動中です。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "待機車両の乗員"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉北線の土砂による道路閉塞への現地確認・撤去手配",
+            "description": "道路管理者の現地確認と、安全確認後の土砂撤去を手配する。",
+            "place": {
+              "expression": "青葉北線、第二カーブの南側",
+              "search_name": "青葉北線",
+              "municipality": null,
+              "detail": "第二カーブの南側"
+            },
+            "map_categories": [
+              "road_blocked"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "土砂が道路を約20メートル塞いでいます。"
+              },
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "青葉北線の第二カーブについて、道路管理者の現地確認と、安全確認後の土砂撤去を手配願います。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 20.0,
+                "unit": "メートル",
+                "description": "土砂が道路を塞いでいる距離"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "青葉北線の第二カーブについて、道路管理者の現地確認と、安全確認後の土砂撤去を手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "situation_confirmation",
+            "title": "巻き込まれた人の有無の確認",
+            "description": "土砂に巻き込まれた人の有無を確認する。",
+            "place": {
+              "expression": "青葉北線、第二カーブの南側",
+              "search_name": "青葉北線",
+              "municipality": null,
+              "detail": "第二カーブの南側"
+            },
+            "map_categories": [
+              "road_blocked",
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "土砂が道路を約20メートル塞いでいます。"
+              },
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "巻き込まれた人の有無は確認中です。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_381d86ebd4df420283ada09c9e34d9b1",
+                "revision": 1,
+                "quote": "巻き込まれた人の有無は確認中です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "巻き込まれた人の有無は確認中です。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.894
+    },
+    {
+      "case": "04",
+      "input": "訓練、訓練。災害本部、こちら道路調査班。あさぎ橋南詰から報告。橋の手前で道路が約5メートル崩落し、車両は通行できない状態です。近くにいた歩行者4名は南側広場へ退避しています。あさぎ橋南詰へ通行止めの資機材を手配願います。あわせて道路管理者による迂回路の確認と、関係する現場への周知をお願いします。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "道路調査班",
+        "recipient": "災害本部",
+        "situation": "あさぎ橋南詰から、橋の手前で道路が約5メートル崩落し車両通行不可。近くにいた歩行者4名は南側広場へ退避。",
+        "people": [
+          {
+            "value": 4.0,
+            "unit": "名",
+            "description": "近くにいた歩行者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "通行止め資機材の手配",
+            "description": "あさぎ橋南詰へ通行止めの資機材を手配する。",
+            "place": {
+              "expression": "あさぎ橋南詰",
+              "search_name": "あさぎ橋",
+              "municipality": null,
+              "detail": "南詰"
+            },
+            "map_categories": [
+              "road_blocked"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_f057dd6425a24c0dab898cf77f2fa4e3",
+                "revision": 1,
+                "quote": "橋の手前で道路が約5メートル崩落し、車両は通行できない状態です。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 5.0,
+                "unit": "メートル",
+                "description": "道路の崩落規模"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_f057dd6425a24c0dab898cf77f2fa4e3",
+                "revision": 1,
+                "quote": "あさぎ橋南詰へ通行止めの資機材を手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "request",
+            "title": "迂回路の確認と関係現場への周知",
+            "description": "道路管理者による迂回路の確認と、関係する現場への周知を行う。",
+            "place": {
+              "expression": "あさぎ橋南詰",
+              "search_name": "あさぎ橋",
+              "municipality": null,
+              "detail": "南詰"
+            },
+            "map_categories": [
+              "road_blocked"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_f057dd6425a24c0dab898cf77f2fa4e3",
+                "revision": 1,
+                "quote": "橋の手前で道路が約5メートル崩落し、車両は通行できない状態です。"
+              }
+            ],
+            "quantities": [],
+            "assignee": "道路管理者",
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_f057dd6425a24c0dab898cf77f2fa4e3",
+                "revision": 1,
+                "quote": "あわせて道路管理者による迂回路の確認と、関係する現場への周知をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "関係する現場の具体的な場所は不明"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 24.52
+    },
+    {
+      "case": "05",
+      "input": "訓練、訓練。災害本部、こちら水辺調査班。みどり住宅東側の高台から報告。住宅周辺が浸水し、東端の2階建て住宅に住民5名が待機しています。窓越しに人数を確認しました。みどり住宅の5名のうち、子どもが1名、階段移動に介助が必要な方が1名います。水難救助に対応できる隊の派遣と、5名の避難支援をお願いします。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "水辺調査班",
+        "recipient": "災害本部",
+        "situation": "みどり住宅周辺が浸水し、東端の2階建て住宅で住民5名が待機中。うち子ども1名、階段移動に介助が必要な方1名。",
+        "people": [
+          {
+            "value": 5.0,
+            "unit": "名",
+            "description": "みどり住宅の東端の2階建て住宅で待機している住民"
+          },
+          {
+            "value": 1.0,
+            "unit": "名",
+            "description": "待機している住民のうち子ども"
+          },
+          {
+            "value": 1.0,
+            "unit": "名",
+            "description": "待機している住民のうち階段移動に介助が必要な方"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "水難救助対応隊の派遣と5名の避難支援",
+            "description": "みどり住宅東端の2階建て住宅で待機している住民5名について、水難救助に対応できる隊の派遣と5名の避難支援を行うよう要請。",
+            "place": {
+              "expression": "みどり住宅東端の2階建て住宅",
+              "search_name": "みどり住宅",
+              "municipality": null,
+              "detail": "東端の2階建て住宅"
+            },
+            "map_categories": [
+              "rescue",
+              "evacuation"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_34981d0087154934bcc9e65326b731dc",
+                "revision": 1,
+                "quote": "水難救助に対応できる隊の派遣"
+              },
+              {
+                "communication_id": "comm_34981d0087154934bcc9e65326b731dc",
+                "revision": 1,
+                "quote": "5名の避難支援をお願いします"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 5.0,
+                "unit": "名",
+                "description": "避難支援の対象となる住民"
+              },
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "対象住民のうち子ども"
+              },
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "対象住民のうち階段移動に介助が必要な方"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_34981d0087154934bcc9e65326b731dc",
+                "revision": 1,
+                "quote": "水難救助に対応できる隊の派遣と、5名の避難支援をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.116
+    },
+    {
+      "case": "06",
+      "input": "訓練、訓練。災害本部、こちらひなた集会所担当。集会所玄関から報告。避難者24名のうち、雨で衣服が濡れ、寒さを訴える方が6名います。乾いた寝具が不足しています。毛布30枚と、濡れた6名分の着替えを手配願います。サイズは担当者が取りまとめ中です。受け渡しは集会所玄関でお願いします。以上、訓練。",
+      "status": "failed",
+      "error": "ValueError: 根拠引用が交信原文に一致しません",
+      "seconds": 18.624
+    },
+    {
+      "case": "07",
+      "input": "訓練、訓練。災害本部、こちら山間調査班。つばき地区集会所前から報告。地区の進入路を倒木が塞ぎ、住民12名が集会所で待機しています。うち歩行に介助が必要な方は2名です。つばき地区の進入路について、道路管理者による倒木処理をお願いします。あわせて住民12名の避難移送手段を調整願います。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "山間調査班",
+        "recipient": "災害本部",
+        "situation": "つばき地区の進入路を倒木が塞ぎ、住民12名が集会所で待機しており、うち歩行に介助が必要な方は2名です。",
+        "people": [
+          {
+            "value": 12.0,
+            "unit": "名",
+            "description": "集会所で待機している住民"
+          },
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "歩行に介助が必要な住民"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "つばき地区進入路の倒木処理",
+            "description": "つばき地区の進入路を塞いでいる倒木について、道路管理者による処理を依頼する。",
+            "place": {
+              "expression": "つばき地区の進入路",
+              "search_name": "つばき地区",
+              "municipality": null,
+              "detail": "進入路"
+            },
+            "map_categories": [
+              "road_blocked"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "地区の進入路を倒木が塞ぎ"
+              },
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "道路管理者による倒木処理"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "つばき地区の進入路について、道路管理者による倒木処理をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "request",
+            "title": "住民12名の避難移送手段の調整",
+            "description": "つばき地区集会所で待機している住民12名の避難移送手段を調整する。うち歩行に介助が必要な方は2名。",
+            "place": {
+              "expression": "つばき地区集会所前",
+              "search_name": "つばき地区集会所",
+              "municipality": null,
+              "detail": "前"
+            },
+            "map_categories": [
+              "evacuation"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "住民12名の避難移送手段を調整願います"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 12.0,
+                "unit": "名",
+                "description": "避難移送対象の住民"
+              },
+              {
+                "value": 2.0,
+                "unit": "名",
+                "description": "歩行に介助が必要な避難移送対象者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "住民12名の避難移送手段を調整願います。"
+              },
+              {
+                "communication_id": "comm_a83cd9e5aa48491e841d5a9807c27a24",
+                "revision": 1,
+                "quote": "うち歩行に介助が必要な方は2名です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.207
+    },
+    {
+      "case": "08",
+      "input": "訓練、訓練。災害本部、こちら福祉支援班。こもれび福祉館西側入口から報告。停電中で、利用者10名と職員3名が館内にいます。利用者1名が電源を必要とする医療機器を使用しています。こもれび福祉館の職員から、医療機器の予備電池は残り約1時間との申告です。医療支援担当への連絡、機器に適合する電源の確保と、必要時の搬送調整をお願いします。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "福祉支援班",
+        "recipient": "災害本部",
+        "situation": "こもれび福祉館は停電中で、利用者10名と職員3名が館内におり、利用者1名が電源を必要とする医療機器を使用中。医療機器の予備電池は残り約1時間。",
+        "people": [
+          {
+            "value": 10.0,
+            "unit": "名",
+            "description": "利用者"
+          },
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "職員"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "医療支援担当へ連絡",
+            "description": "医療支援担当へ連絡する。",
+            "place": {
+              "expression": "こもれび福祉館西側入口",
+              "search_name": "こもれび福祉館",
+              "municipality": null,
+              "detail": "西側入口"
+            },
+            "map_categories": [
+              "power",
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "停電中で、利用者10名と職員3名が館内にいます。"
+              },
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "利用者1名が電源を必要とする医療機器を使用しています。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "医療機器を使用している利用者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "医療支援担当への連絡、機器に適合する電源の確保と、必要時の搬送調整をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "request",
+            "title": "医療機器用電源の確保",
+            "description": "使用中の医療機器に適合する電源を確保する。",
+            "place": {
+              "expression": "こもれび福祉館西側入口",
+              "search_name": "こもれび福祉館",
+              "municipality": null,
+              "detail": "西側入口"
+            },
+            "map_categories": [
+              "power"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "停電中で、利用者10名と職員3名が館内にいます。"
+              },
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "機器に適合する電源の確保"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "医療機器を使用している利用者"
+              },
+              {
+                "value": 1.0,
+                "unit": "時間",
+                "description": "予備電池の残り時間（約）"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "こもれび福祉館の職員から、医療機器の予備電池は残り約1時間との申告です。"
+              },
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "機器に適合する電源の確保"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "医療機器に適合する電源の仕様・種類は不明"
+            ]
+          },
+          {
+            "kind": "request",
+            "title": "必要時の搬送調整",
+            "description": "必要時に医療機器を使用している利用者の搬送を調整する。",
+            "place": {
+              "expression": "こもれび福祉館西側入口",
+              "search_name": "こもれび福祉館",
+              "municipality": null,
+              "detail": "西側入口"
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "必要時の搬送調整"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "医療機器を使用している利用者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_515600c9b0564e0c9c8e2bb90397b065",
+                "revision": 1,
+                "quote": "医療支援担当への連絡、機器に適合する電源の確保と、必要時の搬送調整をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "搬送が必要となる条件・要否は不明"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 35.309
+    },
+    {
+      "case": "09",
+      "input": "訓練、訓練。災害本部、こちら施設調査班。ほたる通り商店街南端から報告。角の空き店舗の外壁が歩道へ落下しました。通行人2名が負傷し、隣の駐車場で救護担当が付き添っています。ほたる通り南端の駐車場へ救急隊の派遣をお願いします。店舗の壁面に亀裂が残っています。周辺の立入規制と、専門担当による建物の安全確認を手配願います。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "施設調査班",
+        "recipient": "災害本部",
+        "situation": "ほたる通り商店街南端の角の空き店舗の外壁が歩道へ落下し、通行人2名が負傷。店舗の壁面に亀裂が残っている。負傷者は隣の駐車場で救護担当が付き添っている。",
+        "people": [
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "負傷した通行人"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "救急隊の派遣",
+            "description": "負傷者2名がいるほたる通り南端の駐車場へ救急隊を派遣する。",
+            "place": {
+              "expression": "ほたる通り南端の駐車場",
+              "search_name": "ほたる通り",
+              "municipality": null,
+              "detail": "南端の駐車場"
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_1797895d643b4e49a4d050b37dd6e95b",
+                "revision": 1,
+                "quote": "ほたる通り南端の駐車場へ救急隊の派遣をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "名",
+                "description": "負傷者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_1797895d643b4e49a4d050b37dd6e95b",
+                "revision": 1,
+                "quote": "ほたる通り南端の駐車場へ救急隊の派遣をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "request",
+            "title": "立入規制と建物の安全確認",
+            "description": "外壁が落下し亀裂が残る空き店舗周辺の立入規制と、専門担当による建物の安全確認を手配する。",
+            "place": {
+              "expression": "ほたる通り商店街南端の角の空き店舗",
+              "search_name": "ほたる通り商店街",
+              "municipality": null,
+              "detail": "南端の角の空き店舗"
+            },
+            "map_categories": [
+              "road_blocked",
+              "other"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_1797895d643b4e49a4d050b37dd6e95b",
+                "revision": 1,
+                "quote": "周辺の立入規制と、専門担当による建物の安全確認を手配願います。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_1797895d643b4e49a4d050b37dd6e95b",
+                "revision": 1,
+                "quote": "店舗の壁面に亀裂が残っています。周辺の立入規制と、専門担当による建物の安全確認を手配願います。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.607
+    },
+    {
+      "case": "10",
+      "input": "訓練、訓練。災害本部、こちらすみれ避難所担当。旧すみれ学校の給食搬入口から報告。避難者80名分の次の食事が不足しています。うち4名が食物アレルギーを申告し、対象食品を担当者が確認中です。食料は合計80食を手配願います。このうち4食は対象食品を個別確認したうえで、対応食の調整をお願いします。搬入先は旧すみれ学校の給食搬入口です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "すみれ避難所担当",
+        "recipient": "災害本部",
+        "situation": "旧すみれ学校の給食搬入口から、避難者80名分の次の食事が不足している。うち4名が食物アレルギーを申告し、対象食品を担当者が確認中。",
+        "people": [
+          {
+            "value": 80.0,
+            "unit": "名",
+            "description": "避難者"
+          },
+          {
+            "value": 4.0,
+            "unit": "名",
+            "description": "食物アレルギー申告者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "すみれ避難所の食料手配",
+            "description": "避難者向けの食料80食を手配し、そのうち4食は対象食品を個別確認したうえで対応食に調整する。",
+            "place": {
+              "expression": "旧すみれ学校の給食搬入口",
+              "search_name": "旧すみれ学校",
+              "municipality": null,
+              "detail": "給食搬入口"
+            },
+            "map_categories": [
+              "supplies"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "食料は合計80食を手配願います。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 80.0,
+                "unit": "食",
+                "description": "手配する食料の合計"
+              },
+              {
+                "value": 4.0,
+                "unit": "食",
+                "description": "対象食品を個別確認し対応食に調整する食数"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "避難者80名分の次の食事が不足しています。"
+              },
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "うち4名が食物アレルギーを申告し、対象食品を担当者が確認中です。"
+              },
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "食料は合計80食を手配願います。"
+              },
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "このうち4食は対象食品を個別確認したうえで、対応食の調整をお願いします。"
+              },
+              {
+                "communication_id": "comm_6b0df3f4b9684017a19fa80f18244227",
+                "revision": 1,
+                "quote": "搬入先は旧すみれ学校の給食搬入口です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "対象食品は担当者が確認中"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 22.099
+    },
+    {
+      "case": "R01",
+      "input": "訓練、訓練。本部、こちら連絡一班。東京都台東区の上野恩賜公園から報告。待機者は60名です。飲料水が不足しています。2リットル入り6本を1箱として、飲料水15箱の手配をお願いします。園内の詳しい受け渡し場所は確認中です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "連絡一班",
+        "recipient": "本部",
+        "situation": "東京都台東区の上野恩賜公園で待機者60名。飲料水が不足しており、受け渡し場所は確認中。",
+        "people": [
+          {
+            "value": 60.0,
+            "unit": "名",
+            "description": "待機者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "飲料水の手配",
+            "description": "飲料水15箱の手配を依頼。1箱は2リットル入り6本。",
+            "place": {
+              "expression": "東京都台東区の上野恩賜公園",
+              "search_name": "上野恩賜公園",
+              "municipality": "東京都台東区",
+              "detail": null
+            },
+            "map_categories": [
+              "water"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_3996442841384304ad2371b7f8e7f109",
+                "revision": 1,
+                "quote": "飲料水が不足しています。2リットル入り6本を1箱として、飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "リットル",
+                "description": "1本あたりの容量"
+              },
+              {
+                "value": 6.0,
+                "unit": "本",
+                "description": "1箱あたりの本数"
+              },
+              {
+                "value": 1.0,
+                "unit": "箱",
+                "description": "飲料水の包装単位"
+              },
+              {
+                "value": 15.0,
+                "unit": "箱",
+                "description": "手配を依頼する飲料水"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_3996442841384304ad2371b7f8e7f109",
+                "revision": 1,
+                "quote": "飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "園内の詳しい受け渡し場所は確認中"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 17.351
+    },
+    {
+      "case": "R02",
+      "input": "訓練、訓練。本部、こちら救護二班。東京都渋谷区の代々木公園から報告。負傷者3名、うち2名は自力歩行可能、1名は脚の痛みで歩行が困難です。救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。園内の正確な場所は確認中です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "救護二班",
+        "recipient": "本部",
+        "situation": "東京都渋谷区の代々木公園で負傷者3名。うち2名は自力歩行可能、1名は脚の痛みで歩行が困難。園内の正確な場所は確認中。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "負傷者"
+          },
+          {
+            "value": 2.0,
+            "unit": "名",
+            "description": "自力歩行可能な負傷者"
+          },
+          {
+            "value": 1.0,
+            "unit": "名",
+            "description": "脚の痛みで歩行が困難な負傷者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "situation_confirmation",
+            "title": "代々木公園の負傷者状況を確認",
+            "description": "代々木公園で負傷者3名が報告されており、うち1名は歩行困難。正確な場所は確認中。",
+            "place": {
+              "expression": "東京都渋谷区の代々木公園",
+              "search_name": "代々木公園",
+              "municipality": "東京都渋谷区",
+              "detail": null
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_cbf4f2c9d53640bc9cb0fe43a8cfb611",
+                "revision": 1,
+                "quote": "負傷者3名、うち2名は自力歩行可能、1名は脚の痛みで歩行が困難です。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_cbf4f2c9d53640bc9cb0fe43a8cfb611",
+                "revision": 1,
+                "quote": "東京都渋谷区の代々木公園から報告。負傷者3名、うち2名は自力歩行可能、1名は脚の痛みで歩行が困難です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "園内の正確な場所は確認中。"
+            ]
+          },
+          {
+            "kind": "request",
+            "title": "救急隊派遣と歩行困難者の搬送調整",
+            "description": "救急隊の派遣と、歩行困難な1名の搬送調整を要請。",
+            "place": {
+              "expression": "東京都渋谷区の代々木公園",
+              "search_name": "代々木公園",
+              "municipality": "東京都渋谷区",
+              "detail": null
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_cbf4f2c9d53640bc9cb0fe43a8cfb611",
+                "revision": 1,
+                "quote": "救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "名",
+                "description": "歩行困難な搬送対象者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_cbf4f2c9d53640bc9cb0fe43a8cfb611",
+                "revision": 1,
+                "quote": "救急隊の派遣と、歩行困難な1名の搬送調整をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "園内の正確な場所は確認中。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.283
+    },
+    {
+      "case": "R03",
+      "input": "訓練、訓練。本部、こちら道路調査三班。東京都の隅田川にかかる永代橋から報告。路上の障害物で車両が通行できない状態です。負傷者の有無は未確認です。道路管理者による現地確認を手配願います。橋のどちら側かは確認中です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "道路調査三班",
+        "recipient": "本部",
+        "situation": "路上の障害物で車両が通行できない状態。負傷者の有無は未確認で、橋のどちら側かは確認中。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "永代橋の道路障害物を現地確認",
+            "description": "道路管理者による現地確認を手配する。",
+            "place": {
+              "expression": "東京都の隅田川にかかる永代橋",
+              "search_name": "永代橋",
+              "municipality": "東京都",
+              "detail": null
+            },
+            "map_categories": [
+              "road_blocked"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_30ecc417b25741459cc37f45d3806ba3",
+                "revision": 1,
+                "quote": "路上の障害物で車両が通行できない状態です。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_30ecc417b25741459cc37f45d3806ba3",
+                "revision": 1,
+                "quote": "道路管理者による現地確認を手配願います。"
+              },
+              {
+                "communication_id": "comm_30ecc417b25741459cc37f45d3806ba3",
+                "revision": 1,
+                "quote": "負傷者の有無は未確認です。"
+              },
+              {
+                "communication_id": "comm_30ecc417b25741459cc37f45d3806ba3",
+                "revision": 1,
+                "quote": "橋のどちら側かは確認中です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "負傷者の有無は未確認です。",
+              "橋のどちら側かは確認中です。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 17.46
+    },
+    {
+      "case": "S01",
+      "input": "本部、こちら調査班。青葉避難所に負傷者3名。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": "青葉避難所に負傷者3名",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "名",
+            "description": "負傷者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "situation_confirmation",
+            "title": "青葉避難所の負傷者状況確認",
+            "description": "青葉避難所に負傷者3名。対応要否の確認が必要。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_ad465f00b96a4b5ba237154a5dbb49ef",
+                "revision": 1,
+                "quote": "青葉避難所に負傷者3名"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 3.0,
+                "unit": "名",
+                "description": "負傷者"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_ad465f00b96a4b5ba237154a5dbb49ef",
+                "revision": 1,
+                "quote": "青葉避難所に負傷者3名"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 12.705
+    },
+    {
+      "case": "S02",
+      "input": "本部、こちら調査班。符号は朝日のあです。続いて符号はアルファです。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": null,
+        "people": [],
+        "phonetic_interpretations": [
+          {
+            "original": "朝日のあ",
+            "characters": [
+              "ア"
+            ],
+            "interpreted": "ア",
+            "evidence": {
+              "communication_id": "comm_1a5c343c438147a58fa29a7431fe9af0",
+              "revision": 1,
+              "quote": "符号は朝日のあです"
+            }
+          },
+          {
+            "original": "アルファ",
+            "characters": [
+              "A"
+            ],
+            "interpreted": "A",
+            "evidence": {
+              "communication_id": "comm_1a5c343c438147a58fa29a7431fe9af0",
+              "revision": 1,
+              "quote": "符号はアルファです"
+            }
+          }
+        ],
+        "tasks": [],
+        "notices": []
+      },
+      "seconds": 7.95
+    },
+    {
+      "case": "S03",
+      "input": "本部、こちら調査班。ホテルへ向かっています。アルファ波についての一般連絡です。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": "調査班がホテルへ向かっている。アルファ波についての一般連絡。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "tasks": [],
+        "notices": []
+      },
+      "seconds": 8.541
+    },
+    {
+      "case": "S04",
+      "input": "本部、こちら調査班。青葉避難所への飲料水の手配は未完了です。到着は未確認、追加の手配は保留です。以上。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "調査班",
+        "recipient": "本部",
+        "situation": "青葉避難所への飲料水の手配は未完了で、到着は未確認、追加の手配は保留。",
+        "people": [],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "situation_confirmation",
+            "title": "青葉避難所への飲料水手配状況の確認",
+            "description": "青葉避難所への飲料水の手配が未完了で、到着も未確認、追加の手配も保留のため、対応要否を確認する。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "water"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_70ecfe0311734e6192586a97dcf3fc67",
+                "revision": 1,
+                "quote": "青葉避難所への飲料水の手配"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_70ecfe0311734e6192586a97dcf3fc67",
+                "revision": 1,
+                "quote": "青葉避難所への飲料水の手配は未完了です。"
+              },
+              {
+                "communication_id": "comm_70ecfe0311734e6192586a97dcf3fc67",
+                "revision": 1,
+                "quote": "到着は未確認、追加の手配は保留です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "飲料水の到着状況は未確認です。",
+              "追加の手配は保留です。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 14.921
+    }
+  ]
+}

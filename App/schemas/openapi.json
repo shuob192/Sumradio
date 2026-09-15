@@ -1,0 +1,2784 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sumradio",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles": {
+      "get": {
+        "summary": "Profiles",
+        "operationId": "profiles_api_profiles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Profile"
+                  },
+                  "type": "array",
+                  "title": "Response Profiles Api Profiles Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "summary": "Runs",
+        "operationId": "runs_api_runs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create",
+        "operationId": "create_api_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/regions": {
+      "get": {
+        "summary": "Regions",
+        "operationId": "regions_api_regions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/locations": {
+      "get": {
+        "summary": "Run Locations",
+        "operationId": "run_locations_api_runs__run_id__locations_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Location-Output"
+                  },
+                  "title": "Response Run Locations Api Runs  Run Id  Locations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}": {
+      "get": {
+        "summary": "Get Run",
+        "operationId": "get_run_api_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/devices": {
+      "get": {
+        "summary": "Devices",
+        "operationId": "devices_api_devices_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/recording/start": {
+      "post": {
+        "summary": "Start Recording",
+        "operationId": "start_recording_api_runs__run_id__recording_start_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordingStart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/recording/stop": {
+      "post": {
+        "summary": "Stop Recording",
+        "operationId": "stop_recording_api_runs__run_id__recording_stop_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/communications/{comm_id}/corrections": {
+      "post": {
+        "summary": "Correct",
+        "operationId": "correct_api_runs__run_id__communications__comm_id__corrections_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "comm_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Comm Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/communications/{comm_id}/retry": {
+      "post": {
+        "summary": "Retry",
+        "operationId": "retry_api_runs__run_id__communications__comm_id__retry_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "comm_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Comm Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Versioned"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/tasks": {
+      "post": {
+        "summary": "Create Task",
+        "operationId": "create_task_api_runs__run_id__tasks_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/communications/{comm_id}/display-metrics": {
+      "post": {
+        "summary": "Display Metric",
+        "operationId": "display_metric_api_runs__run_id__communications__comm_id__display_metrics_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "comm_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Comm Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisplayMetric"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/tasks/{task_id}": {
+      "put": {
+        "summary": "Edit Task",
+        "operationId": "edit_task_api_runs__run_id__tasks__task_id__put",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/tasks/{task_id}/transition": {
+      "post": {
+        "summary": "Transition",
+        "operationId": "transition_api_runs__run_id__tasks__task_id__transition_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/tasks/{task_id}/location": {
+      "post": {
+        "summary": "Location",
+        "operationId": "location_api_runs__run_id__tasks__task_id__location_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmLocation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/tasks/{task_id}/interpretation-location": {
+      "post": {
+        "summary": "Interpretation Location",
+        "operationId": "interpretation_location_api_runs__run_id__tasks__task_id__interpretation_location_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmInterpretationLocation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{run_id}/audio/{comm_id}/{variant}": {
+      "get": {
+        "summary": "Audio",
+        "operationId": "audio_api_runs__run_id__audio__comm_id___variant__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "comm_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Comm Id"
+            }
+          },
+          {
+            "name": "variant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Variant"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "summary": "Events",
+        "operationId": "events_api_events_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApprovedLocationInterpretation": {
+        "properties": {
+          "communication_id": {
+            "type": "string",
+            "title": "Communication Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "interpretation_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Interpretation Index"
+          },
+          "possible_meaning": {
+            "type": "string",
+            "title": "Possible Meaning"
+          },
+          "original_expression": {
+            "type": "string",
+            "title": "Original Expression"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "communication_id",
+          "revision",
+          "interpretation_index",
+          "possible_meaning",
+          "original_expression",
+          "evidence"
+        ],
+        "title": "ApprovedLocationInterpretation"
+      },
+      "Category": {
+        "type": "string",
+        "enum": [
+          "road_blocked",
+          "water",
+          "rescue",
+          "injury",
+          "medical",
+          "fire",
+          "flood",
+          "building_damage",
+          "communication",
+          "missing_person",
+          "sanitation",
+          "supplies",
+          "evacuation",
+          "power",
+          "other"
+        ],
+        "title": "Category"
+      },
+      "Communication": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "received_at": {
+            "type": "string",
+            "title": "Received At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 1
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision",
+            "default": 1
+          },
+          "original_text": {
+            "type": "string",
+            "title": "Original Text",
+            "default": ""
+          },
+          "corrections": {
+            "items": {
+              "$ref": "#/components/schemas/Correction"
+            },
+            "type": "array",
+            "title": "Corrections"
+          },
+          "original_audio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Audio"
+          },
+          "recognition_audio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recognition Audio"
+          },
+          "transcription_status": {
+            "type": "string",
+            "enum": [
+              "recording",
+              "queued",
+              "running",
+              "done",
+              "failed",
+              "interrupted"
+            ],
+            "title": "Transcription Status",
+            "default": "queued"
+          },
+          "extraction_status": {
+            "type": "string",
+            "enum": [
+              "waiting",
+              "running",
+              "done",
+              "failed"
+            ],
+            "title": "Extraction Status",
+            "default": "waiting"
+          },
+          "extraction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Extraction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "extraction_revision": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Revision"
+          },
+          "extraction_attempts": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Extraction Attempts"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "metrics": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Metrics"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "run_id",
+          "received_at",
+          "version",
+          "revision",
+          "original_text",
+          "corrections",
+          "original_audio",
+          "recognition_audio",
+          "transcription_status",
+          "extraction_status",
+          "extraction",
+          "extraction_revision",
+          "extraction_attempts",
+          "error",
+          "metrics"
+        ],
+        "title": "Communication"
+      },
+      "ConfirmInterpretationLocation": {
+        "properties": {
+          "communication_id": {
+            "type": "string",
+            "title": "Communication Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "interpretation_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Interpretation Index"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "location_id": {
+            "type": "string",
+            "title": "Location Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "communication_id",
+          "revision",
+          "interpretation_index",
+          "expected_version",
+          "actor",
+          "location_id"
+        ],
+        "title": "ConfirmInterpretationLocation"
+      },
+      "ConfirmLocation": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "candidate_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Id"
+          },
+          "manual": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Location-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor"
+        ],
+        "title": "ConfirmLocation"
+      },
+      "CorrectRequest": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 100000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor",
+          "text"
+        ],
+        "title": "CorrectRequest"
+      },
+      "Correction": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor"
+          },
+          "at": {
+            "type": "string",
+            "title": "At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision",
+          "text",
+          "actor",
+          "at"
+        ],
+        "title": "Correction"
+      },
+      "DisplayMetric": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "final",
+              "subtitle"
+            ],
+            "title": "Kind"
+          },
+          "displayed_at_epoch": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Displayed At Epoch"
+          },
+          "captured_at_epoch": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Captured At Epoch"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor",
+          "kind",
+          "displayed_at_epoch"
+        ],
+        "title": "DisplayMetric"
+      },
+      "Evidence": {
+        "properties": {
+          "communication_id": {
+            "type": "string",
+            "title": "Communication Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Quote"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "communication_id",
+          "revision",
+          "quote"
+        ],
+        "title": "Evidence"
+      },
+      "ExtractedTask": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/Kind"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlaceExpression"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "map_categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Map Categories"
+          },
+          "category_evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Category Evidence"
+          },
+          "quantities": {
+            "items": {
+              "$ref": "#/components/schemas/Quantity"
+            },
+            "type": "array",
+            "title": "Quantities"
+          },
+          "assignee": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Evidence"
+          },
+          "related_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Task Ids"
+          },
+          "uncertainties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uncertainties"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "title",
+          "description",
+          "place",
+          "map_categories",
+          "category_evidence",
+          "quantities",
+          "assignee",
+          "deadline",
+          "evidence",
+          "related_task_ids",
+          "uncertainties"
+        ],
+        "title": "ExtractedTask"
+      },
+      "Extraction": {
+        "properties": {
+          "sender": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender"
+          },
+          "recipient": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient"
+          },
+          "situation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Situation"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/Quantity"
+            },
+            "type": "array",
+            "title": "People"
+          },
+          "phonetic_interpretations": {
+            "items": {
+              "$ref": "#/components/schemas/PhoneticInterpretation"
+            },
+            "type": "array",
+            "title": "Phonetic Interpretations"
+          },
+          "transcript_interpretations": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptInterpretation"
+            },
+            "type": "array",
+            "title": "Transcript Interpretations"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/ExtractedTask"
+            },
+            "type": "array",
+            "title": "Tasks"
+          },
+          "notices": {
+            "items": {
+              "$ref": "#/components/schemas/Notice"
+            },
+            "type": "array",
+            "title": "Notices"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sender",
+          "recipient",
+          "situation",
+          "people",
+          "phonetic_interpretations",
+          "transcript_interpretations",
+          "tasks",
+          "notices"
+        ],
+        "title": "Extraction"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "History": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "at": {
+            "type": "string",
+            "title": "At"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "target_id": {
+            "type": "string",
+            "title": "Target Id"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          },
+          "after": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "at",
+          "actor",
+          "action",
+          "target_id",
+          "before",
+          "after"
+        ],
+        "title": "History"
+      },
+      "InterpretationLocationOption": {
+        "properties": {
+          "communication_id": {
+            "type": "string",
+            "title": "Communication Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "interpretation_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Interpretation Index"
+          },
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "task_version": {
+            "type": "integer",
+            "title": "Task Version"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location-Output"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "communication_id",
+          "revision",
+          "interpretation_index",
+          "task_id",
+          "task_version",
+          "location"
+        ],
+        "title": "InterpretationLocationOption"
+      },
+      "Kind": {
+        "type": "string",
+        "enum": [
+          "request",
+          "situation_confirmation"
+        ],
+        "title": "Kind"
+      },
+      "Location-Input": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "municipality": {
+            "type": "string",
+            "title": "Municipality"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases"
+          },
+          "lat": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Lon"
+          },
+          "precision": {
+            "type": "string",
+            "enum": [
+              "representative",
+              "specific"
+            ],
+            "title": "Precision",
+            "default": "representative"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "default": ""
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url",
+            "default": ""
+          },
+          "checked_at": {
+            "type": "string",
+            "title": "Checked At",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "municipality",
+          "lat",
+          "lon",
+          "source"
+        ],
+        "title": "Location"
+      },
+      "Location-Output": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "municipality": {
+            "type": "string",
+            "title": "Municipality"
+          },
+          "aliases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Aliases"
+          },
+          "lat": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Lon"
+          },
+          "precision": {
+            "type": "string",
+            "enum": [
+              "representative",
+              "specific"
+            ],
+            "title": "Precision",
+            "default": "representative"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "default": ""
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url",
+            "default": ""
+          },
+          "checked_at": {
+            "type": "string",
+            "title": "Checked At",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "municipality",
+          "aliases",
+          "lat",
+          "lon",
+          "precision",
+          "detail",
+          "source",
+          "source_url",
+          "checked_at"
+        ],
+        "title": "Location"
+      },
+      "LocationState": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "unresolved",
+              "candidates",
+              "confirmed"
+            ],
+            "title": "Status",
+            "default": "pending"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/Location-Output"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "confirmed": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Location-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confirmed_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed By"
+          },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "interpretation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ApprovedLocationInterpretation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "candidates",
+          "confirmed",
+          "confirmed_by",
+          "confirmed_at",
+          "reason",
+          "interpretation"
+        ],
+        "title": "LocationState"
+      },
+      "Notice": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "uncertain",
+              "duplicate",
+              "completion",
+              "negation",
+              "contradiction"
+            ],
+            "title": "Kind"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "related_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Task Ids"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "text",
+          "related_task_ids",
+          "evidence"
+        ],
+        "title": "Notice"
+      },
+      "PhoneticInterpretation": {
+        "properties": {
+          "original": {
+            "type": "string",
+            "title": "Original"
+          },
+          "characters": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Characters"
+          },
+          "interpreted": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpreted"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "original",
+          "characters",
+          "interpreted",
+          "evidence"
+        ],
+        "title": "PhoneticInterpretation"
+      },
+      "PlaceExpression": {
+        "properties": {
+          "expression": {
+            "type": "string",
+            "title": "Expression",
+            "description": "交信内で明示された地名・施設の固有名を省略せず、入口等の詳細地点と合わせた表現。"
+          },
+          "search_name": {
+            "type": "string",
+            "title": "Search Name",
+            "description": "原文で明示された固有名を含む地名・施設名の全体。単に『公園』『集会所』のような施設種別に短縮しない。"
+          },
+          "municipality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipality"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expression",
+          "search_name",
+          "municipality",
+          "detail"
+        ],
+        "title": "PlaceExpression"
+      },
+      "Profile": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "training": {
+            "type": "boolean",
+            "title": "Training"
+          },
+          "external_geocoding": {
+            "type": "boolean",
+            "title": "External Geocoding"
+          },
+          "locations": {
+            "items": {
+              "$ref": "#/components/schemas/Location-Output"
+            },
+            "type": "array",
+            "title": "Locations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "training",
+          "external_geocoding",
+          "locations"
+        ],
+        "title": "Profile"
+      },
+      "Quantity": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value",
+          "unit",
+          "description"
+        ],
+        "title": "Quantity"
+      },
+      "RecordingStart": {
+        "properties": {
+          "device": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "manual_mode": {
+            "type": "boolean",
+            "title": "Manual Mode",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RecordingStart"
+      },
+      "Region-Input": {
+        "properties": {
+          "prefecture": {
+            "type": "string",
+            "maxLength": 10,
+            "minLength": 3,
+            "title": "Prefecture"
+          },
+          "municipality": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Municipality",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "prefecture"
+        ],
+        "title": "Region"
+      },
+      "Region-Output": {
+        "properties": {
+          "prefecture": {
+            "type": "string",
+            "maxLength": 10,
+            "minLength": 3,
+            "title": "Prefecture"
+          },
+          "municipality": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Municipality",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "prefecture",
+          "municipality"
+        ],
+        "title": "Region"
+      },
+      "Run": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "demo_profile_id": {
+            "type": "string",
+            "title": "Demo Profile Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Region-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 1
+          },
+          "communications": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Communication"
+            },
+            "type": "object",
+            "title": "Communications"
+          },
+          "tasks": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Task"
+            },
+            "type": "object",
+            "title": "Tasks"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/History"
+            },
+            "type": "array",
+            "title": "History"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "demo_profile_id",
+          "title",
+          "region",
+          "created_at",
+          "version",
+          "communications",
+          "tasks",
+          "history"
+        ],
+        "title": "Run"
+      },
+      "RunCreate": {
+        "properties": {
+          "demo_profile_id": {
+            "type": "string",
+            "title": "Demo Profile Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Title",
+            "default": ""
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Region-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "demo_profile_id"
+        ],
+        "title": "RunCreate"
+      },
+      "RunView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "demo_profile_id": {
+            "type": "string",
+            "title": "Demo Profile Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Region-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 1
+          },
+          "communications": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Communication"
+            },
+            "type": "object",
+            "title": "Communications"
+          },
+          "tasks": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Task"
+            },
+            "type": "object",
+            "title": "Tasks"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/History"
+            },
+            "type": "array",
+            "title": "History"
+          },
+          "interpretation_locations": {
+            "items": {
+              "$ref": "#/components/schemas/InterpretationLocationOption"
+            },
+            "type": "array",
+            "title": "Interpretation Locations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "demo_profile_id",
+          "title",
+          "region",
+          "created_at",
+          "version",
+          "communications",
+          "tasks",
+          "history",
+          "interpretation_locations"
+        ],
+        "title": "RunView"
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "candidate",
+          "unhandled",
+          "completed",
+          "discarded"
+        ],
+        "title": "Status"
+      },
+      "Task": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/Kind"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlaceExpression"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "map_categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Map Categories"
+          },
+          "category_evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Category Evidence"
+          },
+          "quantities": {
+            "items": {
+              "$ref": "#/components/schemas/Quantity"
+            },
+            "type": "array",
+            "title": "Quantities"
+          },
+          "assignee": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "related_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Task Ids"
+          },
+          "uncertainties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uncertainties"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 1
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status",
+            "default": "candidate"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "ai",
+              "manual"
+            ],
+            "title": "Origin"
+          },
+          "manual_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manual Reason"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationState"
+          },
+          "notices": {
+            "items": {
+              "$ref": "#/components/schemas/Notice"
+            },
+            "type": "array",
+            "title": "Notices"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "title",
+          "description",
+          "place",
+          "map_categories",
+          "category_evidence",
+          "quantities",
+          "assignee",
+          "deadline",
+          "evidence",
+          "related_task_ids",
+          "uncertainties",
+          "id",
+          "run_id",
+          "version",
+          "status",
+          "origin",
+          "manual_reason",
+          "created_at",
+          "location",
+          "notices"
+        ],
+        "title": "Task"
+      },
+      "TaskCreate": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/Kind"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Description",
+            "default": ""
+          },
+          "place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlaceExpression"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "map_categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Map Categories"
+          },
+          "quantities": {
+            "items": {
+              "$ref": "#/components/schemas/Quantity"
+            },
+            "type": "array",
+            "title": "Quantities"
+          },
+          "assignee": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "related_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Task Ids"
+          },
+          "uncertainties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uncertainties"
+          },
+          "manual_reason": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Manual Reason"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "title",
+          "manual_reason",
+          "actor"
+        ],
+        "title": "TaskCreate"
+      },
+      "TaskEdit": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/Kind"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Description",
+            "default": ""
+          },
+          "place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlaceExpression"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "map_categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Map Categories"
+          },
+          "quantities": {
+            "items": {
+              "$ref": "#/components/schemas/Quantity"
+            },
+            "type": "array",
+            "title": "Quantities"
+          },
+          "assignee": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "related_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Task Ids"
+          },
+          "uncertainties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uncertainties"
+          },
+          "manual_reason": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Manual Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor",
+          "kind",
+          "title",
+          "manual_reason"
+        ],
+        "title": "TaskEdit"
+      },
+      "TranscriptInterpretation": {
+        "properties": {
+          "possible_meaning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Possible Meaning"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "possible_meaning",
+          "reason",
+          "evidence"
+        ],
+        "title": "TranscriptInterpretation"
+      },
+      "TransitionRequest": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor",
+          "status"
+        ],
+        "title": "TransitionRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Versioned": {
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "actor": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Actor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_version",
+          "actor"
+        ],
+        "title": "Versioned"
+      }
+    }
+  }
+}

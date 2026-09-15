@@ -1,0 +1,232 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "at": "2026-09-15T03:30:34.408710+00:00",
+  "prompt_sha256": "5ee69a8a959aaf30c0808018dfab72fed362e2acb62f41fbb7655939c0c15436",
+  "results": [
+    {
+      "case": "I01",
+      "input": "訓練。本部、青葉避難所に負傷者3名。うち1名の搬送と救急隊の派遣をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": "本部",
+        "situation": "青葉避難所に負傷者3名。うち1名の搬送と救急隊の派遣が必要。",
+        "people": [
+          {
+            "value": 3.0,
+            "unit": "人",
+            "description": "負傷者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "負傷者1名の搬送と救急隊の派遣",
+            "description": "青葉避難所に負傷者3名がおり、そのうち1名の搬送と救急隊の派遣を要請。",
+            "place": {
+              "expression": "青葉避難所",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "injury",
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_edaeee6fbf694a13bf7eb33aed8aa774",
+                "revision": 1,
+                "quote": "本部、青葉避難所に負傷者3名。"
+              },
+              {
+                "communication_id": "comm_edaeee6fbf694a13bf7eb33aed8aa774",
+                "revision": 1,
+                "quote": "うち1名の搬送と救急隊の派遣をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 1.0,
+                "unit": "人",
+                "description": "搬送対象"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_edaeee6fbf694a13bf7eb33aed8aa774",
+                "revision": 1,
+                "quote": "本部、青葉避難所に負傷者3名。"
+              },
+              {
+                "communication_id": "comm_edaeee6fbf694a13bf7eb33aed8aa774",
+                "revision": 1,
+                "quote": "うち1名の搬送と救急隊の派遣をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 12.621
+    },
+    {
+      "case": "I02",
+      "input": "訓練。青葉避難所の倉庫に2名が閉じ込められています。けが人はいません。救助をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": "訓練。青葉避難所の倉庫に2名が閉じ込められている。けが人はいない。",
+        "people": [
+          {
+            "value": 2.0,
+            "unit": "人",
+            "description": "倉庫に閉じ込められている人数"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "青葉避難所の倉庫から2名を救助",
+            "description": "青葉避難所の倉庫に2名が閉じ込められています。けが人はいないとの報告です。救助をお願いします。",
+            "place": {
+              "expression": "青葉避難所の倉庫",
+              "search_name": "青葉避難所",
+              "municipality": null,
+              "detail": "倉庫"
+            },
+            "map_categories": [
+              "rescue"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "救助をお願いします。"
+              },
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "青葉避難所の倉庫に2名が閉じ込められています。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 2.0,
+                "unit": "人",
+                "description": "救助対象者数"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "青葉避難所の倉庫に2名が閉じ込められています。"
+              },
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "けが人はいません。"
+              },
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "救助をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": [
+          {
+            "kind": "negation",
+            "text": "けが人はいません。",
+            "related_task_ids": [],
+            "evidence": [
+              {
+                "communication_id": "comm_2ffa2b941c0f47d5aa99c987fa305285",
+                "revision": 1,
+                "quote": "けが人はいません。"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 16.336
+    },
+    {
+      "case": "I03",
+      "input": "訓練。ひなた集会所で煙と炎が出ています。消防隊の出動をお願いします。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": null,
+        "recipient": null,
+        "situation": null,
+        "people": [],
+        "phonetic_interpretations": [],
+        "transcript_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "消防隊の出動要請",
+            "description": "ひなた集会所で煙と炎が出ているため、消防隊の出動をお願いします。",
+            "place": {
+              "expression": "ひなた集会所",
+              "search_name": "ひなた集会所",
+              "municipality": null,
+              "detail": null
+            },
+            "map_categories": [
+              "fire"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_8921d6483b91434886c3c01b1a0f7ee7",
+                "revision": 1,
+                "quote": "ひなた集会所で煙と炎が出ています。"
+              },
+              {
+                "communication_id": "comm_8921d6483b91434886c3c01b1a0f7ee7",
+                "revision": 1,
+                "quote": "消防隊の出動をお願いします。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_8921d6483b91434886c3c01b1a0f7ee7",
+                "revision": 1,
+                "quote": "ひなた集会所で煙と炎が出ています。"
+              },
+              {
+                "communication_id": "comm_8921d6483b91434886c3c01b1a0f7ee7",
+                "revision": 1,
+                "quote": "消防隊の出動をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 9.237
+    }
+  ]
+}

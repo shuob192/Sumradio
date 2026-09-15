@@ -1,0 +1,431 @@
+{
+  "$defs": {
+    "Category": {
+      "enum": [
+        "road_blocked",
+        "water",
+        "rescue",
+        "injury",
+        "medical",
+        "fire",
+        "flood",
+        "building_damage",
+        "communication",
+        "missing_person",
+        "sanitation",
+        "supplies",
+        "evacuation",
+        "power",
+        "other"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "Evidence": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id"
+      ],
+      "additionalProperties": false
+    },
+    "ExtractedTask": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/Kind"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "place": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlaceExpression"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "map_categories": {
+          "items": {
+            "$ref": "#/$defs/Category"
+          },
+          "minItems": 1,
+          "title": "Map Categories",
+          "type": "array"
+        },
+        "category_evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "title": "Category Evidence",
+          "type": "array"
+        },
+        "quantities": {
+          "items": {
+            "$ref": "#/$defs/Quantity"
+          },
+          "title": "Quantities",
+          "type": "array"
+        },
+        "assignee": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Assignee"
+        },
+        "deadline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deadline"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "related_task_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Task Ids",
+          "type": "array"
+        },
+        "uncertainties": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncertainties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "title",
+        "description",
+        "place",
+        "map_categories",
+        "category_evidence",
+        "quantities",
+        "assignee",
+        "deadline",
+        "evidence",
+        "related_task_ids",
+        "uncertainties"
+      ],
+      "title": "ExtractedTask",
+      "type": "object"
+    },
+    "Kind": {
+      "enum": [
+        "request",
+        "situation_confirmation"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "Notice": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "uncertain",
+            "duplicate",
+            "completion",
+            "negation",
+            "contradiction"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "related_task_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related Task Ids",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "related_task_ids",
+        "evidence"
+      ],
+      "title": "Notice",
+      "type": "object"
+    },
+    "PhoneticInterpretation": {
+      "additionalProperties": false,
+      "properties": {
+        "original": {
+          "title": "Original",
+          "type": "string"
+        },
+        "characters": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Characters",
+          "type": "array"
+        },
+        "interpreted": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpreted"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "original",
+        "characters",
+        "interpreted",
+        "evidence"
+      ],
+      "title": "PhoneticInterpretation",
+      "type": "object"
+    },
+    "PlaceExpression": {
+      "additionalProperties": false,
+      "properties": {
+        "expression": {
+          "description": "交信内で明示された地名・施設の固有名を省略せず、入口等の詳細地点と合わせた表現。",
+          "title": "Expression",
+          "type": "string"
+        },
+        "search_name": {
+          "description": "原文で明示された固有名を含む地名・施設名の全体。単に『公園』『集会所』のような施設種別に短縮しない。",
+          "title": "Search Name",
+          "type": "string"
+        },
+        "municipality": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Municipality"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "expression",
+        "search_name",
+        "municipality",
+        "detail"
+      ],
+      "title": "PlaceExpression",
+      "type": "object"
+    },
+    "Quantity": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "description"
+      ],
+      "title": "Quantity",
+      "type": "object"
+    },
+    "TranscriptInterpretation": {
+      "additionalProperties": false,
+      "properties": {
+        "possible_meaning": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Possible Meaning"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "possible_meaning",
+        "reason",
+        "evidence"
+      ],
+      "title": "TranscriptInterpretation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "sender": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Sender"
+    },
+    "recipient": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Recipient"
+    },
+    "situation": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Situation"
+    },
+    "people": {
+      "items": {
+        "$ref": "#/$defs/Quantity"
+      },
+      "title": "People",
+      "type": "array"
+    },
+    "phonetic_interpretations": {
+      "items": {
+        "$ref": "#/$defs/PhoneticInterpretation"
+      },
+      "title": "Phonetic Interpretations",
+      "type": "array"
+    },
+    "transcript_interpretations": {
+      "items": {
+        "$ref": "#/$defs/TranscriptInterpretation"
+      },
+      "title": "Transcript Interpretations",
+      "type": "array"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/ExtractedTask"
+      },
+      "title": "Tasks",
+      "type": "array"
+    },
+    "notices": {
+      "items": {
+        "$ref": "#/$defs/Notice"
+      },
+      "title": "Notices",
+      "type": "array"
+    }
+  },
+  "required": [
+    "sender",
+    "recipient",
+    "situation",
+    "people",
+    "phonetic_interpretations",
+    "transcript_interpretations",
+    "tasks",
+    "notices"
+  ],
+  "title": "Extraction",
+  "type": "object"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "local",
+  "name": "通常利用・登録地点と地名検索",
+  "training": false,
+  "external_geocoding": true,
+  "locations": []
+}

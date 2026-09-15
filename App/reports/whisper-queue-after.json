@@ -1,0 +1,62 @@
+{
+  "mode": "saved_audio_real_worker_simulated_stop_not_microphone_acceptance",
+  "at": "2026-09-15T02:44:15.760160+00:00",
+  "audio_sha256": "ed3053c08b8af38cbeda20ea9ed186da37392ecd0e8d78541adbb6396288fa9e",
+  "threads": 4,
+  "source_sha256": "054917a7f2d7459a6c19d9f1b1316d997b48f73f8c30b4efa95a18c8558e93f8",
+  "limitations": "暫定字幕の処理直後に手動確定を模擬。モデルロード・実録音・無音待ち・画面描画・Codexは時間に含まない。生成データは一時保存先のみ。",
+  "results": [
+    {
+      "final_delay_seconds": 5.5183,
+      "pre_recognition_seconds": 0.0286,
+      "text": "訓練訓練本部こちら連絡一般東京都台東区の上野温室公園から報告待機者は60名です飲料水が不足しています2リットリー6本を1箱として飲料水15箱の手配をお願いします園内の詳しい受け渡し場所は録音中です以上訓練",
+      "calls": [
+        {
+          "kind": "partial",
+          "audio_seconds": 20.0,
+          "started_after_finalize_seconds": -0.0003,
+          "duration_seconds": 5.1674
+        },
+        {
+          "kind": "final",
+          "audio_seconds": 25.0,
+          "started_after_finalize_seconds": 0.0286,
+          "duration_seconds": 5.4894
+        }
+      ],
+      "stale_subtitles_published": 0,
+      "metrics": {
+        "finalized_at_epoch": 1789440256.8029451,
+        "speech_started_at_epoch": 1789440256.8043442,
+        "speech_queue_wait_ms": 1.3990402221679688,
+        "speech_preparation_ms": 24.17270799924154
+      }
+    },
+    {
+      "final_delay_seconds": 5.4587,
+      "pre_recognition_seconds": 0.0144,
+      "text": "訓練訓練本部こちら連絡一般東京都台東区の上野温室公園から報告待機者は60名です飲料水が不足しています2リットリー6本を1箱として飲料水15箱の手配をお願いします園内の詳しい受け渡し場所は録音中です以上訓練",
+      "calls": [
+        {
+          "kind": "partial",
+          "audio_seconds": 20.0,
+          "started_after_finalize_seconds": -0.0005,
+          "duration_seconds": 5.0546
+        },
+        {
+          "kind": "final",
+          "audio_seconds": 25.0,
+          "started_after_finalize_seconds": 0.0144,
+          "duration_seconds": 5.4442
+        }
+      ],
+      "stale_subtitles_published": 0,
+      "metrics": {
+        "finalized_at_epoch": 1789440263.1758761,
+        "speech_started_at_epoch": 1789440263.177773,
+        "speech_queue_wait_ms": 1.8968582153320312,
+        "speech_preparation_ms": 9.907083993311971
+      }
+    }
+  ]
+}

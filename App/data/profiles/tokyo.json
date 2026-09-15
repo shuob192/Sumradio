@@ -1,0 +1,57 @@
+{
+  "id": "tokyo",
+  "name": "実在地名・東京都内",
+  "training": true,
+  "external_geocoding": false,
+  "locations": [
+    {
+      "id": "tokyo_ueno",
+      "name": "上野恩賜公園",
+      "municipality": "東京都台東区",
+      "aliases": [
+        "上野公園",
+        "うえのおんしこうえん",
+        "うえのこうえん"
+      ],
+      "lat": 35.714756,
+      "lon": 139.773431,
+      "precision": "representative",
+      "detail": "",
+      "source": "台東区公式観光案内の地図リンク（公園代表点）",
+      "source_url": "https://t-navi.city.taito.lg.jp/spot/1025",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "tokyo_yoyogi",
+      "name": "代々木公園",
+      "municipality": "東京都渋谷区",
+      "aliases": [
+        "よよぎこうえん"
+      ],
+      "lat": 35.6714052,
+      "lon": 139.6951716,
+      "precision": "representative",
+      "detail": "",
+      "source": "OpenStreetMap relation 19862716／東京都公園協会の案内図と照合（公園代表点）",
+      "source_url": "https://www.openstreetmap.org/relation/19862716",
+      "checked_at": "2026-09-15"
+    },
+    {
+      "id": "tokyo_eitai",
+      "name": "永代橋",
+      "municipality": "東京都江東区・東京都中央区",
+      "aliases": [
+        "えいたいばし",
+        "隅田川の永代橋",
+        "隅田川にかかる永代橋"
+      ],
+      "lat": 35.6763021,
+      "lon": 139.7875645,
+      "precision": "representative",
+      "detail": "",
+      "source": "OpenStreetMap way 1060000228／江東区橋一覧の設置箇所と照合（橋の代表点）",
+      "source_url": "https://www.openstreetmap.org/way/1060000228",
+      "checked_at": "2026-09-15"
+    }
+  ]
+}

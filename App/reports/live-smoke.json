@@ -1,0 +1,124 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "results": [
+    {
+      "case": "R01",
+      "input": "訓練、訓練。本部、こちら連絡一班。東京都台東区の上野恩賜公園から報告。待機者は60名です。飲料水が不足しています。2リットル入り6本を1箱として、飲料水15箱の手配をお願いします。園内の詳しい受け渡し場所は確認中です。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "連絡一班",
+        "recipient": "本部",
+        "situation": "東京都台東区の上野恩賜公園で60名が待機中。飲料水が不足しており、園内の詳しい受け渡し場所は確認中。",
+        "people": [
+          {
+            "value": 60.0,
+            "unit": "名",
+            "description": "待機者"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "飲料水15箱の手配",
+            "description": "2リットル入り6本を1箱として、飲料水15箱の手配を依頼。",
+            "place": {
+              "expression": "東京都台東区の上野恩賜公園",
+              "search_name": "上野恩賜公園",
+              "municipality": "東京都台東区",
+              "detail": null
+            },
+            "map_categories": [
+              "supplies"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "飲料水が不足しています。2リットル入り6本を1箱として、飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 15.0,
+                "unit": "箱",
+                "description": "飲料水"
+              },
+              {
+                "value": 2.0,
+                "unit": "リットル",
+                "description": "1本あたりの容量"
+              },
+              {
+                "value": 6.0,
+                "unit": "本",
+                "description": "1箱あたりの本数"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "2リットル入り6本を1箱として、飲料水15箱の手配をお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": []
+          },
+          {
+            "kind": "situation_confirmation",
+            "title": "待機者状況と受け渡し場所の確認",
+            "description": "上野恩賜公園の待機者60名の状況および園内の詳しい飲料水受け渡し場所を確認。",
+            "place": {
+              "expression": "東京都台東区の上野恩賜公園",
+              "search_name": "上野恩賜公園",
+              "municipality": "東京都台東区",
+              "detail": "園内の詳しい受け渡し場所"
+            },
+            "map_categories": [
+              "supplies",
+              "other"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "待機者は60名です。"
+              },
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "園内の詳しい受け渡し場所は確認中です。"
+              }
+            ],
+            "quantities": [],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "待機者は60名です。"
+              },
+              {
+                "communication_id": "comm_bd76fe7d9cb84a9ca2a8714d28fd1673",
+                "revision": 1,
+                "quote": "園内の詳しい受け渡し場所は確認中です。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "園内の詳しい受け渡し場所は未確認"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 26.96
+    }
+  ]
+}

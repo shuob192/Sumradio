@@ -1,0 +1,424 @@
+{
+  "mode": "saved_text_live_cli_not_microphone",
+  "limitations": "形式・引用と限定的な分類/数量/場所の検証。意味の完全性・全体の正確さ・音声精度・実機操作の合格を意味しない。後のファイルを最新試行として採用。",
+  "attempts": [
+    {
+      "case": "01",
+      "status": "valid_json_and_evidence",
+      "seconds": 25.842,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "02",
+      "status": "valid_json_and_evidence",
+      "seconds": 22.517,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "03",
+      "status": "valid_json_and_evidence",
+      "seconds": 26.894,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "04",
+      "status": "valid_json_and_evidence",
+      "seconds": 24.52,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "05",
+      "status": "valid_json_and_evidence",
+      "seconds": 26.116,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "06",
+      "status": "failed",
+      "seconds": 18.624,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "07",
+      "status": "valid_json_and_evidence",
+      "seconds": 26.207,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "08",
+      "status": "valid_json_and_evidence",
+      "seconds": 35.309,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "09",
+      "status": "valid_json_and_evidence",
+      "seconds": 26.607,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "10",
+      "status": "valid_json_and_evidence",
+      "seconds": 22.099,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "R01",
+      "status": "valid_json_and_evidence",
+      "seconds": 17.351,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "R02",
+      "status": "valid_json_and_evidence",
+      "seconds": 26.283,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "R03",
+      "status": "valid_json_and_evidence",
+      "seconds": 17.46,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "S01",
+      "status": "valid_json_and_evidence",
+      "seconds": 12.705,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "S02",
+      "status": "valid_json_and_evidence",
+      "seconds": 7.95,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "S03",
+      "status": "valid_json_and_evidence",
+      "seconds": 8.541,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "S04",
+      "status": "valid_json_and_evidence",
+      "seconds": 14.921,
+      "source": "reports/live-extraction-v2.json"
+    },
+    {
+      "case": "06",
+      "status": "valid_json_and_evidence",
+      "seconds": 16.178,
+      "source": "reports/live-retry-06.json"
+    },
+    {
+      "case": "R02",
+      "status": "valid_json_and_evidence",
+      "seconds": 23.3,
+      "source": "reports/live-focused.json"
+    },
+    {
+      "case": "S05",
+      "status": "valid_json_and_evidence",
+      "seconds": 12.02,
+      "source": "reports/live-focused.json"
+    },
+    {
+      "case": "S06",
+      "status": "valid_json_and_evidence",
+      "seconds": 16.193,
+      "source": "reports/live-focused.json"
+    },
+    {
+      "case": "06",
+      "status": "valid_json_and_evidence",
+      "seconds": 19.211,
+      "source": "reports/live-location-06.json"
+    }
+  ],
+  "evaluations": [
+    {
+      "case": "01",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "青葉避難所の避難者数と介助必要者数の確認",
+          "status": "candidates",
+          "candidates": [
+            "青葉避難所"
+          ]
+        },
+        {
+          "title": "飲料水15箱の手配",
+          "status": "candidates",
+          "candidates": [
+            "青葉避難所"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "02",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "救急隊派遣と歩行困難者1名の搬送調整",
+          "status": "candidates",
+          "candidates": [
+            "若葉公園"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "03",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "青葉北線の土砂による道路閉塞への現地確認・撤去手配",
+          "status": "candidates",
+          "candidates": [
+            "青葉北線"
+          ]
+        },
+        {
+          "title": "巻き込まれた人の有無の確認",
+          "status": "candidates",
+          "candidates": [
+            "青葉北線"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "04",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "通行止め資機材の手配",
+          "status": "candidates",
+          "candidates": [
+            "あさぎ橋"
+          ]
+        },
+        {
+          "title": "迂回路の確認と関係現場への周知",
+          "status": "candidates",
+          "candidates": [
+            "あさぎ橋"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "05",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "水難救助対応隊の派遣と5名の避難支援",
+          "status": "candidates",
+          "candidates": [
+            "みどり住宅"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "06",
+      "source": "reports/live-location-06.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "毛布と着替えの手配",
+          "status": "candidates",
+          "candidates": [
+            "ひなた集会所"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "07",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "つばき地区進入路の倒木処理",
+          "status": "candidates",
+          "candidates": [
+            "つばき地区"
+          ]
+        },
+        {
+          "title": "住民12名の避難移送手段の調整",
+          "status": "unresolved",
+          "candidates": []
+        }
+      ]
+    },
+    {
+      "case": "08",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "医療支援担当へ連絡",
+          "status": "candidates",
+          "candidates": [
+            "こもれび福祉館"
+          ]
+        },
+        {
+          "title": "医療機器用電源の確保",
+          "status": "candidates",
+          "candidates": [
+            "こもれび福祉館"
+          ]
+        },
+        {
+          "title": "必要時の搬送調整",
+          "status": "candidates",
+          "candidates": [
+            "こもれび福祉館"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "09",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "救急隊の派遣",
+          "status": "candidates",
+          "candidates": [
+            "ほたる通り"
+          ]
+        },
+        {
+          "title": "立入規制と建物の安全確認",
+          "status": "unresolved",
+          "candidates": []
+        }
+      ]
+    },
+    {
+      "case": "10",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "すみれ避難所の食料手配",
+          "status": "candidates",
+          "candidates": [
+            "すみれ避難所"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R01",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "飲料水の手配",
+          "status": "candidates",
+          "candidates": [
+            "上野恩賜公園"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R02",
+      "source": "reports/live-focused.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "救急隊派遣と歩行困難者の搬送調整",
+          "status": "candidates",
+          "candidates": [
+            "代々木公園"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R03",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": [
+        {
+          "title": "永代橋の道路障害物を現地確認",
+          "status": "candidates",
+          "candidates": [
+            "永代橋"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "S01",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    },
+    {
+      "case": "S02",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    },
+    {
+      "case": "S03",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    },
+    {
+      "case": "S04",
+      "source": "reports/live-extraction-v2.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    },
+    {
+      "case": "S05",
+      "source": "reports/live-focused.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    },
+    {
+      "case": "S06",
+      "source": "reports/live-focused.json",
+      "passed": true,
+      "problems": [],
+      "locations": []
+    }
+  ],
+  "passed": 19,
+  "total": 19
+}

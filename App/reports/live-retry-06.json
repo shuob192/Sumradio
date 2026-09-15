@@ -1,0 +1,85 @@
+{
+  "mode": "saved_text_live_codex_not_microphone",
+  "model": "gpt-5.6-luna",
+  "codex_version": "codex-cli 0.154.0-alpha.6.2",
+  "results": [
+    {
+      "case": "06",
+      "input": "訓練、訓練。災害本部、こちらひなた集会所担当。集会所玄関から報告。避難者24名のうち、雨で衣服が濡れ、寒さを訴える方が6名います。乾いた寝具が不足しています。毛布30枚と、濡れた6名分の着替えを手配願います。サイズは担当者が取りまとめ中です。受け渡しは集会所玄関でお願いします。以上、訓練。",
+      "status": "valid_json_and_evidence",
+      "output": {
+        "sender": "ひなた集会所担当",
+        "recipient": "災害本部",
+        "situation": "避難者24名のうち、雨で衣服が濡れ、寒さを訴える方が6名おり、乾いた寝具が不足している。",
+        "people": [
+          {
+            "value": 24.0,
+            "unit": "名",
+            "description": "避難者"
+          },
+          {
+            "value": 6.0,
+            "unit": "名",
+            "description": "雨で衣服が濡れ、寒さを訴える方"
+          }
+        ],
+        "phonetic_interpretations": [],
+        "tasks": [
+          {
+            "kind": "request",
+            "title": "毛布と着替えの手配",
+            "description": "乾いた寝具が不足しているため、毛布30枚と、濡れた6名分の着替えを手配する。受け渡しは集会所玄関。サイズは担当者が取りまとめ中。",
+            "place": {
+              "expression": "集会所玄関",
+              "search_name": "集会所",
+              "municipality": null,
+              "detail": "玄関"
+            },
+            "map_categories": [
+              "supplies"
+            ],
+            "category_evidence": [
+              {
+                "communication_id": "comm_fa62da286b114727914fec70f7ab6be7",
+                "revision": 1,
+                "quote": "毛布30枚と、濡れた6名分の着替えを手配願います。"
+              }
+            ],
+            "quantities": [
+              {
+                "value": 30.0,
+                "unit": "枚",
+                "description": "毛布"
+              },
+              {
+                "value": 6.0,
+                "unit": "名分",
+                "description": "濡れた方の着替え"
+              }
+            ],
+            "assignee": null,
+            "deadline": null,
+            "evidence": [
+              {
+                "communication_id": "comm_fa62da286b114727914fec70f7ab6be7",
+                "revision": 1,
+                "quote": "乾いた寝具が不足しています。毛布30枚と、濡れた6名分の着替えを手配願います。"
+              },
+              {
+                "communication_id": "comm_fa62da286b114727914fec70f7ab6be7",
+                "revision": 1,
+                "quote": "受け渡しは集会所玄関でお願いします。"
+              }
+            ],
+            "related_task_ids": [],
+            "uncertainties": [
+              "サイズは担当者が取りまとめ中。"
+            ]
+          }
+        ],
+        "notices": []
+      },
+      "seconds": 16.178
+    }
+  ]
+}
