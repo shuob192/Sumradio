@@ -85,7 +85,12 @@ function renderStatus() {
   $("#device-select").disabled = recording;
   $("#refresh-devices").disabled = recording;
   const error = runtime.audio_error || whisper.error || codex.error;
-  $("#audio-message").textContent = error || (recording ? "受信中です。無音5秒または「今の交信を確定」で区切ります。" : "無音5秒で自動的に1件の交信として確定します。");
+  let message = "無音5秒で自動的に1件の交信として確定します。";
+  if (recording) message = "受信中です。無音5秒または「今の交信を確定」で区切ります。";
+  else if (["starting", "loading"].includes(whisper.status)) message = "音声認識モデルを準備中のため、録音はまだ開始できません。初回はモデルのダウンロードが必要です。準備完了後に「録音開始」を押してください。";
+  else if (whisper.status === "skipped") message = "音声認識が無効です。録音するには音声認識を有効にして再起動してください。";
+  else if (!appState.active_area) message = "録音を始めるには、先に「対象地域を指定」してください。";
+  $("#audio-message").textContent = error || message;
   $("#audio-message").className = `helper${error ? " error" : ""}`;
 }
 

@@ -34,6 +34,12 @@ codex login status
 
 Whisperモデルは初回起動時にダウンロードされます。デモ当日の取得を避ける場合は、事前に次を実行します。
 
+「文字起こし・モデル読込中」の間は録音開始ボタンが無効になります。
+マイクが一覧に表示されていても、モデルの準備が完了するまで録音は開始できません。
+取得済みの完全なモデルがある場合は、起動時に外部通信せずキャッシュから読み込みます。
+フォルダを移した場合は、取得済みの`data/models`を引き継ぐか、
+`SUMRADIO_MODEL_DIR=/absolute/path/to/existing/data/models uv run sumradio`で保存済みモデルを指定できます。
+
 ```sh
 uv run python -c 'from faster_whisper import WhisperModel; WhisperModel("medium", device="cpu", compute_type="int8", download_root="data/models")'
 ```

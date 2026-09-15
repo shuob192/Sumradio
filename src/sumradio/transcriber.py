@@ -23,14 +23,28 @@ class WhisperTranscriber:
     def load(self) -> None:
         try:
             from faster_whisper import WhisperModel
+            from faster_whisper.utils import download_model
+            from huggingface_hub.errors import LocalEntryNotFoundError
+
+            cache_dir = str(self.download_root) if self.download_root else None
+            model_path = self.model_name
+            try:
+                cached = Path(download_model(self.model_name, cache_dir=cache_dir, local_files_only=True))
+            except LocalEntryNotFoundError:
+                pass
+            else:
+                # A snapshot can exist while its large model file is still downloading.
+                required = [cached / name for name in ("model.bin", "config.json", "tokenizer.json")]
+                if all(path.is_file() and path.stat().st_size > 0 for path in required) and any(cached.glob("vocabulary.*")):
+                    model_path = str(cached)
 
             self._model = WhisperModel(
-                self.model_name,
+                model_path,
                 device="cpu",
                 compute_type="int8",
                 cpu_threads=self.cpu_threads,
                 num_workers=1,
-                download_root=str(self.download_root) if self.download_root else None,
+                download_root=cache_dir,
             )
         except Exception as exc:
             raise WhisperUnavailableError(f"Whisper mediumを読み込めません: {exc}") from exc
