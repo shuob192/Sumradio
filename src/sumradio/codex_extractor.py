@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+import subprocess
 import time
 from pathlib import Path
 
@@ -69,7 +70,7 @@ def _structured_output_schema() -> dict:
 
 
 def _safe_error_detail(stderr: bytes) -> str:
-    text = stderr.decode("utf-8", errors="replace")
+    text = re.sub(r"\x1b\[[0-9;]*m", "", stderr.decode("utf-8", errors="replace"))
     messages = re.findall(r'"message"\s*:\s*"((?:[^"\\]|\\.)*)"', text)
     if messages:
         try:
@@ -77,7 +78,9 @@ def _safe_error_detail(stderr: bytes) -> str:
         except json.JSONDecodeError:
             return messages[-1][:1000]
     lines = [line.strip() for line in text.splitlines() if line.strip()]
-    return (lines[-1] if lines else "詳細なし")[:1000]
+    # clap prints the useful error first and a generic '--help' hint last.
+    errors = [line for line in lines if line.lower().startswith("error:")]
+    return (errors[0] if errors else "\n".join(lines[:3]) or "詳細なし")[:1000]
 
 
 class CodexExtractor:
@@ -93,6 +96,8 @@ class CodexExtractor:
         self.japanese_table = japanese_table
         self.nato_table = nato_table
         self.runtime_dir = runtime_dir
+        self.cli_version: str | None = None
+        self._cli_checked = False
         self.workspace_dir = runtime_dir / "codex-workspace"
         self.workspace_dir.mkdir(parents=True, exist_ok=True)
         self.schema_path = runtime_dir / "task-extraction.schema.json"
@@ -187,11 +192,54 @@ class CodexExtractor:
             "never",
         ]
 
+    def check_cli(self) -> None:
+        """Validate the actual executable and arguments without sending a transcript."""
+        self._cli_checked = False
+        try:
+            version = subprocess.run(
+                [self.settings.codex_path, "--version"],
+                stdin=subprocess.DEVNULL,
+                capture_output=True,
+                timeout=5,
+                cwd=self.workspace_dir,
+            )
+            self.cli_version = version.stdout.decode("utf-8", errors="replace").strip()[:160] or None
+            if version.returncode != 0:
+                raise CodexExtractionError(
+                    f"Codex CLIのバージョンを確認できません: {_safe_error_detail(version.stderr)}"
+                )
+            # Use the real extraction arguments: merely finding a 'codex' binary
+            # (or checking a version number) does not establish compatibility.
+            probe = subprocess.run(
+                [*self.command(), "--help"],
+                stdin=subprocess.DEVNULL,
+                capture_output=True,
+                timeout=5,
+                cwd=self.workspace_dir,
+            )
+        except OSError as exc:
+            raise CodexExtractionError(
+                f"Codex CLIを起動できません（{self.settings.codex_path}）: {exc}。"
+                "インストール先とSUMRADIO_CODEX_PATHを確認してください。"
+            ) from exc
+        except subprocess.TimeoutExpired as exc:
+            raise CodexExtractionError("Codex CLIの起動確認が5秒でタイムアウトしました") from exc
+        if probe.returncode != 0:
+            raise CodexExtractionError(
+                f"Codex CLIがSumradioの起動引数に対応していません"
+                f"（{self.cli_version}; {self.settings.codex_path}）: "
+                f"{_safe_error_detail(probe.stderr)}。Codex CLIを更新し、"
+                "SUMRADIO_CODEX_PATHが更新後の実行ファイルを指すことを確認して再起動してください。"
+            )
+        self._cli_checked = True
+
     async def extract(
         self,
         communication: CommunicationRecord,
         related_tasks: list[TaskRecord],
     ) -> tuple[ExtractionResponse, float]:
+        if not self._cli_checked:
+            await asyncio.to_thread(self.check_cli)
         prompt = self.build_prompt(communication, related_tasks)
         started = time.monotonic()
         try:
@@ -219,6 +267,8 @@ class CodexExtractor:
         if len(stdout) > self.settings.codex_output_limit_bytes:
             raise CodexExtractionError("Codexの出力が許可サイズを超えました")
         if process.returncode != 0:
+            if process.returncode == 2:
+                self._cli_checked = False
             detail = _safe_error_detail(stderr)
             raise CodexExtractionError(f"Codex CLIが失敗しました（{process.returncode}）: {detail}")
         try:

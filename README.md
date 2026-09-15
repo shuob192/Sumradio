@@ -88,6 +88,23 @@ uv run sumradio
 
 ## 設定
 
+プロジェクト直下の`.env`を起動時に読み込みます。ターミナルの環境変数が優先されます。
+Codex CLIの指定を再起動後も維持するには、`.env`へ対応版の実行ファイルの絶対パスを保存してください。
+`.env`はGitの管理対象外です。
+
+```dotenv
+SUMRADIO_CODEX_PATH=/absolute/path/to/compatible/codex
+```
+
+Codex CLIは`--ephemeral`・`--ignore-user-config`・`--ignore-rules`・`--output-schema`に対応した版が必要です。
+`codex-cli 0.63.0`は非対応です。起動時に実際の引数を`--help`付きで検証し、
+非対応なら実行ファイル・版・原因を表示します。「CLI確認済み」は引数の確認結果であり、
+ログイン・モデル利用権限・通信成功を保証しません。
+
+`unexpected argument`が出た場合は対応版のCLIを指定して再起動してください。
+保存済みの交信は「AI整理を再試行」で再整理できます。文字訂正が必要なら
+「訂正を保存して再整理」を使ってください。音声の録り直しは不要です。
+
 | 環境変数 | 既定値 | 用途 |
 | --- | --- | --- |
 | `SUMRADIO_DATA_DIR` | `./data` | 音声・記録の保存先 |

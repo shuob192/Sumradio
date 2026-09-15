@@ -5,6 +5,8 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from dotenv import dotenv_values
+
 
 @dataclass(frozen=True, slots=True)
 class Settings:
@@ -36,33 +38,38 @@ class Settings:
     @classmethod
     def from_env(cls, project_root: Path | None = None) -> "Settings":
         root = (project_root or Path(__file__).resolve().parents[2]).resolve()
-        configured_codex = os.getenv("SUMRADIO_CODEX_PATH")
+        # Process environment overrides persistent project settings.
+        env = {
+            **{key: value for key, value in dotenv_values(root / ".env").items() if value is not None},
+            **os.environ,
+        }
+        configured_codex = env.get("SUMRADIO_CODEX_PATH")
         codex_path = configured_codex or shutil.which("codex") or "codex"
         return cls(
             project_root=root,
-            data_dir=Path(os.getenv("SUMRADIO_DATA_DIR", root / "data")).resolve(),
+            data_dir=Path(env.get("SUMRADIO_DATA_DIR", root / "data")).resolve(),
             model_cache_dir=Path(
-                os.getenv("SUMRADIO_MODEL_DIR", Path(os.getenv("SUMRADIO_DATA_DIR", root / "data")) / "models")
+                env.get("SUMRADIO_MODEL_DIR", Path(env.get("SUMRADIO_DATA_DIR", root / "data")) / "models")
             ).resolve(),
             japanese_phonetic_path=root / "Document_recent" / "japanese_phonetic.md",
             nato_phonetic_path=root / "Document_recent" / "nato_phonetic.md",
             codex_path=codex_path,
-            codex_model=os.getenv("SUMRADIO_CODEX_MODEL", "gpt-5.6-luna"),
-            codex_effort=os.getenv("SUMRADIO_CODEX_EFFORT", "low"),
-            codex_timeout_seconds=float(os.getenv("SUMRADIO_CODEX_TIMEOUT_SECONDS", "60")),
-            codex_output_limit_bytes=int(os.getenv("SUMRADIO_CODEX_OUTPUT_LIMIT_BYTES", "1048576")),
+            codex_model=env.get("SUMRADIO_CODEX_MODEL", "gpt-5.6-luna"),
+            codex_effort=env.get("SUMRADIO_CODEX_EFFORT", "low"),
+            codex_timeout_seconds=float(env.get("SUMRADIO_CODEX_TIMEOUT_SECONDS", "60")),
+            codex_output_limit_bytes=int(env.get("SUMRADIO_CODEX_OUTPUT_LIMIT_BYTES", "1048576")),
             whisper_model="medium",
-            whisper_cpu_threads=int(os.getenv("SUMRADIO_WHISPER_CPU_THREADS", "8")),
-            voice_rms_threshold=float(os.getenv("SUMRADIO_VOICE_RMS_THRESHOLD", "300")),
-            skip_model_load=os.getenv("SUMRADIO_SKIP_MODEL_LOAD", "0") == "1",
-            host=os.getenv("SUMRADIO_HOST", "127.0.0.1"),
-            port=int(os.getenv("SUMRADIO_PORT", "8000")),
-            geocoder_enabled=os.getenv("SUMRADIO_GEOCODER_ENABLED", "1") == "1",
-            geocoder_url=os.getenv("SUMRADIO_GEOCODER_URL", "https://nominatim.openstreetmap.org/search"),
-            geocoder_user_agent=os.getenv("SUMRADIO_GEOCODER_USER_AGENT", "Sumradio/0.2 (local disaster-training application)"),
-            geocoder_interval_seconds=float(os.getenv("SUMRADIO_GEOCODER_INTERVAL_SECONDS", "15")),
-            geocoder_timeout_seconds=float(os.getenv("SUMRADIO_GEOCODER_TIMEOUT_SECONDS", "10")),
-            tile_url=os.getenv("SUMRADIO_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
-            tile_attribution=os.getenv("SUMRADIO_TILE_ATTRIBUTION", ""),
-            refresh_places=os.getenv("SUMRADIO_REFRESH_PLACES", "1") == "1",
+            whisper_cpu_threads=int(env.get("SUMRADIO_WHISPER_CPU_THREADS", "8")),
+            voice_rms_threshold=float(env.get("SUMRADIO_VOICE_RMS_THRESHOLD", "300")),
+            skip_model_load=env.get("SUMRADIO_SKIP_MODEL_LOAD", "0") == "1",
+            host=env.get("SUMRADIO_HOST", "127.0.0.1"),
+            port=int(env.get("SUMRADIO_PORT", "8000")),
+            geocoder_enabled=env.get("SUMRADIO_GEOCODER_ENABLED", "1") == "1",
+            geocoder_url=env.get("SUMRADIO_GEOCODER_URL", "https://nominatim.openstreetmap.org/search"),
+            geocoder_user_agent=env.get("SUMRADIO_GEOCODER_USER_AGENT", "Sumradio/0.2 (local disaster-training application)"),
+            geocoder_interval_seconds=float(env.get("SUMRADIO_GEOCODER_INTERVAL_SECONDS", "15")),
+            geocoder_timeout_seconds=float(env.get("SUMRADIO_GEOCODER_TIMEOUT_SECONDS", "10")),
+            tile_url=env.get("SUMRADIO_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
+            tile_attribution=env.get("SUMRADIO_TILE_ATTRIBUTION", ""),
+            refresh_places=env.get("SUMRADIO_REFRESH_PLACES", "1") == "1",
         )
