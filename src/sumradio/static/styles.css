@@ -27,10 +27,8 @@ button.primary { color: white; background: var(--deep); border-color: var(--deep
 button.secondary { color: var(--deep); background: var(--green-soft); border-color: #bad1c6; }
 
 .topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; background: #102b23; color: white; border-bottom: 1px solid rgba(255,255,255,.1); }
-.brand { display: flex; gap: 12px; align-items: center; }
-.brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.4); border-radius: 50%; color: #bfe4d2; font-size: 24px; }
-.brand h1 { font-size: 19px; margin: 0; letter-spacing: .02em; }
-.brand p { font-size: 11px; margin: 3px 0 0; color: #b7c8c0; }
+.brand { display: flex; align-items: center; min-width: 0; margin: 0; }
+.brand-logo { display: block; width: auto; height: 52px; max-width: 100%; object-fit: contain; }
 .system-status { display: flex; gap: 8px; }
 .status-pill { padding: 7px 11px; border-radius: 99px; background: rgba(255,255,255,.1); color: #dce8e2; font-size: 12px; border: 1px solid rgba(255,255,255,.12); }
 .status-pill.ready { background: rgba(63, 145, 109, .28); color: #d7f3e5; }
