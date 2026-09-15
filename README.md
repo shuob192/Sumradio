@@ -29,6 +29,11 @@ uv sync --all-groups
 codex login status
 ```
 
+Codex CLIは、`--ephemeral`・`--ignore-user-config`・`--ignore-rules`・`--output-schema`
+を含むSumradioの起動引数に対応した版が必要です。`codex-cli 0.63.0`は非対応です。
+起動時に実際の引数を`--help`付きで検証し、非対応の場合は実行ファイル・版・原因を画面に表示します。
+「CLI確認済み」は起動引数の確認結果であり、ログイン・モデル利用権限・通信の成功を保証する表示ではありません。
+
 Whisperモデルは初回起動時にダウンロードされます。デモ当日の取得を避ける場合は、事前に次を実行します。
 
 ```sh
@@ -51,6 +56,30 @@ uv run sumradio
 - タスク編集では、人数を「説明｜人数」、物資を「品目｜数量｜単位｜詳細」の形式で1行ずつ入力できます。
 - AI整理が失敗しても音声と文字は残り、手動登録も利用できます。
 - 「承認」「破棄」「対応済みにする」は確認ダイアログの後に状態を変更します。
+
+### 文字起こし・訂正はできるがタスク候補が出ない場合
+
+交信詳細の「AI整理」とエラーを確認してください。「AI整理失敗」は、候補0件で整理が成功した場合とは異なります。
+`unexpected argument`や終了コード`2`が出る場合は、CLIと起動引数の互換性を確認します。
+文字を訂正しても同じCLIを呼ぶため、CLIの問題が解消するまでは再整理も失敗します。
+
+Sumradioを起動するのと同じターミナルで次を実行します。npmで導入したCLIの更新手順です。
+
+```sh
+npm install -g @openai/codex@latest
+codex --version
+codex exec --help
+codex login status
+```
+
+Homebrewなど別の方法で導入した場合は、その方法で更新してください。
+必要な引数が更新後も見つからない場合は、別の古いCLIを起動していないか確認し、
+`SUMRADIO_CODEX_PATH`に対応版の実行ファイルを指定します。
+更新後にSumradioを再起動し、保存済みの交信で「AI整理を再試行」を押します。
+訂正が必要な交信は「訂正を保存して再整理」で訂正文を送ります。原音の録り直しは不要です。
+
+参考: [Codex CLIの導入・更新](https://learn.chatgpt.com/docs/codex/cli)、
+[非対話実行と構造化出力](https://learn.chatgpt.com/docs/non-interactive-mode)。
 
 ## 保存先とプライバシー
 

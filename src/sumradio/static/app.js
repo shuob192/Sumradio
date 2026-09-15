@@ -66,7 +66,7 @@ function renderStatus() {
   const whisper = runtime.whisper || {};
   const codex = runtime.codex || {};
   const whisperLabels = {starting:"起動中", loading:"モデル読込中", ready:"準備完了", error:"エラー", skipped:"停止中"};
-  const codexLabels = {starting:"起動中", ready:`${codex.model || "Codex"} 準備完了`, error:"エラー"};
+  const codexLabels = {starting:"起動確認中", ready:`${codex.model || "Codex"} CLI確認済み`, error:"エラー"};
   const whisperNode = $("#whisper-status");
   whisperNode.textContent = `文字起こし · ${whisperLabels[whisper.status] || whisper.status || "確認中"}`;
   whisperNode.className = `status-pill ${whisper.status === "ready" ? "ready" : whisper.status === "error" ? "error" : ""}`;

@@ -6,12 +6,11 @@ import time
 from contextlib import suppress
 
 from .audio import AudioRecorder, CapturedSegment
-from .codex_extractor import CodexExtractor
+from .codex_extractor import CodexExtractionError, CodexExtractor
 from .config import Settings
 from .events import EventBus
 from .models import (
     CorrectionInput,
-    ExtractionStatus,
     ManualTaskInput,
     TaskEditInput,
     TaskRecord,
@@ -68,8 +67,9 @@ class SumradioService:
                 nato_table=nato,
                 runtime_dir=self.store.runtime_dir,
             )
+            await asyncio.to_thread(self.extractor.check_cli)
             self.codex_status = "ready"
-        except (PhoneticTableError, OSError) as exc:
+        except (CodexExtractionError, PhoneticTableError, OSError) as exc:
             self.codex_status = "error"
             self.codex_error = str(exc)
         self._worker_task = asyncio.create_task(self._extraction_worker(), name="sumradio-extraction")
@@ -113,6 +113,7 @@ class SumradioService:
                 "error": self.codex_error,
                 "model": self.settings.codex_model,
                 "effort": self.settings.codex_effort,
+                "version": self.extractor.cli_version if self.extractor else None,
             },
             "audio_error": self.audio_error,
         }
@@ -260,9 +261,14 @@ class SumradioService:
             if is_current:
                 for task in tasks:
                     await self.events.publish("task.updated", task.model_dump(mode="json"))
+            self.codex_status = "ready"
+            self.codex_error = None
         except Exception as exc:
+            self.codex_status = "error"
+            self.codex_error = str(exc)
             updated = await asyncio.to_thread(self.store.fail_extraction, communication_id, revision, str(exc))
             await self.events.publish("communication.updated", updated.model_dump(mode="json"))
+        await self.events.publish("system.status", self.runtime_status())
 
     async def correct_communication(self, communication_id: str, data: CorrectionInput):
         record = await asyncio.to_thread(

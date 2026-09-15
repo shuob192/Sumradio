@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import subprocess
 
 import pytest
 
 from sumradio.codex_extractor import CodexExtractionError, CodexExtractor
-from sumradio.codex_extractor import _structured_output_schema
+from sumradio.codex_extractor import _safe_error_detail, _structured_output_schema
 from sumradio.models import (
     CommunicationFacts,
     CommunicationRecord,
@@ -59,7 +60,17 @@ def make_extractor(settings, tmp_path) -> CodexExtractor:
 def fake_codex(tmp_path, body: str):
     tmp_path.mkdir(parents=True, exist_ok=True)
     path = tmp_path / "fake-codex"
-    path.write_text(f"#!/bin/sh\n/bin/cat >/dev/null\n{body}\n", encoding="utf-8")
+    path.write_text(
+        "#!/bin/sh\n"
+        "for arg in \"$@\"; do\n"
+        "  case \"$arg\" in\n"
+        "    --version) printf 'codex-cli test'; exit 0;;\n"
+        "    --help) printf 'Usage: codex exec [OPTIONS]'; exit 0;;\n"
+        "  esac\n"
+        "done\n"
+        f"/bin/cat >/dev/null\n{body}\n",
+        encoding="utf-8",
+    )
     path.chmod(0o755)
     return path
 
@@ -67,10 +78,49 @@ def fake_codex(tmp_path, body: str):
 def test_command_uses_ephemeral_read_only_schema_and_luna(settings, tmp_path) -> None:
     extractor = make_extractor(settings, tmp_path)
     command = extractor.command()
-    assert command[:4] == ["codex", "--ask-for-approval", "never", "exec"]
+    assert command[:4] == [settings.codex_path, "--ask-for-approval", "never", "exec"]
     assert "--ephemeral" in command and "read-only" in command
     assert "--ignore-user-config" in command and "--ignore-rules" in command
     assert "--output-schema" in command and "gpt-5.6-luna" in command
+
+
+def test_cli_probe_rejects_unsupported_flags_before_sending_text(settings, tmp_path):
+    cli = tmp_path / "old-codex"
+    cli.write_text(
+        "#!/bin/sh\n"
+        "if [ \"$1\" = '--version' ]; then printf 'codex-cli 0.63.0'; exit 0; fi\n"
+        "printf \"error: unexpected argument '--ephemeral' found\\n\\nFor more information, try '--help'.\\n\" >&2\n"
+        "exit 2\n",
+        encoding="utf-8",
+    )
+    cli.chmod(0o755)
+    extractor = make_extractor(replace(settings, codex_path=str(cli)), tmp_path / "runtime")
+    with pytest.raises(CodexExtractionError) as caught:
+        extractor.check_cli()
+    message = str(caught.value)
+    assert "0.63.0" in message and "--ephemeral" in message
+    assert "更新" in message and "SUMRADIO_CODEX_PATH" in message
+    assert str(cli) in message
+    assert not extractor._cli_checked
+
+
+def test_error_detail_keeps_argument_error_instead_of_help_footer():
+    error = b"error: unexpected argument '--ignore-rules' found\n\nUsage: codex exec\n\nFor more information, try '--help'."
+    assert _safe_error_detail(error) == "error: unexpected argument '--ignore-rules' found"
+
+
+def test_cli_probe_reports_missing_executable(settings, tmp_path):
+    extractor = make_extractor(replace(settings, codex_path=str(tmp_path / "missing")), tmp_path)
+    with pytest.raises(CodexExtractionError, match="SUMRADIO_CODEX_PATH"):
+        extractor.check_cli()
+
+
+def test_cli_probe_has_a_timeout(settings, tmp_path, monkeypatch):
+    def timeout(*args, **kwargs):
+        raise subprocess.TimeoutExpired(args[0], kwargs["timeout"])
+    monkeypatch.setattr(subprocess, "run", timeout)
+    with pytest.raises(CodexExtractionError, match="起動確認.*タイムアウト"):
+        make_extractor(settings, tmp_path).check_cli()
 
 
 def test_structured_output_schema_requires_every_property() -> None:
