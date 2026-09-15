@@ -1,0 +1,43 @@
+[project]
+name = "sumradio"
+version = "0.1.0"
+description = "無線交信を文字起こしし、人間が確認する対応事項として整理するローカルアプリ"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "faster-whisper>=1.2,<2",
+  "numpy>=2.1,<3",
+  "pydantic>=2.11,<3",
+  "scipy>=1.15,<2",
+  "sounddevice>=0.5,<1",
+  "uvicorn[standard]>=0.35,<1",
+  "webrtcvad-wheels>=2.0.14,<3",
+]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.28,<1",
+  "pytest>=8.4,<9",
+  "pytest-asyncio>=1.1,<2",
+  "pytest-cov>=6.2,<7",
+]
+
+[project.scripts]
+sumradio = "sumradio.__main__:main"
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sumradio"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["sumradio"]
+omit = ["src/sumradio/__main__.py"]

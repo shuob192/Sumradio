@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sumradio</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">∿</span>
+        <div><h1>Sumradio</h1><p>無線交信の記録と対応整理</p></div>
+      </div>
+      <div class="system-status" aria-label="システム状態">
+        <span id="whisper-status" class="status-pill">文字起こし · 確認中</span>
+        <span id="codex-status" class="status-pill">AI整理 · 確認中</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="capture-panel" aria-labelledby="capture-heading">
+        <div class="capture-controls">
+          <div class="section-kicker">受信</div>
+          <h2 id="capture-heading">マイク入力</h2>
+          <label for="device-select">入力マイク</label>
+          <div class="device-row">
+            <select id="device-select" aria-label="入力マイク"></select>
+            <button id="refresh-devices" class="icon-button" title="マイクを再読み込み" aria-label="マイクを再読み込み">↻</button>
+          </div>
+          <div class="meter" aria-label="入力レベル"><span id="input-level"></span></div>
+          <div class="record-buttons">
+            <button id="start-recording" class="primary"><span class="record-dot"></span>録音開始</button>
+            <button id="finalize-recording" disabled>今の交信を確定</button>
+            <button id="stop-recording" disabled>録音停止</button>
+          </div>
+          <p id="audio-message" class="helper">無音5秒で自動的に1件の交信として確定します。</p>
+        </div>
+        <div class="live-caption" aria-live="polite">
+          <div class="live-heading"><span class="live-indicator"></span>ライブ字幕</div>
+          <p id="partial-caption">録音を開始すると、ここに暫定字幕が表示されます。</p>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="communications-panel">
+          <div class="panel-heading">
+            <div><div class="section-kicker">記録</div><h2>交信履歴</h2></div>
+            <span id="communication-count" class="count-badge">0</span>
+          </div>
+          <div id="communications" class="communications-list"></div>
+        </aside>
+
+        <section class="board-panel">
+          <div class="panel-heading">
+            <div><div class="section-kicker">対応</div><h2>対応ボード</h2></div>
+            <button id="new-task" class="secondary">+　手動登録</button>
+          </div>
+          <div class="board">
+            <section class="board-column candidate-column" data-state="candidate">
+              <header><h3>タスク候補</h3><span id="candidate-count">0</span></header>
+              <p class="column-note">AI・手動で登録された未確認の候補</p>
+              <div id="candidate-tasks" class="task-list"></div>
+            </section>
+            <section class="board-column open-column" data-state="open">
+              <header><h3>未対応</h3><span id="open-count">0</span></header>
+              <p class="column-note">人間が確認し、対応対象としたタスク</p>
+              <div id="open-tasks" class="task-list"></div>
+            </section>
+            <section class="board-column done-column" data-state="done">
+              <header><h3>対応済み</h3><span id="done-count">0</span></header>
+              <p class="column-note">対応完了または対応要否を確定済み</p>
+              <div id="done-tasks" class="task-list"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="communication-dialog" class="detail-dialog">
+      <form method="dialog" class="dialog-shell">
+        <header><div><div class="section-kicker">交信詳細</div><h2 id="communication-title">交信</h2></div><button class="close-button" value="close" aria-label="閉じる">×</button></header>
+        <div id="communication-detail" class="dialog-content"></div>
+      </form>
+    </dialog>
+
+    <dialog id="task-dialog" class="detail-dialog">
+      <form id="task-form" class="dialog-shell">
+        <header><div><div class="section-kicker">対応詳細</div><h2 id="task-dialog-title">タスク</h2></div><button type="button" class="close-button" data-close="task-dialog" aria-label="閉じる">×</button></header>
+        <div class="dialog-content form-grid">
+          <input id="task-id" type="hidden" />
+          <input id="task-version" type="hidden" />
+          <label>種別<select id="task-kind"><option value="request">要請</option><option value="situation_confirmation">状況確認</option></select></label>
+          <label class="wide">見出し<input id="task-title" required maxlength="160" /></label>
+          <label class="wide">対応内容<textarea id="task-action" required maxlength="1000"></textarea></label>
+          <label>対象<input id="task-target" maxlength="400" /></label>
+          <label>場所<input id="task-location" maxlength="400" /></label>
+          <label>条件<input id="task-condition" maxlength="500" /></label>
+          <label>担当<input id="task-assignee" maxlength="240" /></label>
+          <label>期限<input id="task-deadline" maxlength="240" /></label>
+          <label class="wide">人数（1行ごとに「説明｜人数」）<textarea id="task-people" placeholder="避難者｜60\n乳幼児｜8"></textarea></label>
+          <label class="wide">物資（1行ごとに「品目｜数量｜単位｜詳細」）<textarea id="task-resources" placeholder="飲料水｜15｜箱｜500ml"></textarea></label>
+          <label class="wide">根拠交信ID（1行1件）<textarea id="task-communications"></textarea></label>
+          <label class="wide">根拠の原文（1行1件）<textarea id="task-quotes"></textarea></label>
+          <div id="task-readonly-detail" class="wide"></div>
+        </div>
+        <footer><button type="button" data-close="task-dialog">キャンセル</button><button type="submit" class="primary">保存</button></footer>
+      </form>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>
